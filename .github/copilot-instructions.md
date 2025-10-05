@@ -1,15 +1,72 @@
 # GitHub Copilot Instructions
 
 ## Project Overview
-This is a personal recipe website built with React, Vite, TypeScript, and Tailwind CSS. The project is currently in transition and will be migrated to **Tina CMS** for content management.
+This is a personal recipe website built with React, Vite, TypeScript, and Tailwind CSS, using **Tina CMS** for content management.
 
 ## Technology Stack
 - **Frontend**: React 19, TypeScript, Tailwind CSS 4
 - **Build Tool**: Vite 6
+- **CMS**: Tina CMS (integrated)
 - **UI Components**: Radix UI, shadcn/ui patterns
 - **State Management**: TanStack Query
 - **Markdown**: Marked, React Markdown
-- **Future CMS**: Tina CMS (migration in progress)
+
+## Content Management System (Tina CMS)
+
+### Important: Generated Files Are NOT Source Code
+**Tina admin files are build artifacts, NOT source code.**
+
+#### What Gets Committed:
+- ✅ `tina/config.ts` - Tina configuration
+- ✅ `content/` - Recipe markdown files
+- ✅ Tina-related dependencies in package.json
+
+#### What Gets Ignored (`.gitignore`):
+- ❌ `public/admin/` - Generated admin UI files
+- ❌ Admin build artifacts
+
+### Build Process
+The build automatically includes Tina:
+```json
+{
+  "scripts": {
+    "build": "tinacms build && tsc -b --noCheck && vite build"
+  }
+}
+```
+
+1. `tinacms build` generates admin UI in `public/admin/`
+2. TypeScript compilation
+3. Vite builds the app (includes admin files)
+
+### Development Workflow
+
+#### With CMS Access (use this for content editing):
+```bash
+pnpm run dev:tina
+```
+- Starts Vite on :5000 + Tina on :4001
+- Access admin at `/admin`
+- Edit content visually
+
+#### Without CMS (faster for code changes):
+```bash
+pnpm run dev
+```
+- Regular Vite dev server
+- No admin access
+
+### Why Admin Files Are NOT Committed
+
+1. **Build Artifacts**: Generated during build, like `dist/`
+2. **Platform-Specific**: esbuild binaries differ per OS
+3. **Reproducible**: Build produces identical output
+4. **Bloat**: Large JS bundles would bloat repo
+
+### CI/CD Behavior
+- GitHub Actions runs on Linux
+- Builds Tina admin during deployment
+- Works correctly because build happens on target platform
 
 ## Project File Structure Rules
 
@@ -95,21 +152,35 @@ All task outcomes from Copilot jobs and development tasks must be documented in 
    - **Use standard markdown checkboxes**: `- [ ]` for unchecked, `- [x]` for checked
    - Avoid using emojis (✅, ✓, ❌) for checkboxes - use proper markdown syntax
 
-## Migration to Tina CMS
+## Tina CMS Integration (Complete)
 
-### ⚠️ Important: Keep Instructions Updated
-**As the Tina CMS migration progresses, these instructions MUST be updated to reflect:**
-- New content structure and schema
-- Tina CMS specific patterns and best practices
-- Changes to markdown file locations (if Tina manages them differently)
-- New build processes or development workflows
-- Updated component patterns for Tina integration
+### Content Structure
+- **Recipe Content**: `content/recipes/` - Markdown files managed by Tina
+- **Tina Config**: `tina/config.ts` - Schema and collection definitions
 
-### During Migration:
-1. Update this file immediately when major CMS-related changes are made
-2. Document any breaking changes in a migration task file
-3. Keep both old and new patterns documented until migration is complete
-4. Add Tina-specific development guidelines as they are established
+### Admin Access
+- **Local**: `http://localhost:5000/admin` (requires `pnpm run dev:tina`)
+- **Production**: `https://recipes.gordonbeeming.com/admin`
+
+### Development Commands
+```bash
+# Regular dev (faster, no CMS)
+pnpm run dev
+
+# Dev with Tina CMS access
+pnpm run dev:tina
+```
+
+### Build Behavior
+- Standard build includes Tina: `tinacms build && tsc && vite build`
+- Generates `public/admin/` automatically
+- Admin files are in `.gitignore` (build artifacts)
+
+### When Making Changes
+1. **Never commit** `public/admin/` files (they're generated)
+2. **Always commit** changes to `tina/config.ts` or content schema
+3. **Use `dev:tina`** when testing CMS-related features
+4. **Update Tina config** when adding new content fields
 
 ## Code Style and Patterns
 
@@ -310,8 +381,8 @@ After:
 ---
 
 **Last Updated**: 2025-01-05
-**Version**: 1.4.0
-**Status**: Pre-Tina CMS Migration
+**Version**: 2.0.0
+**CMS Status**: ✅ Tina CMS Integrated
 **Accessibility Standard**: WCAG 2.1 AA
 **Testing**: Playwright for functionality verification
 **Screenshots**: Manual capture in docs/tasks/images/
