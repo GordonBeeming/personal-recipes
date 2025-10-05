@@ -7,7 +7,7 @@
         "dev": "vite",
         "dev:tina": "tinacms dev -c \"npm run dev\"",
         "kill": "fuser -k 5000/tcp",
-        "build": "tinacms build && tsc -b --noCheck && vite build",
+        "build": "tsc -b --noCheck && vite build",
         "build:tina": "tinacms build",
         "lint": "eslint .",
         "optimize": "vite optimize",
