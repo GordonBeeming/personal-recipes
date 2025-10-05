@@ -1,12 +1,9 @@
-import { useState } from 'react'
 import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
-import { Checkbox } from './ui/checkbox'
-import { Separator } from './ui/separator'
 import { Recipe } from '../lib/types'
-import { useKV } from '@github/spark/hooks'
+import ReactMarkdown from 'react-markdown'
 
 interface RecipeDetailProps {
   recipe: Recipe
@@ -14,22 +11,7 @@ interface RecipeDetailProps {
 }
 
 export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
-  const { frontmatter, intro, ingredients, instructions, notes } = recipe
-  const [checkedIngredientsStr, setCheckedIngredientsStr] = useKV(`recipe-${recipe.slug}-checked`, '[]')
-  const checkedIngredients = JSON.parse(checkedIngredientsStr || '[]') as number[]
-
-  const handleIngredientCheck = (index: number, checked: boolean) => {
-    const currentList = checkedIngredients || []
-    let newList: number[]
-    
-    if (checked) {
-      newList = [...currentList, index]
-    } else {
-      newList = currentList.filter(i => i !== index)
-    }
-    
-    setCheckedIngredientsStr(JSON.stringify(newList))
-  }
+  const { frontmatter, content } = recipe
 
   const handlePrint = () => {
     window.print()
@@ -40,7 +22,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
       try {
         await navigator.share({
           title: frontmatter.title,
-          text: intro,
+          text: `Check out this recipe: ${frontmatter.title}`,
           url: window.location.href
         })
       } catch (err) {
@@ -166,73 +148,14 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
             </CardContent>
           </Card>
 
-          {intro && (
-            <Card>
-              <CardHeader>
-                <CardTitle>About This Recipe</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{intro}</p>
-              </CardContent>
-            </Card>
-          )}
-
+          {/* Main content area with fluid markdown rendering */}
           <Card>
-            <CardHeader>
-              <CardTitle>Ingredients</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {ingredients.map((ingredient, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Checkbox
-                      id={`ingredient-${index}`}
-                      checked={checkedIngredients.includes(index)}
-                      onCheckedChange={(checked) => handleIngredientCheck(index, checked as boolean)}
-                      className="mt-1"
-                    />
-                    <label
-                      htmlFor={`ingredient-${index}`}
-                      className={`text-sm cursor-pointer ${
-                        checkedIngredients.includes(index) ? 'line-through text-muted-foreground' : ''
-                      }`}
-                    >
-                      {ingredient}
-                    </label>
-                  </div>
-                ))}
+            <CardContent className="pt-6">
+              <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
+                <ReactMarkdown>{content}</ReactMarkdown>
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Instructions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {instructions.map((instruction, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-semibold text-sm">
-                      {index + 1}
-                    </div>
-                    <p className="text-sm leading-relaxed pt-1">{instruction}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {notes && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Notes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{notes}</p>
-              </CardContent>
-            </Card>
-          )}
         </div>
       </div>
     </div>
