@@ -40,3 +40,6 @@ pids
 
 # Keep screenshots for documentation
 # tests/screenshots/
+
+# Temporary files (if needed, create tmp/ folder in project)
+tmp/

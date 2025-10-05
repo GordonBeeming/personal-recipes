@@ -11,6 +11,27 @@ This is a personal recipe website built with React, Vite, TypeScript, and Tailwi
 - **Markdown**: Marked, React Markdown
 - **Future CMS**: Tina CMS (migration in progress)
 
+## Project File Structure Rules
+
+### ⚠️ CRITICAL: All Files Must Be in Project Directory
+**NEVER write files outside the project root.** All files, directories, and artifacts must be within the project folder.
+
+#### Allowed Locations:
+- Project root: `/work` or current working directory
+- Any subdirectories under project root
+- Temporary files: Use `tmp/` folder within project (add to .gitignore)
+
+#### Forbidden:
+- Writing to home directory (`~/`)
+- Writing to system directories (`/tmp`, `/var`, etc.)
+- Writing outside project boundaries
+
+#### If You Need Temporary Storage:
+1. Create `tmp/` folder in project root
+2. Add `tmp/` to `.gitignore`
+3. Use it for temporary files
+4. Clean up when done
+
 ## File Organization Standards
 
 ### Documentation Structure
@@ -42,6 +63,16 @@ All task outcomes from Copilot jobs and development tasks must be documented in 
 - **Date Format**: Use ISO 8601 date format (YYYYMMDD)
 - **Order**: Two-digit sequence number (01, 02, 03...) to track order of tasks on same day
 - **Topic**: Use lowercase with hyphens for multi-word topics
+
+#### Task Screenshots:
+- **Location**: `/docs/tasks/images/`
+- **For UI Changes**: Take before/after screenshots manually
+- **Naming**: `YYYYMMDD-XX-{description}.png` (matches task file)
+- **Examples**: 
+  - `20250105-02-before-colors.png`
+  - `20250105-02-after-colors.png`
+  - `20250105-04-search-location.png`
+- **In Task Docs**: Reference images with relative paths: `![Description](./images/20250105-02-before-colors.png)`
 
 #### Task Documentation Guidelines:
 1. **Minor Tasks**: Update existing task files instead of creating new ones
@@ -186,10 +217,10 @@ src/
 1. Run linters: `npm run lint`
 2. Build the project: `npm run build`
 3. Test in dev mode: `npm run dev`
-4. **Run Playwright tests**: `npm run test` (generates screenshots automatically)
-5. **Review screenshots**: Check `tests/screenshots/` for before/after comparisons
+4. **Run Playwright tests**: `npm run test` (verifies functionality)
+5. **For UI changes**: Take before/after screenshots manually, save to `docs/tasks/images/`
 6. Document significant changes in `/docs/tasks/` following naming conventions
-7. **Include screenshots in task documentation** for visual changes
+7. **Include screenshots in task docs** with relative image paths
 
 ## Testing and Quality
 
@@ -197,10 +228,9 @@ src/
 **Always run Playwright tests before committing changes** to ensure the site works correctly.
 
 #### Test Commands:
-- `npm run test` - Run all tests with screenshots
+- `npm run test` - Run all tests
 - `npm run test:ui` - Run tests in UI mode for debugging
 - `npm run test:headed` - Run tests with browser visible
-- `npm run test:screenshots` - Run tests and highlight screenshot location
 
 #### What Tests Cover:
 - Homepage loading and recipe display
@@ -210,19 +240,34 @@ src/
 - Responsive design (mobile, tablet, desktop)
 - Recipe detail page functionality
 
-#### Screenshots for Documentation:
-- All tests automatically generate screenshots in `tests/screenshots/`
-- **Always include relevant screenshots in task documentation**
-- Show before/after for visual changes
-- Include mobile/desktop views when applicable
-- Screenshot naming: `{feature}-{state}.png` (e.g., `before-dark-mode.png`)
+#### Screenshots for Task Documentation:
+**Important**: Playwright tests verify functionality but DON'T auto-generate task screenshots.
+
+**For UI changes, manually capture screenshots**:
+1. Run the dev server: `npm run dev`
+2. Take "before" screenshot of current state
+3. Make your changes
+4. Take "after" screenshot
+5. Save both to `docs/tasks/images/` with task-numbered names
+6. Reference in task documentation with relative paths
+
+**Example**:
+```markdown
+## Visual Changes
+
+Before:
+![Before color update](./images/20250105-02-before-colors.png)
+
+After:
+![After color update](./images/20250105-02-after-colors.png)
+```
 
 ### Before Committing
 - **Run Playwright tests**: `npm run test` - Ensure all functionality works
-- **Review test screenshots**: Check `tests/screenshots/` for any visual issues
 - Ensure no TypeScript errors: `npm run build`
 - Run ESLint: `npm run lint`
 - Test affected functionality manually
+- **For UI changes**: Capture before/after screenshots in `docs/tasks/images/`
 - **Test keyboard navigation** - ensure all interactive elements are accessible
 - **Test with screen reader** - verify announcements are correct
 - Verify responsive design if UI changes were made
@@ -242,13 +287,15 @@ src/
 ## Important Reminders
 
 ### ⚠️ Critical Guidelines
-1. **Keep these instructions updated** - Especially during Tina CMS migration
-2. **All docs in `/docs`** - Except standard GitHub files
-3. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
-4. **Minor tasks update existing files** - Don't create duplicate task files
-5. **Document major changes** - Create task files for significant work
-6. **Accessibility is mandatory** - Every change must be accessible
-7. **Test before committing** - Run Playwright tests and include screenshots in docs
+1. **All files in project directory** - Never write outside project root
+2. **Keep these instructions updated** - Especially during Tina CMS migration
+3. **All docs in `/docs`** - Except standard GitHub files
+4. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
+5. **Task screenshots in `/docs/tasks/images/`** - Manual before/after for UI changes
+6. **Minor tasks update existing files** - Don't create duplicate task files
+7. **Document major changes** - Create task files for significant work
+8. **Accessibility is mandatory** - Every change must be accessible
+9. **Test before committing** - Run Playwright tests to verify functionality
 
 ### When to Update These Instructions
 - Adding new tools or dependencies
@@ -261,7 +308,8 @@ src/
 ---
 
 **Last Updated**: 2025-01-05
-**Version**: 1.3.0
+**Version**: 1.4.0
 **Status**: Pre-Tina CMS Migration
 **Accessibility Standard**: WCAG 2.1 AA
-**Testing**: Playwright with automated screenshots
+**Testing**: Playwright for functionality verification
+**Screenshots**: Manual capture in docs/tasks/images/

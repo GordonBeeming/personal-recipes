@@ -12,8 +12,7 @@
         "preview": "vite preview",
         "test": "playwright test",
         "test:ui": "playwright test --ui",
-        "test:headed": "playwright test --headed",
-        "test:screenshots": "playwright test && echo 'Screenshots saved to tests/screenshots/'"
+        "test:headed": "playwright test --headed"
     },
     "dependencies": {
         "@github/spark": "^0.39.0",
