@@ -43,3 +43,4 @@ pids
 
 # Temporary files (if needed, create tmp/ folder in project)
 tmp/
+.env
