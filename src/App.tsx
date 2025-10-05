@@ -4,6 +4,7 @@ import { RecipeCard } from './components/RecipeCard'
 import { RecipeDetail } from './components/RecipeDetail'
 import { RecipeFilters } from './components/RecipeFilters'
 import { RecipeStatsComponent } from './components/RecipeStats'
+import { Button } from './components/ui/button'
 import { getRecipes, getRecipeStats, searchRecipes, getRecipeBySlug } from './lib/recipes'
 import { Recipe } from './lib/types'
 
@@ -51,7 +52,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <Header />
       
       <main className="container mx-auto px-4 py-8">
         <RecipeStatsComponent stats={stats} />
@@ -62,20 +63,22 @@ function App() {
             tags={allTags}
             selectedCategory={selectedCategory}
             selectedTag={selectedTag}
+            searchQuery={searchQuery}
             onCategoryChange={setSelectedCategory}
             onTagChange={setSelectedTag}
+            onSearchChange={setSearchQuery}
             onClearFilters={handleClearFilters}
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4" role="status" aria-live="polite">
           <p className="text-sm text-muted-foreground">
             Showing {filteredRecipes.length} of {stats.totalRecipes} recipes
           </p>
         </div>
 
         {filteredRecipes.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
             {filteredRecipes.map((recipe) => (
               <RecipeCard
                 key={recipe.slug}
@@ -85,18 +88,19 @@ function App() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🍳</div>
+          <div className="text-center py-12" role="status">
+            <div className="text-6xl mb-4" aria-hidden="true">🍳</div>
             <h3 className="text-xl font-semibold text-foreground mb-2">No recipes found</h3>
             <p className="text-muted-foreground mb-4">
               Try adjusting your search or clearing the filters to see more recipes.
             </p>
-            <button
+            <Button
               onClick={handleClearFilters}
-              className="text-primary hover:underline"
+              variant="link"
+              className="text-primary"
             >
               Clear all filters
-            </button>
+            </Button>
           </div>
         )}
       </main>

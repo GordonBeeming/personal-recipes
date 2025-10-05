@@ -37,9 +37,10 @@ This is a personal recipe website built with React, Vite, TypeScript, and Tailwi
 All task outcomes from Copilot jobs and development tasks must be documented in `/docs/tasks/`.
 
 #### Task File Naming Convention:
-- **Format**: `YYYYMMDD-topic.md`
-- **Example**: `20250105-recipe-search-implementation.md`
+- **Format**: `YYYYMMDD-XX-topic.md` (XX is a two-digit order number)
+- **Example**: `20250105-01-recipe-search-implementation.md`, `20250105-02-color-update.md`
 - **Date Format**: Use ISO 8601 date format (YYYYMMDD)
+- **Order**: Two-digit sequence number (01, 02, 03...) to track order of tasks on same day
 - **Topic**: Use lowercase with hyphens for multi-word topics
 
 #### Task Documentation Guidelines:
@@ -79,6 +80,63 @@ All task outcomes from Copilot jobs and development tasks must be documented in 
 
 ## Code Style and Patterns
 
+### Accessibility First 🌟
+
+**Accessibility is a CORE requirement, not an afterthought.**
+
+Every component, feature, and change MUST be built with accessibility in mind:
+
+#### Required Accessibility Practices:
+1. **Semantic HTML**
+   - Use appropriate HTML elements (`<button>`, `<nav>`, `<main>`, `<article>`, etc.)
+   - Never use `<div>` or `<span>` when a semantic element exists
+   - Ensure proper heading hierarchy (h1 → h2 → h3, no skipping levels)
+
+2. **ARIA Attributes**
+   - Add `aria-label` to icon-only buttons and interactive elements
+   - Use `aria-hidden="true"` for decorative icons and images
+   - Implement `aria-live` regions for dynamic content updates
+   - Add `aria-describedby` for additional context when needed
+   - Use proper `role` attributes (e.g., `role="list"`, `role="status"`)
+
+3. **Keyboard Navigation**
+   - All interactive elements must be keyboard accessible
+   - Implement visible focus states (never `outline: none` without replacement)
+   - Support standard keyboard patterns (Tab, Enter, Space, Escape, Arrow keys)
+   - Ensure logical tab order follows visual flow
+
+4. **Form Accessibility**
+   - Always associate labels with form inputs using `htmlFor` and `id`
+   - Include helpful placeholder text and error messages
+   - Use `type="search"` for search inputs
+   - Provide clear validation feedback
+
+5. **Visual Accessibility**
+   - Maintain WCAG AA contrast ratios minimum (4.5:1 for normal text, 3:1 for large text)
+   - Don't rely on color alone to convey information
+   - Ensure touch targets are at least 44×44 pixels
+   - Support text resize up to 200% without breaking layout
+
+6. **Images and Media**
+   - Provide meaningful `alt` text for all images (describe content, not "image of...")
+   - Use `aria-hidden="true"` for decorative images with empty alt (`alt=""`)
+   - Ensure video/audio content has captions and transcripts
+
+7. **Screen Reader Support**
+   - Test with screen readers (VoiceOver, NVDA, JAWS)
+   - Use skip links for navigation
+   - Announce dynamic content changes with `aria-live`
+   - Provide descriptive link text (avoid "click here")
+
+#### Accessibility Checklist for Every Change:
+- [ ] Can this be used with keyboard only?
+- [ ] Does this work with a screen reader?
+- [ ] Are color contrasts sufficient?
+- [ ] Are all interactive elements properly labeled?
+- [ ] Is focus management handled correctly?
+- [ ] Are error states clearly communicated?
+- [ ] Does this work at 200% zoom?
+
 ### TypeScript
 - Use TypeScript for all new files
 - Prefer type inference where possible
@@ -114,13 +172,15 @@ src/
 ### Before Making Changes
 1. Check existing patterns in the codebase
 2. Review PRD.md (in /docs after reorganization) for feature requirements
-3. Ensure changes align with the "elegant, accessible, delightful" experience qualities
+3. **Review accessibility requirements** - ensure changes maintain or improve accessibility
+4. Ensure changes align with the "elegant, accessible, delightful" experience qualities
 
 ### Making Changes
 1. Make minimal, surgical changes - change only what's necessary
 2. Follow existing code patterns and conventions
-3. Update relevant documentation if making structural changes
-4. Test changes locally before committing
+3. **Implement accessibility best practices** - semantic HTML, ARIA, keyboard support
+4. Update relevant documentation if making structural changes
+5. Test changes locally before committing
 
 ### After Making Changes
 1. Run linters: `npm run lint`
@@ -134,7 +194,10 @@ src/
 - Ensure no TypeScript errors: `npm run build`
 - Run ESLint: `npm run lint`
 - Test affected functionality manually
+- **Test keyboard navigation** - ensure all interactive elements are accessible
+- **Test with screen reader** - verify announcements are correct
 - Verify responsive design if UI changes were made
+- **Check color contrast** - ensure WCAG AA compliance
 
 ### Edge Cases to Consider
 - Missing or failed image loads
@@ -142,15 +205,20 @@ src/
 - Long text content (titles, descriptions)
 - Various screen sizes and devices
 - Slow network conditions
+- **Keyboard-only navigation**
+- **Screen reader usage**
+- **High contrast mode**
+- **Reduced motion preferences**
 
 ## Important Reminders
 
 ### ⚠️ Critical Guidelines
 1. **Keep these instructions updated** - Especially during Tina CMS migration
 2. **All docs in `/docs`** - Except standard GitHub files
-3. **Task files use date prefix** - `YYYYMMDD-topic.md` format
+3. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
 4. **Minor tasks update existing files** - Don't create duplicate task files
 5. **Document major changes** - Create task files for significant work
+6. **Accessibility is mandatory** - Every change must be accessible
 
 ### When to Update These Instructions
 - Adding new tools or dependencies
@@ -163,5 +231,6 @@ src/
 ---
 
 **Last Updated**: 2025-01-05
-**Version**: 1.0.0
+**Version**: 1.1.0
 **Status**: Pre-Tina CMS Migration
+**Accessibility Standard**: WCAG 2.1 AA

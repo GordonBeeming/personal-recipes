@@ -28,11 +28,20 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
     <Card 
       className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
+      tabIndex={0}
+      role="article"
+      aria-label={`Recipe: ${frontmatter.title}`}
     >
       <div className="relative aspect-video overflow-hidden">
         <img
           src={frontmatter.heroImage || getPlaceholderImage(frontmatter.category)}
-          alt={frontmatter.title}
+          alt={`${frontmatter.title} - ${frontmatter.category} recipe`}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           onError={(e) => {
             // Fallback to a general cooking-themed placeholder
@@ -57,16 +66,16 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
         
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-1">
-            <Clock size={14} />
+            <Clock size={14} aria-hidden="true" />
             <span>{frontmatter.totalTime}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Users size={14} />
+            <Users size={14} aria-hidden="true" />
             <span>{frontmatter.servings}</span>
           </div>
         </div>
         
-        <div className="flex flex-wrap gap-1 mt-3">
+        <div className="flex flex-wrap gap-1 mt-3" aria-label="Recipe tags">
           {frontmatter.tags.slice(0, 3).map((tag) => (
             <Badge key={tag} variant="outline" className="text-xs">
               {tag}

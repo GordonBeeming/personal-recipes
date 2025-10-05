@@ -56,19 +56,20 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
           size="sm"
           onClick={onBack}
           className="mb-6 hover:bg-muted"
+          aria-label="Go back to recipe list"
         >
-          <ArrowLeft size={16} className="mr-2" />
+          <ArrowLeft size={16} className="mr-2" aria-hidden="true" />
           Back to Recipes
         </Button>
 
-        <div className="space-y-6">
-          <div>
+        <article className="space-y-6">
+          <header>
             <h1 className="text-4xl font-bold text-foreground mb-4">{frontmatter.title}</h1>
             
             <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-6">
               <img
                 src={frontmatter.heroImage || getPlaceholderImage(frontmatter.category, 'hero')}
-                alt={frontmatter.title}
+                alt={`${frontmatter.title} - ${frontmatter.category} recipe`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   // Fallback to a general cooking-themed placeholder
@@ -76,19 +77,19 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
                 }}
               />
             </div>
-          </div>
+          </header>
 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Recipe Details</span>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={handlePrint}>
-                    <Printer size={16} className="mr-2" />
+                  <Button variant="outline" size="sm" onClick={handlePrint} aria-label="Print recipe">
+                    <Printer size={16} className="mr-2" aria-hidden="true" />
                     Print
                   </Button>
-                  <Button variant="outline" size="sm" onClick={handleShare}>
-                    <Share size={16} className="mr-2" />
+                  <Button variant="outline" size="sm" onClick={handleShare} aria-label="Share recipe">
+                    <Share size={16} className="mr-2" aria-hidden="true" />
                     Share
                   </Button>
                 </div>
@@ -97,28 +98,28 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex items-center gap-2">
-                  <CalendarBlank size={16} className="text-muted-foreground" />
+                  <CalendarBlank size={16} className="text-muted-foreground" aria-hidden="true" />
                   <div>
                     <p className="text-xs text-muted-foreground">Date Added</p>
                     <p className="font-medium">{new Date(frontmatter.date).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock size={16} className="text-muted-foreground" />
+                  <Clock size={16} className="text-muted-foreground" aria-hidden="true" />
                   <div>
                     <p className="text-xs text-muted-foreground">Prep Time</p>
                     <p className="font-medium">{frontmatter.prepTime}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock size={16} className="text-muted-foreground" />
+                  <Clock size={16} className="text-muted-foreground" aria-hidden="true" />
                   <div>
                     <p className="text-xs text-muted-foreground">Cook Time</p>
                     <p className="font-medium">{frontmatter.cookTime}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users size={16} className="text-muted-foreground" />
+                  <Users size={16} className="text-muted-foreground" aria-hidden="true" />
                   <div>
                     <p className="text-xs text-muted-foreground">Servings</p>
                     <p className="font-medium">{frontmatter.servings}</p>
@@ -133,9 +134,9 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
 
               <div>
                 <p className="text-sm text-muted-foreground mb-2">Tags</p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2" role="list" aria-label="Recipe tags">
                   {frontmatter.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">
+                    <Badge key={tag} variant="secondary" role="listitem">
                       {tag}
                     </Badge>
                   ))}
