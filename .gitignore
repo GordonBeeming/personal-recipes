@@ -45,3 +45,6 @@ pids
 tmp/
 .env
 .pnpm-store/
+
+# Tina CMS generated files (built during build process)
+public/admin/
