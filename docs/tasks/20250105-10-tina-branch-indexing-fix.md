@@ -2,101 +2,98 @@
 
 **Date**: 2025-01-05  
 **Issue**: Branch 'main' not indexed on TinaCloud
-**Solution**: Push to GitHub first, then configure Tina Cloud
+**Solution**: Push to GitHub - indexing happens automatically
 
 ## The Problem
 
-Tina Cloud needs to index your branch before it can build. The error means:
-- Your `main` branch isn't synced to Tina Cloud yet
-- Tina Cloud hasn't indexed your repository
+Tina Cloud shows: "Branch 'main' is not on TinaCloud"
 
-## Solution Steps
+This means Tina Cloud hasn't indexed your branch yet.
 
-### Step 1: Push Code to GitHub First
+## The Solution (From Tina Docs)
+
+**Tina Cloud automatically indexes branches when it detects changes.**
+
+You don't manually trigger indexing - it happens when you push!
+
+### Step 1: Push Your Code to GitHub
 ```bash
 git push origin main
 ```
 
-This makes your `main` branch available for Tina to index.
+This triggers Tina Cloud to:
+1. Detect the push
+2. Automatically index the branch
+3. Make it available for builds
 
-### Step 2: Configure Tina Cloud Branch Indexing
+### Step 2: Wait for Automatic Indexing
 
-1. Go to https://app.tina.io/projects/YOUR_PROJECT/configuration
-2. Look for "Branch Configuration" or "Indexing" section
-3. Ensure `main` branch is:
-   - Listed as a branch to index
-   - Set as the default branch
-   - Enabled for content editing
+After pushing:
+- Tina Cloud detects the change (usually within 1-2 minutes)
+- Automatically indexes the branch
+- No manual action needed!
 
-### Step 3: Trigger Initial Index
+### Step 3: Verify in Tina Cloud
 
-In Tina Cloud:
-1. Go to Configuration → Branches
-2. Click "Refresh" or "Re-index" for `main` branch
-3. Wait for indexing to complete (1-2 minutes)
+1. Go to https://app.tina.io
+2. Select your project
+3. Go to Configuration → Branches
+4. You should see `main` branch listed after indexing completes
 
-OR
+## Workflow is Already Updated
 
-1. Make a small change in Tina admin
-2. Save it (this triggers indexing)
-
-### Step 4: Workflow Update
-
-I've updated the workflow to be more resilient:
-- Tina build failure won't stop deployment
-- Uses existing generated schema if Tina Cloud is unavailable
-- Logs warning but continues
-
-### Step 5: Test Deployment
-
-After branch is indexed:
-```bash
-git push origin main
-```
-
-Watch Actions tab - should deploy successfully now!
-
-## Alternative: Use Pre-Generated Schema
-
-The Tina schema is already generated locally in `tina/__generated__/`.
-
-For now, you can:
-1. Push code with existing schema
-2. Site will work with current recipes
-3. Configure Tina Cloud branch indexing later
-4. Once indexed, admin will work
-
-## Workflow Now Handles This
-
-Updated workflow:
+The workflow now handles this gracefully:
 ```yaml
 - name: Build Tina (with Cloud check)
   run: npm run build:tina || echo "Tina build failed, continuing with local schema"
 ```
 
 This means:
-- If Tina Cloud is ready → rebuilds schema
-- If Tina Cloud not ready → uses existing schema
-- Deployment continues either way
+- **First deployment**: Uses existing local schema (site works!)
+- **After Tina indexes**: Future deployments rebuild from Tina Cloud
+- **Admin panel**: Works once indexing completes
 
-## To Verify Tina Cloud Setup
+## What Happens Now
 
-1. Visit https://app.tina.io
-2. Select your project
-3. Check "Configuration" tab
-4. Verify:
-   - Repository connected ✓
-   - Branch `main` listed ✓
-   - Indexing status: Complete ✓
+### Immediate (First Push):
+1. You push to GitHub
+2. Tina Cloud starts indexing (automatic)
+3. GitHub Actions runs
+4. Tina build may fail (branch still indexing)
+5. Uses existing schema instead
+6. **Site deploys successfully** ✓
 
-## Next Steps
+### After ~2-5 Minutes:
+1. Tina Cloud finishes indexing
+2. Branch is available
+3. Next deployment rebuilds from Tina Cloud
+4. Admin panel at /admin works ✓
 
-1. Push code to GitHub: `git push origin main`
-2. Wait for deployment (uses existing schema)
-3. Configure Tina Cloud branch indexing
-4. Future deployments will rebuild schema from Tina Cloud
+## The Key Insight
+
+**You don't trigger indexing manually.**
+**Tina Cloud indexes automatically when you push code.**
+
+Just push to GitHub and wait a few minutes!
+
+## Ready to Deploy
+
+```bash
+# Push everything
+git push origin main
+
+# Watch GitHub Actions
+# First build might show Tina warning (OK!)
+# Site deploys with existing schema
+# Wait 2-5 minutes for Tina Cloud indexing
+# Future deployments will use Tina Cloud
+```
 
 ---
 
-**Status**: Workflow updated to handle Tina Cloud branch indexing
-**Impact**: Site can deploy even if Tina Cloud isn't fully configured yet
+**Status**: Understanding corrected - indexing is automatic on push
+**Action**: Push to GitHub and wait for automatic indexing
+**Impact**: Site deploys immediately, admin works after indexing completes
+
+Reference: https://tina.io/docs/introduction/faq#how-do-i-resolve-errors-caused-by-unindexed-branches
+
