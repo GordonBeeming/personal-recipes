@@ -23,7 +23,10 @@ This is a personal recipe website built with React, Vite, TypeScript, and Tailwi
 
 #### What Gets Ignored (`.gitignore`):
 - ❌ `public/admin/` - Generated admin UI files
-- ❌ Admin build artifacts
+- ❌ `tina/__generated__/` - Auto-generated schema and GraphQL files
+- ❌ Any other admin build artifacts
+
+**NEVER commit these generated files** - they are rebuilt during the build process.
 
 ### Build Process
 The build automatically includes Tina:
@@ -273,6 +276,43 @@ src/
 
 ## Development Workflow
 
+### Git Workflow - Commit as You Go
+**IMPORTANT**: Commit changes incrementally as you complete logical units of work.
+
+#### Commit Guidelines:
+1. **Commit frequently**: After completing each logical change or fix
+2. **Small, focused commits**: Each commit should represent one change
+3. **Descriptive messages**: Use clear, concise commit messages
+4. **Fix mistakes**: If you need to fix something in the last commit:
+   ```bash
+   # Undo last commit but keep changes
+   git reset --soft HEAD~1
+   # Make your fixes
+   git add .
+   git commit -m "Fixed: [description]"
+   ```
+
+#### When to Commit:
+- ✅ After adding a new feature or component
+- ✅ After fixing a bug
+- ✅ After updating documentation
+- ✅ After refactoring code
+- ✅ Before making major changes (safety checkpoint)
+- ✅ After successful test runs
+
+#### Commit Message Format:
+```
+[Type]: Brief description
+
+Examples:
+- feat: Add recipe search functionality
+- fix: Correct dark mode toggle behavior
+- docs: Update Tina CMS setup guide
+- refactor: Simplify recipe card component
+- style: Fix accessibility contrast issues
+- test: Add keyboard navigation tests
+```
+
 ### Before Making Changes
 1. Check existing patterns in the codebase
 2. Review PRD.md (in /docs after reorganization) for feature requirements
@@ -294,6 +334,7 @@ src/
 5. **For UI changes**: Take before/after screenshots manually, save to `docs/tasks/images/`
 6. Document significant changes in `/docs/tasks/` following naming conventions
 7. **Include screenshots in task docs** with relative image paths
+8. **Commit your changes**: `git add . && git commit -m "Type: Description"`
 
 ## Testing and Quality
 
@@ -360,15 +401,18 @@ After:
 ## Important Reminders
 
 ### ⚠️ Critical Guidelines
-1. **All files in project directory** - Never write outside project root
-2. **Keep these instructions updated** - Especially during Tina CMS migration
-3. **All docs in `/docs`** - Except standard GitHub files
-4. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
-5. **Task screenshots in `/docs/tasks/images/`** - Manual before/after for UI changes
-6. **Minor tasks update existing files** - Don't create duplicate task files
-7. **Document major changes** - Create task files for significant work
-8. **Accessibility is mandatory** - Every change must be accessible
-9. **Test before committing** - Run Playwright tests to verify functionality
+1. **Commit as you go** - Make incremental commits after each logical change
+2. **Fix commits if needed** - Use `git reset --soft HEAD~1` to undo last commit and fix
+3. **All files in project directory** - Never write outside project root
+4. **Keep these instructions updated** - Especially during Tina CMS migration
+5. **All docs in `/docs`** - Except standard GitHub files
+6. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
+7. **Task screenshots in `/docs/tasks/images/`** - Manual before/after for UI changes
+8. **Minor tasks update existing files** - Don't create duplicate task files
+9. **Document major changes** - Create task files for significant work
+10. **Accessibility is mandatory** - Every change must be accessible
+11. **Test before committing** - Run Playwright tests to verify functionality
+12. **Tina generated files are ignored** - Never commit `tina/__generated__/` or `public/admin/`
 
 ### When to Update These Instructions
 - Adding new tools or dependencies
