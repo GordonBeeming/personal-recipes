@@ -3,6 +3,7 @@ import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
 import { Recipe } from '../lib/types'
+import { Header } from './Header'
 import ReactMarkdown from 'react-markdown'
 
 interface RecipeDetailProps {
@@ -50,6 +51,8 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
 
   return (
     <div className="min-h-screen bg-background">
+      <Header onLogoClick={onBack} />
+      
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <Button
           variant="ghost"
