@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "dev:tina": "tinacms dev -c \"npm run dev\"",
+        "dev:tina": "tinacms dev -c \"pnpm run dev\"",
         "kill": "fuser -k 5000/tcp",
         "build": "tsc -b --noCheck && vite build",
         "build:tina": "tinacms build",
