@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@github/spark':
         specifier: ^0.39.0
-        version: 0.39.144(react@19.2.0)(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
+        version: 0.39.144(react@19.2.0)(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.2.0)
@@ -112,13 +112,13 @@ importers:
         version: 0.5.19(tailwindcss@4.1.14)
       '@tailwindcss/vite':
         specifier: ^4.1.11
-        version: 4.1.14(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
+        version: 4.1.14(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
       '@tanstack/react-query':
         specifier: ^5.83.1
         version: 5.90.2(react@19.2.0)
       '@tinacms/cli':
         specifier: ^1.11.0
-        version: 1.11.0(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rollup@4.52.4)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yaml@2.8.1)
+        version: 1.11.0(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rollup@4.52.4)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yaml@2.8.1)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -193,7 +193,7 @@ importers:
         version: 0.175.0
       tinacms:
         specifier: ^2.9.0
-        version: 2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0))
+        version: 2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0))
       tw-animate-css:
         specifier: ^1.2.4
         version: 1.4.0
@@ -216,6 +216,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.8
         version: 4.1.14
+      '@types/node':
+        specifier: ^24.6.2
+        version: 24.6.2
       '@types/react':
         specifier: ^19.0.10
         version: 19.2.0
@@ -224,10 +227,10 @@ importers:
         version: 19.2.0(@types/react@19.2.0)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.7.0(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
+        version: 4.7.0(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
       '@vitejs/plugin-react-swc':
         specifier: ^3.11.0
-        version: 3.11.0(@swc/helpers@0.5.17)(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
+        version: 3.11.0(@swc/helpers@0.5.17)(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))
       eslint:
         specifier: ^9.28.0
         version: 9.37.0(jiti@1.21.7)
@@ -250,8 +253,8 @@ importers:
         specifier: ^8.38.0
         version: 8.45.0(eslint@9.37.0(jiti@1.21.7))(typescript@5.7.3)
       vite:
-        specifier: ^6.3.5
-        version: 6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
+        specifier: ^7.0.7
+        version: 7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
 
 packages:
 
@@ -2643,6 +2646,9 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
+
+  '@types/node@24.6.2':
+    resolution: {integrity: sha512-d2L25Y4j+W3ZlNAeMKcy7yDsK425ibcAOO2t7aPTz6gNMH0z2GThtwENCDc0d/Pw9wgyRqE5Px1wkV7naz8ang==}
 
   '@types/prismjs@1.26.5':
     resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
@@ -6271,6 +6277,9 @@ packages:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
 
+  undici-types@7.13.0:
+    resolution: {integrity: sha512-Ov2Rr9Sx+fRgagJ5AX0qvItZG/JKKoBRAVITs1zk7IqZGTJUwgUr7qoYBpWwakpWilTZFM98rG/AFRocu10iIQ==}
+
   unified@10.1.2:
     resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
 
@@ -6493,19 +6502,19 @@ packages:
       terser:
         optional: true
 
-  vite@6.3.6:
-    resolution: {integrity: sha512-0msEVHJEScQbhkbVTb/4iHZdJ6SXp/AvxL2sjwYQFfBqleHtnCqv1J3sa9zbWz/6kW1m9Tfzn92vW+kZ1WV6QA==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+  vite@7.0.7:
+    resolution: {integrity: sha512-hc6LujN/EkJHmxeiDJMs0qBontZ1cdBvvoCbWhVjzUFTU329VRyOC46gHNSA8NcOC5yzCeXpwI40tieI3DEZqg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      '@types/node': ^20.19.0 || >=22.12.0
       jiti: '>=1.21.0'
-      less: '*'
+      less: ^4.0.0
       lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
       yaml: ^2.4.2
@@ -7107,15 +7116,15 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
-  '@github/spark@0.39.144(react@19.2.0)(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
+  '@github/spark@0.39.144(react@19.2.0)(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
     dependencies:
       octokit: 5.0.3
       react: 19.2.0
-      vite: 6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
 
-  '@graphiql/react@0.18.0(@codemirror/language@6.0.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@graphiql/react@0.18.0(@codemirror/language@6.0.0)(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
-      '@graphiql/toolkit': 0.8.4(graphql@15.8.0)
+      '@graphiql/toolkit': 0.8.4(@types/node@24.6.2)(graphql@15.8.0)
       '@headlessui/react': 1.7.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@radix-ui/react-dialog': 1.1.15(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@radix-ui/react-dropdown-menu': 2.1.16(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -7140,11 +7149,11 @@ snapshots:
       - '@types/react-dom'
       - graphql-ws
 
-  '@graphiql/toolkit@0.8.4(graphql@15.8.0)':
+  '@graphiql/toolkit@0.8.4(@types/node@24.6.2)(graphql@15.8.0)':
     dependencies:
       '@n1ru4l/push-pull-async-iterable-iterator': 3.2.0
       graphql: 15.8.0
-      meros: 1.3.2
+      meros: 1.3.2(@types/node@24.6.2)
     transitivePeerDependencies:
       - '@types/node'
 
@@ -8875,12 +8884,12 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.1.14
 
-  '@tailwindcss/vite@4.1.14(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
+  '@tailwindcss/vite@4.1.14(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
     dependencies:
       '@tailwindcss/node': 4.1.14
       '@tailwindcss/oxide': 4.1.14
       tailwindcss: 4.1.14
-      vite: 6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
 
   '@tanstack/query-core@5.90.2': {}
 
@@ -8897,21 +8906,21 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.12': {}
 
-  '@tinacms/app@2.3.4(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yup@1.7.1)':
+  '@tinacms/app@2.3.4(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yup@1.7.1)':
     dependencies:
-      '@graphiql/toolkit': 0.8.4(graphql@15.8.0)
+      '@graphiql/toolkit': 0.8.4(@types/node@24.6.2)(graphql@15.8.0)
       '@headlessui/react': 2.1.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@heroicons/react': 1.0.6(react@19.2.0)
       '@monaco-editor/react': 4.4.5(monaco-editor@0.31.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@tinacms/mdx': 1.8.1(react@19.2.0)(typescript@5.7.3)(yup@1.7.1)
       final-form: 4.20.10
-      graphiql: 3.0.0-alpha.1(@codemirror/language@6.0.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      graphiql: 3.0.0-alpha.1(@codemirror/language@6.0.0)(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       graphql: 15.8.0
       monaco-editor: 0.31.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
       react-router-dom: 6.3.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      tinacms: 2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0))
+      tinacms: 2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0))
       typescript: 5.7.3
       zod: 3.25.76
     transitivePeerDependencies:
@@ -8933,7 +8942,7 @@ snapshots:
       - use-sync-external-store
       - yup
 
-  '@tinacms/cli@1.11.0(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rollup@4.52.4)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yaml@2.8.1)':
+  '@tinacms/cli@1.11.0(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rollup@4.52.4)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yaml@2.8.1)':
     dependencies:
       '@graphql-codegen/core': 2.6.8(graphql@15.8.0)
       '@graphql-codegen/plugin-helpers': 6.0.0(graphql@15.8.0)
@@ -8948,12 +8957,12 @@ snapshots:
       '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.18(yaml@2.8.1))
       '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.18(yaml@2.8.1))
       '@tailwindcss/typography': 0.5.19(tailwindcss@3.4.18(yaml@2.8.1))
-      '@tinacms/app': 2.3.4(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yup@1.7.1)
+      '@tinacms/app': 2.3.4(@codemirror/language@6.0.0)(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(use-sync-external-store@1.6.0(react@19.2.0))(yup@1.7.1)
       '@tinacms/graphql': 1.6.1(react@19.2.0)(typescript@5.7.3)
       '@tinacms/metrics': 1.1.0(fs-extra@11.3.2)
       '@tinacms/schema-tools': 1.9.1(react@19.2.0)(yup@1.7.1)
       '@tinacms/search': 1.1.1(abstract-level@1.0.4)(react@19.2.0)(sucrase@3.35.0)(typescript@5.7.3)(yup@1.7.1)
-      '@vitejs/plugin-react': 3.1.0(vite@4.5.14(lightningcss@1.30.1))
+      '@vitejs/plugin-react': 3.1.0(vite@4.5.14(@types/node@24.6.2)(lightningcss@1.30.1))
       altair-express-middleware: 7.3.6
       async-lock: 1.4.1
       auto-bind: 4.0.0
@@ -8982,10 +8991,10 @@ snapshots:
       react-dom: 19.2.0(react@19.2.0)
       readable-stream: 4.7.0
       tailwindcss: 3.4.18(yaml@2.8.1)
-      tinacms: 2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0))
+      tinacms: 2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0))
       typanion: 3.13.0
       typescript: 5.7.3
-      vite: 4.5.14(lightningcss@1.30.1)
+      vite: 4.5.14(@types/node@24.6.2)(lightningcss@1.30.1)
       yup: 1.7.1
       zod: 3.25.76
     transitivePeerDependencies:
@@ -9262,6 +9271,10 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
+  '@types/node@24.6.2':
+    dependencies:
+      undici-types: 7.13.0
+
   '@types/prismjs@1.26.5': {}
 
   '@types/react-dom@19.2.0(@types/react@19.2.0)':
@@ -9470,13 +9483,13 @@ snapshots:
       - slate-dom
       - use-sync-external-store
 
-  '@udecode/plate-dnd@48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react@19.2.0)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@udecode/plate-dnd@48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react@19.2.0)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@udecode/plate': 48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0))
       lodash: 4.17.21
       raf: 3.4.1
       react: 19.2.0
-      react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react@19.2.0)(react@19.2.0)
+      react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react@19.2.0)(react@19.2.0)
       react-dnd-html5-backend: 16.0.1
       react-dom: 19.2.0(react@19.2.0)
 
@@ -9651,26 +9664,26 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@vitejs/plugin-react-swc@3.11.0(@swc/helpers@0.5.17)(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
+  '@vitejs/plugin-react-swc@3.11.0(@swc/helpers@0.5.17)(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@swc/core': 1.13.5(@swc/helpers@0.5.17)
-      vite: 6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitejs/plugin-react@3.1.0(vite@4.5.14(lightningcss@1.30.1))':
+  '@vitejs/plugin-react@3.1.0(vite@4.5.14(@types/node@24.6.2)(lightningcss@1.30.1))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
       '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.4)
       magic-string: 0.27.0
       react-refresh: 0.14.2
-      vite: 4.5.14(lightningcss@1.30.1)
+      vite: 4.5.14(@types/node@24.6.2)(lightningcss@1.30.1)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.7.0(vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
+  '@vitejs/plugin-react@4.7.0(vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
@@ -9678,7 +9691,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.27
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
+      vite: 7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -10925,10 +10938,10 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphiql@3.0.0-alpha.1(@codemirror/language@6.0.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+  graphiql@3.0.0-alpha.1(@codemirror/language@6.0.0)(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
-      '@graphiql/react': 0.18.0(@codemirror/language@6.0.0)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@graphiql/toolkit': 0.8.4(graphql@15.8.0)
+      '@graphiql/react': 0.18.0(@codemirror/language@6.0.0)(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(graphql@15.8.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@graphiql/toolkit': 0.8.4(@types/node@24.6.2)(graphql@15.8.0)
       graphql: 15.8.0
       graphql-language-service: 5.5.0(graphql@15.8.0)
       markdown-it: 12.3.2
@@ -11765,7 +11778,9 @@ snapshots:
       stylis: 4.3.6
       uuid: 9.0.1
 
-  meros@1.3.2: {}
+  meros@1.3.2(@types/node@24.6.2):
+    optionalDependencies:
+      '@types/node': 24.6.2
 
   methods@1.1.2: {}
 
@@ -12688,7 +12703,7 @@ snapshots:
     dependencies:
       dnd-core: 16.0.1
 
-  react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react@19.2.0)(react@19.2.0):
+  react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react@19.2.0)(react@19.2.0):
     dependencies:
       '@react-dnd/invariant': 4.0.2
       '@react-dnd/shallowequal': 4.0.2
@@ -12698,6 +12713,7 @@ snapshots:
       react: 19.2.0
     optionalDependencies:
       '@types/hoist-non-react-statics': 3.3.7(@types/react@19.2.0)
+      '@types/node': 24.6.2
       '@types/react': 19.2.0
 
   react-dom@19.2.0(react@19.2.0):
@@ -13497,7 +13513,7 @@ snapshots:
 
   throttle-debounce@3.0.1: {}
 
-  tinacms@2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0)):
+  tinacms@2.9.0(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(abstract-level@1.0.4)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(sucrase@3.35.0)(typescript@5.7.3)(use-sync-external-store@1.6.0(react@19.2.0)):
     dependencies:
       '@ariakit/react': 0.4.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@floating-ui/dom': 1.7.4
@@ -13527,7 +13543,7 @@ snapshots:
       '@udecode/plate-break': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@udecode/plate-code-block': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@udecode/plate-combobox': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@udecode/plate-dnd': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react@19.2.0)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@udecode/plate-dnd': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dnd-html5-backend@16.0.1)(react-dnd@16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react@19.2.0)(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@udecode/plate-floating': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@udecode/plate-heading': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@udecode/plate-horizontal-rule': 48.0.0(@udecode/plate@48.0.5(@types/react@19.2.0)(immer@10.1.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(scheduler@0.27.0)(slate-dom@0.114.0(slate@0.114.0))(slate@0.114.0)(use-sync-external-store@1.6.0(react@19.2.0)))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -13567,7 +13583,7 @@ snapshots:
       react-beautiful-dnd: 13.1.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react-color: 2.19.3(react@19.2.0)
       react-datetime: 3.3.1(moment@2.29.4)(react@19.2.0)
-      react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/react@19.2.0)(react@19.2.0)
+      react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.7(@types/react@19.2.0))(@types/node@24.6.2)(@types/react@19.2.0)(react@19.2.0)
       react-dnd-html5-backend: 16.0.1
       react-dom: 19.2.0(react@19.2.0)
       react-dropzone: 14.2.3(react@19.2.0)
@@ -13713,6 +13729,8 @@ snapshots:
   uc.micro@2.1.0: {}
 
   unc-path-regex@0.1.2: {}
+
+  undici-types@7.13.0: {}
 
   unified@10.1.2:
     dependencies:
@@ -13940,16 +13958,17 @@ snapshots:
       d3-time: 3.1.0
       d3-timer: 3.0.1
 
-  vite@4.5.14(lightningcss@1.30.1):
+  vite@4.5.14(@types/node@24.6.2)(lightningcss@1.30.1):
     dependencies:
       esbuild: 0.18.20
       postcss: 8.5.6
       rollup: 3.29.5
     optionalDependencies:
+      '@types/node': 24.6.2
       fsevents: 2.3.3
       lightningcss: 1.30.1
 
-  vite@6.3.6(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1):
+  vite@7.0.7(@types/node@24.6.2)(jiti@1.21.7)(lightningcss@1.30.1)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.10
       fdir: 6.5.0(picomatch@4.0.3)
@@ -13958,6 +13977,7 @@ snapshots:
       rollup: 4.52.4
       tinyglobby: 0.2.15
     optionalDependencies:
+      '@types/node': 24.6.2
       fsevents: 2.3.3
       jiti: 1.21.7
       lightningcss: 1.30.1
