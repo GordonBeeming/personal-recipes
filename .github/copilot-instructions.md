@@ -186,11 +186,40 @@ src/
 1. Run linters: `npm run lint`
 2. Build the project: `npm run build`
 3. Test in dev mode: `npm run dev`
-4. Document significant changes in `/docs/tasks/` following naming conventions
+4. **Run Playwright tests**: `npm run test` (generates screenshots automatically)
+5. **Review screenshots**: Check `tests/screenshots/` for before/after comparisons
+6. Document significant changes in `/docs/tasks/` following naming conventions
+7. **Include screenshots in task documentation** for visual changes
 
 ## Testing and Quality
 
+### Automated Testing with Playwright
+**Always run Playwright tests before committing changes** to ensure the site works correctly.
+
+#### Test Commands:
+- `npm run test` - Run all tests with screenshots
+- `npm run test:ui` - Run tests in UI mode for debugging
+- `npm run test:headed` - Run tests with browser visible
+- `npm run test:screenshots` - Run tests and highlight screenshot location
+
+#### What Tests Cover:
+- Homepage loading and recipe display
+- Dark mode toggle functionality
+- Search and filter operations
+- Keyboard accessibility (Tab, Enter, Space navigation)
+- Responsive design (mobile, tablet, desktop)
+- Recipe detail page functionality
+
+#### Screenshots for Documentation:
+- All tests automatically generate screenshots in `tests/screenshots/`
+- **Always include relevant screenshots in task documentation**
+- Show before/after for visual changes
+- Include mobile/desktop views when applicable
+- Screenshot naming: `{feature}-{state}.png` (e.g., `before-dark-mode.png`)
+
 ### Before Committing
+- **Run Playwright tests**: `npm run test` - Ensure all functionality works
+- **Review test screenshots**: Check `tests/screenshots/` for any visual issues
 - Ensure no TypeScript errors: `npm run build`
 - Run ESLint: `npm run lint`
 - Test affected functionality manually
@@ -219,6 +248,7 @@ src/
 4. **Minor tasks update existing files** - Don't create duplicate task files
 5. **Document major changes** - Create task files for significant work
 6. **Accessibility is mandatory** - Every change must be accessible
+7. **Test before committing** - Run Playwright tests and include screenshots in docs
 
 ### When to Update These Instructions
 - Adding new tools or dependencies
@@ -231,6 +261,7 @@ src/
 ---
 
 **Last Updated**: 2025-01-05
-**Version**: 1.1.0
+**Version**: 1.3.0
 **Status**: Pre-Tina CMS Migration
 **Accessibility Standard**: WCAG 2.1 AA
+**Testing**: Playwright with automated screenshots

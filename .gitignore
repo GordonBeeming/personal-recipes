@@ -32,3 +32,11 @@ pids
 .devcontainer/
 
 .spark-workbench-id
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Keep screenshots for documentation
+# tests/screenshots/

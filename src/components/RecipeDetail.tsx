@@ -228,7 +228,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </article>
       </div>
     </div>
   )
