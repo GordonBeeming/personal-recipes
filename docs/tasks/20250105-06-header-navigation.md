@@ -112,16 +112,16 @@ return (
 ## Testing Notes
 
 ### Manual Testing Checklist:
-- [ ] Logo appears on homepage ✓
-- [ ] Logo appears on recipe detail page ✓
-- [ ] Logo is clickable on all pages ✓
-- [ ] Clicking logo returns to home ✓
-- [ ] Hover effect visible on logo ✓
-- [ ] Keyboard: Can Tab to logo ✓
-- [ ] Keyboard: Enter/Space activates logo ✓
-- [ ] Screen reader announces "Go to home page" ✓
-- [ ] Theme toggle still works ✓
-- [ ] Responsive on mobile/tablet ✓
+- [x] Logo appears on homepage
+- [x] Logo appears on recipe detail page
+- [x] Logo is clickable on all pages
+- [x] Clicking logo returns to home
+- [x] Hover effect visible on logo
+- [x] Keyboard: Can Tab to logo
+- [x] Keyboard: Enter/Space activates logo
+- [x] Screen reader announces "Go to home page"
+- [x] Theme toggle still works
+- [x] Responsive on mobile/tablet
 
 ### Playwright Tests:
 Will verify:

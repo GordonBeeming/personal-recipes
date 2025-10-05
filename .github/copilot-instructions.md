@@ -92,6 +92,8 @@ All task outcomes from Copilot jobs and development tasks must be documented in 
    - Changes made (file changes, new dependencies, etc.)
    - Testing performed
    - Any follow-up items or known issues
+   - **Use standard markdown checkboxes**: `- [ ]` for unchecked, `- [x]` for checked
+   - Avoid using emojis (✅, ✓, ❌) for checkboxes - use proper markdown syntax
 
 ## Migration to Tina CMS
 
