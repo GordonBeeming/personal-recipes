@@ -48,3 +48,9 @@ tmp/
 
 # Tina CMS generated files (built during build process)
 public/admin/
+tina/__generated__/
+tina/__generated__/frags.gql
+tina/__generated__/queries.gql
+tina/__generated__/schema.gql
+tina/__generated__/static-media.json
+tina/__generated__/types.ts

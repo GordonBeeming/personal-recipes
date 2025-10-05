@@ -25,17 +25,5 @@ export default defineConfig({
   },
   server: {
     port: 5000,
-    proxy: {
-      // Proxy Tina admin requests to Tina dev server when running dev:tina
-      '/admin': {
-        target: 'http://localhost:4001',
-        changeOrigin: true,
-        configure: (proxy, options) => {
-          proxy.on('error', (err, req, res) => {
-            console.log('Tina admin not running. Start with: pnpm run dev:tina')
-          })
-        }
-      }
-    }
   }
 });

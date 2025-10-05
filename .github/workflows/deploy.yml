@@ -38,13 +38,13 @@ jobs:
         run: pnpm run build:tina || echo "Tina build failed, continuing with local schema"
         env:
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
-          VITE_TINA_CLIENT_ID: ${{ secrets.VITE_TINA_CLIENT_ID }}
+          NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
 
       - name: Build site
-        run: pnpm run build
+        run: pnpm run build:local
         env:
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
-          VITE_TINA_CLIENT_ID: ${{ secrets.VITE_TINA_CLIENT_ID }}
+          NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
