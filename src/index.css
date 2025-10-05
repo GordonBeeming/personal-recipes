@@ -15,26 +15,79 @@
 :root {
   --radius: 0.5rem;
   
-  /* Custom Recipe Theme Colors */
-  --background: oklch(0.97 0.01 85);
-  --foreground: oklch(0.25 0.01 200);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.01 200);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.01 200);
-  --primary: oklch(0.45 0.08 140);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.94 0.01 85);
-  --secondary-foreground: oklch(0.25 0.01 200);
-  --muted: oklch(0.94 0.01 85);
-  --muted-foreground: oklch(0.5 0.01 200);
-  --accent: oklch(0.65 0.15 45);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.88 0.01 85);
-  --input: oklch(0.88 0.01 85);
-  --ring: oklch(0.45 0.08 140);
+  /* Light Theme Colors - Crisp & Modern */
+  /* Main Background: #F8F9FA - very clean off-white */
+  --background: #F8F9FA;
+  
+  /* Main Text: #1A1A1A - dark charcoal */
+  --foreground: #1A1A1A;
+  
+  /* UI Elements (cards, filters): #E9ECEF - subtle light grey */
+  --card: #E9ECEF;
+  --card-foreground: #1A1A1A;
+  --popover: #E9ECEF;
+  --popover-foreground: #1A1A1A;
+  
+  /* Interactive Elements: #0063B2 - strong dark blue */
+  --primary: #0063B2;
+  --primary-foreground: #FFFFFF;
+  
+  /* Secondary UI Elements */
+  --secondary: #E9ECEF;
+  --secondary-foreground: #1A1A1A;
+  --muted: #E9ECEF;
+  --muted-foreground: #5A5A5A;
+  
+  /* Accent (interactive): #0063B2 - dark blue */
+  --accent: #0063B2;
+  --accent-foreground: #FFFFFF;
+  
+  /* Destructive/Error states */
+  --destructive: #DC3545;
+  --destructive-foreground: #FFFFFF;
+  
+  /* Borders and inputs */
+  --border: #D0D4D9;
+  --input: #E9ECEF;
+  --ring: #0063B2;
+}
+
+.dark {
+  /* Dark Theme Colors - Deep & Vibrant */
+  /* Main Background: #1A1A1A - deep charcoal */
+  --background: #1A1A1A;
+  
+  /* Main Text: #E0E0E0 - soft light grey */
+  --foreground: #E0E0E0;
+  
+  /* UI Elements (cards, filters): #2C2C2C - slightly lighter charcoal */
+  --card: #2C2C2C;
+  --card-foreground: #E0E0E0;
+  --popover: #2C2C2C;
+  --popover-foreground: #E0E0E0;
+  
+  /* Interactive Elements: #46CBFF - vibrant light blue */
+  --primary: #46CBFF;
+  --primary-foreground: #1A1A1A;
+  
+  /* Secondary UI Elements */
+  --secondary: #2C2C2C;
+  --secondary-foreground: #E0E0E0;
+  --muted: #2C2C2C;
+  --muted-foreground: #A0A0A0;
+  
+  /* Accent (interactive): #46CBFF - light blue */
+  --accent: #46CBFF;
+  --accent-foreground: #1A1A1A;
+  
+  /* Destructive/Error states */
+  --destructive: #FF6B6B;
+  --destructive-foreground: #1A1A1A;
+  
+  /* Borders and inputs */
+  --border: #3A3A3A;
+  --input: #2C2C2C;
+  --ring: #46CBFF;
 }
 
 @theme {
