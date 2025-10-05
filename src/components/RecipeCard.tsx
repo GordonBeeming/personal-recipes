@@ -11,29 +11,34 @@ interface RecipeCardProps {
 export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
   const { frontmatter, intro } = recipe
   
+  // Category-specific placeholder images
+  const getPlaceholderImage = (category: string) => {
+    const placeholderMap: Record<string, string> = {
+      'dinner': 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=225&fit=crop&auto=format&q=80',
+      'dessert': 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=225&fit=crop&auto=format&q=80',
+      'lunch': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=225&fit=crop&auto=format&q=80',
+      'breakfast': 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=225&fit=crop&auto=format&q=80',
+      'appetizer': 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=225&fit=crop&auto=format&q=80',
+      'snack': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=225&fit=crop&auto=format&q=80'
+    }
+    return placeholderMap[category.toLowerCase()] || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=225&fit=crop&auto=format&q=80'
+  }
+  
   return (
     <Card 
       className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
       onClick={onClick}
     >
       <div className="relative aspect-video overflow-hidden">
-        {frontmatter.heroImage ? (
-          <img
-            src={frontmatter.heroImage}
-            alt={frontmatter.title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none'
-              e.currentTarget.nextElementSibling?.classList.remove('hidden')
-            }}
-          />
-        ) : null}
-        <div className={`${frontmatter.heroImage ? 'hidden' : ''} w-full h-full bg-muted flex items-center justify-center`}>
-          <div className="text-center">
-            <Clock size={48} className="mx-auto mb-2 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground font-medium">{frontmatter.category}</p>
-          </div>
-        </div>
+        <img
+          src={frontmatter.heroImage || getPlaceholderImage(frontmatter.category)}
+          alt={frontmatter.title}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={(e) => {
+            // Fallback to a general cooking-themed placeholder
+            e.currentTarget.src = getPlaceholderImage('general')
+          }}
+        />
         <div className="absolute top-2 right-2">
           <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
             {frontmatter.category}
