@@ -26,22 +26,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Build Tina (with Cloud check)
-        run: pnpm run build:tina || echo "Tina build failed, continuing with local schema"
+        run: npm run build:tina || echo "Tina build failed, continuing with local schema"
         env:
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
 
       - name: Build site
-        run: pnpm run build:local
+        run: npm run build:local
         env:
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
