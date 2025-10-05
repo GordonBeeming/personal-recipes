@@ -31,8 +31,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Tina (with Cloud check)
-        run: npm run build:tina || echo "Tina build failed, continuing with local schema"
+      - name: Build Tina Admin (or use local schema if Cloud not ready)
+        run: |
+          # Try to build with Tina Cloud first
+          if npm run build:tina; then
+            echo "✅ Tina Cloud build succeeded"
+          else
+            echo "⚠️  Tina Cloud build failed - this is OK if:"
+            echo "   - You just added the branch to Tina Cloud (wait ~5 minutes for indexing)"
+            echo "   - You don't have Tina Cloud configured yet"
+            echo ""
+            echo "📝 The site will still build and deploy successfully."
+            echo "   Admin will work once Tina Cloud has indexed the branch."
+          fi
         env:
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
           NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
