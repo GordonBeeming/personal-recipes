@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom'
 import { Header } from './components/Header'
 import { RecipeCard } from './components/RecipeCard'
 import { RecipeDetail } from './components/RecipeDetail'
@@ -6,13 +7,12 @@ import { RecipeFilters } from './components/RecipeFilters'
 import { RecipeStatsComponent } from './components/RecipeStats'
 import { Button } from './components/ui/button'
 import { getRecipes, getRecipeStats, searchRecipes, getRecipeBySlug } from './lib/recipes'
-import { Recipe } from './lib/types'
 
-function App() {
+function HomePage() {
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [selectedTag, setSelectedTag] = useState('All')
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
 
   const recipes = getRecipes()
   const stats = getRecipeStats()
@@ -30,24 +30,17 @@ function App() {
   }, [searchQuery, selectedCategory, selectedTag])
 
   const handleRecipeClick = (recipeSlug: string) => {
-    const recipe = getRecipeBySlug(recipeSlug)
-    if (recipe) {
-      setSelectedRecipe(recipe)
-    }
+    navigate(`/recipe/${recipeSlug}`)
   }
 
   const handleBackToList = () => {
-    setSelectedRecipe(null)
+    navigate('/')
   }
 
   const handleClearFilters = () => {
     setSelectedCategory('All')
     setSelectedTag('All')
     setSearchQuery('')
-  }
-
-  if (selectedRecipe) {
-    return <RecipeDetail recipe={selectedRecipe} onBack={handleBackToList} />
   }
 
   return (
