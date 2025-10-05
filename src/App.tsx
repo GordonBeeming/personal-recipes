@@ -108,4 +108,37 @@ function App() {
   )
 }
 
+function RecipePage() {
+  const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
+
+  if (!slug) {
+    return <Navigate to="/" replace />
+  }
+
+  const recipe = getRecipeBySlug(slug)
+
+  if (!recipe) {
+    return <Navigate to="/" replace />
+  }
+
+  const handleBack = () => {
+    navigate('/')
+  }
+
+  return <RecipeDetail recipe={recipe} onBack={handleBack} />
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/recipe/:slug" element={<RecipePage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
 export default App
