@@ -148,10 +148,10 @@ Users now have flexibility:
 ## Future Enhancements
 
 Potential improvements:
-- [ ] Add breadcrumb navigation
-- [ ] Add search in header (currently in filters)
-- [ ] Add favorites/bookmarks in header
+- [ ] Add breadcrumb navigation for recipe categories
+- [ ] Add favorites/bookmarks feature in header
 - [ ] Add user profile/settings menu
+- [ ] Add recipe count badge to categories
 
 ## Notes
 
