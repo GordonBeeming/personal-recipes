@@ -313,6 +313,46 @@ Examples:
 - test: Add keyboard navigation tests
 ```
 
+#### Co-Author Attribution
+
+**ALWAYS add the requester as a co-author on commits** to ensure proper attribution.
+
+**How to identify the requester**:
+1. **Git config**: Check `git config user.name` and `git config user.email`
+2. **GitHub user**: If running in GitHub Codespaces, use the logged-in GitHub user
+3. **GitHub Actions**: When triggered by a comment/issue, use the comment author's details
+4. **Manual request**: When someone asks you to make changes, use their information
+
+**Co-Author Format**:
+```bash
+git commit -m "Type: Brief description
+
+Co-authored-by: Name <email@example.com>"
+```
+
+**Example**:
+```bash
+git commit -m "feat: Add recipe search functionality
+
+Co-authored-by: Gordon Beeming <me@gordonbeeming.com>"
+```
+
+**Multiple co-authors**:
+```bash
+git commit -m "feat: Add recipe search functionality
+
+Co-authored-by: Gordon Beeming <me@gordonbeeming.com>
+Co-authored-by: Other Contributor <other@example.com>"
+```
+
+**When to add co-authors**:
+- ✅ When implementing a requested feature
+- ✅ When fixing a reported bug
+- ✅ When making changes based on feedback
+- ✅ When pair programming or collaborating
+- ❌ Not needed for automated updates (dependency bumps, etc.)
+- ❌ Not needed for your own self-initiated refactoring (unless requested)
+
 ### Before Making Changes
 1. Check existing patterns in the codebase
 2. Review PRD.md (in /docs after reorganization) for feature requirements
@@ -334,7 +374,12 @@ Examples:
 5. **For UI changes**: Take before/after screenshots manually, save to `docs/tasks/images/`
 6. Document significant changes in `/docs/tasks/` following naming conventions
 7. **Include screenshots in task docs** with relative image paths
-8. **Commit your changes**: `git add . && git commit -m "Type: Description"`
+8. **Commit your changes with co-author attribution**:
+   ```bash
+   git add . && git commit -m "Type: Description
+
+   Co-authored-by: Name <email@example.com>"
+   ```
 
 ## Testing and Quality
 
@@ -403,16 +448,17 @@ After:
 ### ⚠️ Critical Guidelines
 1. **Commit as you go** - Make incremental commits after each logical change
 2. **Fix commits if needed** - Use `git reset --soft HEAD~1` to undo last commit and fix
-3. **All files in project directory** - Never write outside project root
-4. **Keep these instructions updated** - Especially during Tina CMS migration
-5. **All docs in `/docs`** - Except standard GitHub files
-6. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
-7. **Task screenshots in `/docs/tasks/images/`** - Manual before/after for UI changes
-8. **Minor tasks update existing files** - Don't create duplicate task files
-9. **Document major changes** - Create task files for significant work
-10. **Accessibility is mandatory** - Every change must be accessible
-11. **Test before committing** - Run Playwright tests to verify functionality
-12. **Tina generated files are ignored** - Never commit `tina/__generated__/` or `public/admin/`
+3. **Add co-authors to commits** - Always attribute the requester (see Git Workflow section)
+4. **All files in project directory** - Never write outside project root
+5. **Keep these instructions updated** - Especially during Tina CMS migration
+6. **All docs in `/docs`** - Except standard GitHub files
+7. **Task files use date prefix** - `YYYYMMDD-XX-topic.md` format (XX = order number)
+8. **Task screenshots in `/docs/tasks/images/`** - Manual before/after for UI changes
+9. **Minor tasks update existing files** - Don't create duplicate task files
+10. **Document major changes** - Create task files for significant work
+11. **Accessibility is mandatory** - Every change must be accessible
+12. **Test before committing** - Run Playwright tests to verify functionality
+13. **Tina generated files are ignored** - Never commit `tina/__generated__/` or `public/admin/`
 
 ### When to Update These Instructions
 - Adding new tools or dependencies
@@ -424,9 +470,10 @@ After:
 
 ---
 
-**Last Updated**: 2025-01-05
-**Version**: 2.0.0
+**Last Updated**: 2025-01-07
+**Version**: 2.1.0
 **CMS Status**: ✅ Tina CMS Integrated
 **Accessibility Standard**: WCAG 2.1 AA
 **Testing**: Playwright for functionality verification
 **Screenshots**: Manual capture in docs/tasks/images/
+**Attribution**: Co-author commits for proper attribution
