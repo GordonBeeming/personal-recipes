@@ -3,130 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - Page Not Found | Gordon's Recipe Collection</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <title>Redirecting... | Gordon's Recipe Collection</title>
+  <script>
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    // This script takes the current url and converts the path and query
+    // string into just a query string, and then redirects the browser
+    // to the new url with only a query string and hash fragment,
+    // e.g. https://www.foo.tld/one/two?a=b&c=d#qwe, becomes
+    // https://www.foo.tld/?/one/two&a=b~and~c=d#qwe
+    // Note: this 404.html file must be at least 512 bytes for it to work
+    // with Internet Explorer (it is currently > 512 bytes)
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #1A1A1A;
-    }
+    // If you're creating a Project Pages site and NOT using a custom domain,
+    // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
+    // This way the code will only replace the route part of the path, and not
+    // the real directory in which the app resides, for example:
+    // https://username.github.io/repo-name/one/two?a=b&c=d#qwe becomes
+    // https://username.github.io/repo-name/?/one/two&a=b~and~c=d#qwe
+    // Otherwise, leave pathSegmentsToKeep as 0.
+    var pathSegmentsToKeep = 0;
 
-    .container {
-      text-align: center;
-      padding: 2rem;
-      max-width: 600px;
-    }
-
-    .error-code {
-      font-size: 8rem;
-      font-weight: 800;
-      color: #0063B2;
-      line-height: 1;
-      margin-bottom: 1rem;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #1A1A1A;
-    }
-
-    p {
-      font-size: 1.125rem;
-      color: #666;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-
-    .image-container {
-      margin: 2rem 0;
-      padding: 2rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .image-placeholder {
-      width: 300px;
-      height: 300px;
-      margin: 0 auto;
-      background: #E9ECEF;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      font-size: 0.875rem;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-
-    .home-button {
-      display: inline-block;
-      background: #0063B2;
-      color: white;
-      text-decoration: none;
-      padding: 0.875rem 2rem;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-
-    .home-button:hover {
-      background: #004d8c;
-    }
-
-    @media (max-width: 640px) {
-      .error-code {
-        font-size: 5rem;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      p {
-        font-size: 1rem;
-      }
-
-      .image-placeholder {
-        width: 200px;
-        height: 200px;
-      }
-    }
-  </style>
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
 </head>
 <body>
-  <div class="container">
-    <div class="error-code">404</div>
-    <h1>Recipe Not Found!</h1>
-    <p>Oops! Looks like this recipe doesn't exist in our collection. Maybe it's still being perfected in the kitchen?</p>
-    
-    <div class="image-container">
-      <div class="image-placeholder">
-        [Replace this div with your 404 image]<br>
-        Add image as: /images/404.png or /images/404.jpg
-      </div>
-      <!-- Uncomment and use your image:
-      <img src="/images/404.png" alt="Recipe not found" />
-      -->
-    </div>
-
-    <a href="/" class="home-button">Back to Recipe Collection</a>
+  <!-- IE needs at least 512 bytes of content to show non-default 404 page -->
+  <div style="display: none;">
+    This page is used to handle client-side routing for single page applications.
+    If you are seeing this, JavaScript should redirect you momentarily.
+    If not, please click the link below to go to the homepage.
+    <!-- Padding to ensure > 512 bytes -->
+    <!--
+      Single Page Apps for GitHub Pages
+      https://github.com/rafgraph/spa-github-pages
+      Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
+      This script is used to support client-side routing with GitHub Pages.
+      When a user navigates directly to a route (e.g., /recipe/durban-beef-curry),
+      GitHub Pages returns a 404. This script converts the path into a query string
+      and redirects to index.html, where the actual React app can handle the routing.
+    -->
   </div>
+  <noscript>
+    <p>JavaScript is required for this site to work properly. Please enable JavaScript and refresh the page.</p>
+    <a href="/">Go to Homepage</a>
+  </noscript>
 </body>
 </html>
