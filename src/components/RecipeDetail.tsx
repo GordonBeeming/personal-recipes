@@ -5,6 +5,7 @@ import { Badge } from './ui/badge'
 import { Recipe } from '../lib/types'
 import { Header } from './Header'
 import ReactMarkdown from 'react-markdown'
+import { formatDate } from '../lib/formatDate'
 
 interface RecipeDetailProps {
   recipe: Recipe
@@ -88,7 +89,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
                   <CalendarBlank size={16} className="text-muted-foreground" aria-hidden="true" />
                   <div>
                     <p className="text-xs text-muted-foreground">Date Added</p>
-                    <p className="font-medium">{new Date(frontmatter.date).toLocaleDateString()}</p>
+                    <p className="font-medium">{formatDate(frontmatter.date)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
