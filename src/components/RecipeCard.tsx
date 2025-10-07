@@ -13,7 +13,7 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
   
   return (
     <Card 
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
+      className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden gap-0 py-0"
       onClick={onClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
