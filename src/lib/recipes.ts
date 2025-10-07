@@ -1,16 +1,11 @@
 import { Recipe, RecipeStats } from './types'
 
-// Import all recipe markdown files
+// Import all recipe markdown files as raw strings
 const recipeModules = import.meta.glob('/content/recipes/*.md', { 
   eager: true,
   query: '?raw',
   import: 'default'
 })
-
-interface RecipeModule {
-  default?: string
-  attributes?: Record<string, any>
-}
 
 const parseFrontmatter = (content: string): { frontmatter: any; body: string } => {
   const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/

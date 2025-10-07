@@ -86,21 +86,26 @@
         "zod": "^3.25.76"
     },
     "devDependencies": {
+        "@babel/core": "^7.28.4",
         "@eslint/js": "^9.21.0",
         "@playwright/test": "^1.55.1",
         "@tailwindcss/postcss": "^4.1.8",
         "@types/node": "^24.6.2",
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.0.4",
-        "@vitejs/plugin-react": "^4.7.0",
-        "@vitejs/plugin-react-swc": "^3.11.0",
+        "@vitejs/plugin-react": "^4.3.4",
         "eslint": "^9.28.0",
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.19",
         "globals": "^16.0.0",
+        "react-refresh": "^0.14.2",
         "tailwindcss": "^4.1.11",
         "typescript": "~5.7.2",
         "typescript-eslint": "^8.38.0",
-        "vite": "^6.3.6"
+        "vite": "^6.3.5"
+    },
+    "overrides": {
+        "vite": "$vite",
+        "@vitejs/plugin-react": "$@vitejs/plugin-react"
     }
 }
