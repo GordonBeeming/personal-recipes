@@ -51,6 +51,15 @@ export default defineConfig({
             required: true,
           },
           {
+            type: "string",
+            name: "description",
+            label: "Short Description",
+            description: "A brief description for recipe cards (1-2 sentences)",
+            ui: {
+              component: "textarea",
+            },
+          },
+          {
             type: "datetime",
             name: "date",
             label: "Date Added",

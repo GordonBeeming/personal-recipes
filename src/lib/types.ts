@@ -8,6 +8,7 @@ export interface RecipeFrontmatter {
   cookTime: string
   totalTime: string
   servings: string
+  description?: string
   heroImage?: string
   images?: string[]
 }

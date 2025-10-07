@@ -148,11 +148,12 @@ const loadRecipesFromContent = (): Recipe[] => {
         cookTime: frontmatter.cookTime || '',
         totalTime: frontmatter.totalTime || '',
         servings: frontmatter.servings || '',
+        description: frontmatter.description || '',
         heroImage: frontmatter.heroImage,
         images: Array.isArray(frontmatter.images) ? frontmatter.images : []
       },
       content: body,
-      intro: intro || body.substring(0, 200) + '...',
+      intro: frontmatter.description || intro || body.substring(0, 200).replace(/[#*_\[\]]/g, '') + '...',
       ingredients,
       instructions,
       notes: '' // Could parse a Notes section if present

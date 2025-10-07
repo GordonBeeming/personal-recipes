@@ -61,10 +61,10 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
         </h3>
         
         <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-          {intro}
+          {frontmatter.description || intro}
         </p>
         
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
           <div className="flex items-center gap-1">
             <Clock size={14} aria-hidden="true" />
             <span>{frontmatter.totalTime}</span>
@@ -75,17 +75,12 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
           </div>
         </div>
         
-        <div className="flex flex-wrap gap-1 mt-3" aria-label="Recipe tags">
-          {frontmatter.tags.slice(0, 3).map((tag) => (
+        <div className="flex flex-wrap gap-1.5" aria-label="Recipe tags">
+          {frontmatter.tags.map((tag) => (
             <Badge key={tag} variant="outline" className="text-xs">
               {tag}
             </Badge>
           ))}
-          {frontmatter.tags.length > 3 && (
-            <Badge variant="outline" className="text-xs">
-              +{frontmatter.tags.length - 3}
-            </Badge>
-          )}
         </div>
       </CardContent>
     </Card>

@@ -1,5 +1,6 @@
 ---
 title: Authentic Durban Beef Curry
+description: A rich and aromatic South African curry with tender beef, slow-cooked with fragrant spices and potatoes. This family recipe brings authentic Durban flavors to your kitchen.
 date: 2025-09-21T00:00:00.000Z
 source: Gemini
 category: Dinner
