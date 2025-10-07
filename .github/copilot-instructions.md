@@ -46,15 +46,15 @@ The build automatically includes Tina:
 
 #### With CMS Access (use this for content editing):
 ```bash
-pnpm run dev:tina
+npm run dev
 ```
-- Starts Vite on :5000 + Tina on :4001
+- Starts Vite + Tina CMS
 - Access admin at `/admin`
 - Edit content visually
 
 #### Without CMS (faster for code changes):
 ```bash
-pnpm run dev
+npm run dev:prod
 ```
 - Regular Vite dev server
 - No admin access
@@ -167,11 +167,11 @@ All task outcomes from Copilot jobs and development tasks must be documented in 
 
 ### Development Commands
 ```bash
-# Regular dev (faster, no CMS)
-pnpm run dev
-
 # Dev with Tina CMS access
-pnpm run dev:tina
+npm run dev
+
+# Regular dev (faster, no CMS)
+npm run dev:prod
 ```
 
 ### Build Behavior
@@ -182,7 +182,7 @@ pnpm run dev:tina
 ### When Making Changes
 1. **Never commit** `public/admin/` files (they're generated)
 2. **Always commit** changes to `tina/config.ts` or content schema
-3. **Use `dev:tina`** when testing CMS-related features
+3. **Use `npm run dev`** when testing CMS-related features
 4. **Update Tina config** when adding new content fields
 
 ## Code Style and Patterns

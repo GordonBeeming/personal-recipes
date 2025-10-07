@@ -43,8 +43,10 @@ pids
 
 # Temporary files (if needed, create tmp/ folder in project)
 tmp/
-.env
+
+# pnpm
 .pnpm-store/
+pnpm-lock.yaml
 
 # Tina CMS generated files (built during build process)
 public/admin/
