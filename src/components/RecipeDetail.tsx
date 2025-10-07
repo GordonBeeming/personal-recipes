@@ -14,20 +14,6 @@ interface RecipeDetailProps {
 export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   const { frontmatter, content } = recipe
 
-  // Category-specific placeholder images
-  const getPlaceholderImage = (category: string, size: 'hero' | 'gallery' = 'hero') => {
-    const dimensions = size === 'hero' ? 'w=800&h=450' : 'w=300&h=300'
-    const placeholderMap: Record<string, string> = {
-      'dinner': `https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?${dimensions}&fit=crop&auto=format&q=80`,
-      'dessert': `https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?${dimensions}&fit=crop&auto=format&q=80`,
-      'lunch': `https://images.unsplash.com/photo-1512621776951-a57141f2eefd?${dimensions}&fit=crop&auto=format&q=80`,
-      'breakfast': `https://images.unsplash.com/photo-1484723091739-30a097e8f929?${dimensions}&fit=crop&auto=format&q=80`,
-      'appetizer': `https://images.unsplash.com/photo-1551218808-94e220e084d2?${dimensions}&fit=crop&auto=format&q=80`,
-      'snack': `https://images.unsplash.com/photo-1578985545062-69928b1d9587?${dimensions}&fit=crop&auto=format&q=80`
-    }
-    return placeholderMap[category.toLowerCase()] || `https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?${dimensions}&fit=crop&auto=format&q=80`
-  }
-
   const handlePrint = () => {
     window.print()
   }
@@ -69,17 +55,15 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
           <header>
             <h1 className="text-4xl font-bold text-foreground mb-4">{frontmatter.title}</h1>
             
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-6">
-              <img
-                src={frontmatter.heroImage || getPlaceholderImage(frontmatter.category, 'hero')}
-                alt={`${frontmatter.title} - ${frontmatter.category} recipe`}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback to a general cooking-themed placeholder
-                  e.currentTarget.src = getPlaceholderImage('general', 'hero')
-                }}
-              />
-            </div>
+            {frontmatter.heroImage && (
+              <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-6 bg-muted">
+                <img
+                  src={frontmatter.heroImage}
+                  alt={`${frontmatter.title} - ${frontmatter.category} recipe`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
           </header>
 
           <Card>
@@ -157,80 +141,27 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
             </CardContent>
           </Card>
 
-          {/* Gallery section moved after recipe content */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Recipe Gallery</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {frontmatter.images && frontmatter.images.length > 0 ? (
-                  frontmatter.images.map((image, index) => (
-                    <div key={index} className="aspect-square overflow-hidden rounded-md">
+          {/* Gallery section - only show if there are images */}
+          {frontmatter.images && frontmatter.images.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Recipe Gallery</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {frontmatter.images.map((image, index) => (
+                    <div key={index} className="aspect-square overflow-hidden rounded-md bg-muted">
                       <img
                         src={image}
                         alt={`${frontmatter.title} step ${index + 1}`}
                         className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
-                        onError={(e) => {
-                          // Fallback to category-specific gallery placeholders
-                          e.currentTarget.src = getPlaceholderImage(frontmatter.category, 'gallery')
-                        }}
                       />
                     </div>
-                  ))
-                ) : (
-                  // Show category-appropriate placeholder images when no gallery images exist
-                  Array.from({ length: 6 }, (_, index) => {
-                    const categoryPlaceholders: Record<string, string[]> = {
-                      'dinner': [
-                        'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1586816001966-79b736744398?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1563379091339-03246963d51a?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=300&fit=crop&auto=format&q=80'
-                      ],
-                      'dessert': [
-                        'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&h=300&fit=crop&auto=format&q=80'
-                      ],
-                      'lunch': [
-                        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1547592180-85f173990554?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1565299585323-38174c25f2a3?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=300&h=300&fit=crop&auto=format&q=80',
-                        'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop&auto=format&q=80'
-                      ]
-                    }
-                    
-                    const categoryImages = categoryPlaceholders[frontmatter.category.toLowerCase()] || [
-                      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=300&fit=crop&auto=format&q=80',
-                      'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=300&h=300&fit=crop&auto=format&q=80',
-                      'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=300&fit=crop&auto=format&q=80',
-                      'https://images.unsplash.com/photo-1586816001966-79b736744398?w=300&h=300&fit=crop&auto=format&q=80',
-                      'https://images.unsplash.com/photo-1563379091339-03246963d51a?w=300&h=300&fit=crop&auto=format&q=80',
-                      'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&h=300&fit=crop&auto=format&q=80'
-                    ]
-                    
-                    return (
-                      <div key={index} className="aspect-square overflow-hidden rounded-md">
-                        <img
-                          src={categoryImages[index % categoryImages.length]}
-                          alt={`${frontmatter.title} preparation step ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
-                        />
-                      </div>
-                    )
-                  })
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </article>
       </div>
     </div>
