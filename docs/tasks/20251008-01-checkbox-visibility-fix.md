@@ -26,6 +26,12 @@ This creates strong contrast between the checkbox and its background in both the
   - Light mode now has dark charcoal background
   - Dark mode now has light off-white background
 
+- `src/components/RecipeDetail.tsx`
+  - Updated list rendering to only convert unordered lists to checkboxes
+  - Ordered lists remain as numbered lists with proper decimal styling
+  - Added parent node detection to determine list item rendering
+  - Ordered lists now have `list-decimal pl-6` classes for proper numbering
+
 ## Testing
 
 - [x] Build successful (`npm run build:local`)
@@ -33,6 +39,8 @@ This creates strong contrast between the checkbox and its background in both the
 - [x] Checkbox visibility improved in both themes
 - [x] Checked state styling preserved
 - [x] Focus and hover states unaffected
+- [x] Unordered lists converted to checkboxes
+- [x] Ordered lists remain as numbered lists
 
 ## Technical Details
 
