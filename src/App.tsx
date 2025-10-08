@@ -6,6 +6,7 @@ import { RecipeDetail } from './components/RecipeDetail'
 import { RecipeFilters } from './components/RecipeFilters'
 import { RecipeStatsComponent } from './components/RecipeStats'
 import { NotFoundPage } from './components/NotFoundPage'
+import { ScrollToTop } from './components/ScrollToTop'
 import { Button } from './components/ui/button'
 import { getRecipes, getRecipeStats, searchRecipes, getRecipeBySlug } from './lib/recipes'
 
@@ -126,6 +127,7 @@ function RecipePage() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/recipe/:slug" element={<RecipePage />} />
