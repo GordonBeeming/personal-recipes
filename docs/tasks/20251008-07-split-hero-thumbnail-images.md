@@ -121,11 +121,11 @@ Added comprehensive image guidelines section:
 
 #### Image Size Recommendations Table
 
-| Image Type | Dimensions | Max File Size | Usage |
-|------------|------------|---------------|-------|
-| **Hero Image** | 1200×675px (16:9) | 200 KB | Recipe detail page header |
-| **Thumbnail Image** | 600×338px (16:9) | 100 KB | Recipe cards on home page |
-| **Gallery Images** | 800×800px (1:1) | 150 KB each | Recipe photo gallery |
+| Image Type | Dimensions | Target File Size (WebP) | Legacy (JPEG) | Usage |
+|------------|------------|------------------------|---------------|-------|
+| **Hero Image** | 1200×675px (16:9) | ~80-120 KB | ~200 KB | Recipe detail page header |
+| **Thumbnail Image** | 600×338px (16:9) | ~40-60 KB | ~100 KB | Recipe cards on home page |
+| **Gallery Images** | 800×800px (1:1) | ~60-100 KB | ~150 KB | Recipe photo gallery |
 
 #### Documented Features:
 - Image optimization tips
@@ -170,9 +170,55 @@ Added comprehensive image guidelines section:
 ## Next Steps
 
 - [ ] Create optimized thumbnail versions of existing images
+- [ ] **Convert images to WebP format** for better compression
 - [ ] Update production images with recommended sizes
-- [ ] Compress images using TinyPNG or Squoosh
+- [ ] Compress images using Squoosh or TinyPNG
 - [ ] Test page load performance with optimized images
+
+## WebP Conversion Guide
+
+### Why WebP?
+
+WebP provides **25-35% smaller file sizes** than JPEG at the same quality:
+- 1.5 MB PNG → ~80-120 KB WebP (Hero image at 1200×675px)
+- Better compression with no visible quality loss
+- Supported by 97%+ of browsers (all modern browsers)
+
+### How to Convert to WebP
+
+#### Option 1: Squoosh (Recommended - Web-based)
+1. Go to [squoosh.app](https://squoosh.app/)
+2. Drag and drop your image
+3. Select **WebP** in the right panel
+4. Set quality to **75-85%** (sweet spot for photos)
+5. Compare before/after to ensure quality
+6. Download the optimized image
+
+#### Option 2: Online Converters
+- [CloudConvert](https://cloudconvert.com/png-to-webp)
+- [Convertio](https://convertio.co/png-webp/)
+
+#### Option 3: Batch Processing (Command Line)
+```bash
+# Install cwebp (macOS with Homebrew)
+brew install webp
+
+# Convert single image
+cwebp -q 80 input.png -o output.webp
+
+# Batch convert all PNGs in a folder
+for file in *.png; do cwebp -q 80 "$file" -o "${file%.png}.webp"; done
+```
+
+#### Option 4: ImageOptim (Mac App)
+1. Download [ImageOptim](https://imageoptim.com/)
+2. Enable WebP in preferences
+3. Drag and drop images to convert
+
+### Expected Savings
+- **1200×675px Hero**: 1.5 MB PNG → ~100 KB WebP (93% reduction!)
+- **600×338px Thumbnail**: 400 KB PNG → ~50 KB WebP (87% reduction!)
+- **800×800px Gallery**: 800 KB PNG → ~80 KB WebP (90% reduction!)
 
 ## Notes
 

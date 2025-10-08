@@ -120,20 +120,20 @@ export default defineConfig({
             type: "image",
             name: "heroImage",
             label: "Hero Image",
-            description: "Full-size image for recipe detail page (recommended: 1200x675px, max 200KB)",
+            description: "Full-size image for recipe detail page (WebP recommended: 1200x675px, ~80-120KB)",
           },
           {
             type: "image",
             name: "thumbnailImage",
             label: "Thumbnail Image",
-            description: "Smaller image for recipe cards on home page (recommended: 600x338px, max 100KB)",
+            description: "Smaller image for recipe cards on home page (WebP recommended: 600x338px, ~40-60KB)",
           },
           {
             type: "image",
             name: "images",
             label: "Gallery Images",
             list: true,
-            description: "Additional recipe photos (recommended: 800x800px, max 150KB each)",
+            description: "Additional recipe photos (WebP recommended: 800x800px, ~60-100KB each)",
           },
           {
             type: "rich-text",

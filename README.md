@@ -54,12 +54,23 @@ For optimal performance and page load times, please follow these image size reco
 
 #### Image Optimization Tips
 
-- **Format**: Use JPEG for photos, PNG for graphics with transparency
-- **Compression**: Use tools like [TinyPNG](https://tinypng.com/) or [Squoosh](https://squoosh.app/) to compress images
+- **Format**: **WebP recommended** for best compression (25-35% smaller than JPEG)
+  - WebP: Best choice for all recipe photos (smaller files, great quality)
+  - JPEG: Alternative if WebP conversion isn't available
+  - PNG: Only for graphics with transparency (logos, icons)
+- **Compression**: Use tools like [Squoosh](https://squoosh.app/) or [TinyPNG](https://tinypng.com/)
+  - **Squoosh** (recommended): Convert to WebP with quality 75-85%
+  - **TinyPNG**: Also supports WebP conversion
+  - **ImageOptim** (Mac): Batch processing for multiple images
 - **Aspect Ratios**: 
   - Hero/Thumbnail: 16:9 (landscape)
   - Gallery: 1:1 (square) or 4:3 (flexible)
-- **File Names**: Use descriptive, lowercase names with hyphens (e.g., `beef-curry-hero.jpg`)
+- **File Names**: Use descriptive, lowercase names with hyphens (e.g., `beef-curry-hero.webp`)
+
+#### Example File Sizes (with WebP)
+- Hero image (1200×675px): ~80-120 KB (vs 200+ KB JPEG)
+- Thumbnail (600×338px): ~40-60 KB (vs 100+ KB JPEG)
+- Gallery (800×800px): ~60-100 KB (vs 150+ KB JPEG)
 
 #### Lightbox Behavior
 
