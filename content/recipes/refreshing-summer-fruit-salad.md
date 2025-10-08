@@ -13,12 +13,12 @@ prepTime: 15 minutes
 cookTime: 0 minutes
 totalTime: 15 minutes
 servings: 6-8
-heroImage: /images/IMG_2511.jpeg
-thumbnailImage: /images/IMG_2511.jpeg
+heroImage: /images/refreshing-summer-fruit-salad-hero.webp
+thumbnailImage: /images/refreshing-summer-fruit-salad-thumbnail.webp
 images:
-  - /images/IMG_2511.jpeg
-  - /images/IMG_2510.jpeg
-  - /images/IMG_2512.jpeg
+  - /images/refreshing-summer-fruit-salad-1.webp
+  - /images/refreshing-summer-fruit-salad-2.webp
+  - /images/refreshing-summer-fruit-salad-3.webp
 ---
 
 #### **Ingredients**

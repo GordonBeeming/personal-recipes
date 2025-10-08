@@ -12,10 +12,10 @@ prepTime: 45 minutes
 cookTime: 3 hours 30 minutes
 totalTime: 5 hours (includes 45 min resting time)
 servings: 6-8
-heroImage: /images/IMG_2508.jpeg
-thumbnailImage: /images/IMG_2508.jpeg
+heroImage: /images/classic-pork-crackling-roast-dinner-hero.webp
+thumbnailImage: /images/classic-pork-crackling-roast-dinner-thumbnail.webp
 images:
-  - /images/IMG_2508.jpeg
+  - /images/classic-pork-crackling-roast-dinner-1.webp
 ---
 
 #### **Ingredients**

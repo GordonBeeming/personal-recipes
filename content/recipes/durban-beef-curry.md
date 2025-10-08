@@ -13,10 +13,10 @@ prepTime: 25 minutes
 cookTime: 2 hours
 totalTime: 2 hours 25 minutes
 servings: 4-6
-heroImage: /images/IMG_0035.jpeg
-thumbnailImage: /images/IMG_0035.jpeg
+heroImage: /images/durban-beef-curry-hero.webp
+thumbnailImage: /images/durban-beef-curry-thumbnail.webp
 images:
-  - /images/IMG_0035.jpeg
+  - /images/durban-beef-curry-1.webp
 ---
 
 #### **Ingredients**
