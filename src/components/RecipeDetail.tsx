@@ -64,44 +64,53 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
     }
   }
 
-  // Custom markdown components to replace list items with checkboxes
+  // Custom markdown components to replace unordered list items with checkboxes
   const components: Components = {
-    li: ({ children, ...props }) => {
-      // Generate a unique index for this list item based on its position in the document
-      const itemText = String(children)
-      const itemIndex = itemText.slice(0, 50) // Use first 50 chars as unique identifier
-      const isChecked = checkedItems[itemIndex] || false
-
-      return (
-        <li {...props} className="flex items-start gap-3 my-2">
-          <Checkbox
-            id={`checkbox-${itemIndex}`}
-            checked={isChecked}
-            onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
-            className="mt-1 flex-shrink-0"
-            aria-label={`Mark "${itemText}" as complete`}
-          />
-          <label
-            htmlFor={`checkbox-${itemIndex}`}
-            className={`flex-1 cursor-pointer select-none ${
-              isChecked ? 'line-through text-muted-foreground' : ''
-            }`}
-          >
-            {children}
-          </label>
-        </li>
-      )
-    },
     ul: ({ children, ...props }) => (
-      <ul {...props} className="space-y-1 list-none pl-0">
+      <ul {...props} className="space-y-1 list-none pl-0" data-checkbox-list="true">
         {children}
       </ul>
     ),
     ol: ({ children, ...props }) => (
-      <ol {...props} className="space-y-1 list-none pl-0">
+      <ol {...props} className="space-y-2 list-decimal pl-6">
         {children}
       </ol>
     ),
+    li: ({ children, ...props }) => {
+      // Check if this li is inside a ul (checkbox list) by checking parent
+      const parent = (props as any).node?.parent
+      const isUnorderedList = parent?.tagName === 'ul'
+      
+      if (isUnorderedList) {
+        // Generate a unique index for this list item based on its position in the document
+        const itemText = String(children)
+        const itemIndex = itemText.slice(0, 50) // Use first 50 chars as unique identifier
+        const isChecked = checkedItems[itemIndex] || false
+
+        return (
+          <li {...props} className="flex items-start gap-3 my-2">
+            <Checkbox
+              id={`checkbox-${itemIndex}`}
+              checked={isChecked}
+              onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
+              className="mt-1 flex-shrink-0"
+              aria-label={`Mark "${itemText}" as complete`}
+            />
+            <label
+              htmlFor={`checkbox-${itemIndex}`}
+              className={`flex-1 cursor-pointer select-none ${
+                isChecked ? 'line-through text-muted-foreground' : ''
+              }`}
+            >
+              {children}
+            </label>
+          </li>
+        )
+      }
+      
+      // Regular ordered list item
+      return <li {...props}>{children}</li>
+    },
   }
 
   return (
