@@ -30,12 +30,12 @@ export function NotFoundPage() {
           </div>
 
           {/* Illustration */}
-          <div 
-            className="mb-12 text-8xl" 
-            role="img" 
-            aria-label="Cooking pot emoji"
-          >
-            🍳
+          <div className="mb-12">
+            <img 
+              src="/images/404.png" 
+              alt="404 - Recipe not found illustration"
+              className="max-w-md mx-auto w-full h-auto rounded-lg"
+            />
           </div>
 
           {/* Actions */}
