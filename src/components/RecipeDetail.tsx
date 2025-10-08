@@ -73,18 +73,18 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
       const isChecked = checkedItems[itemIndex] || false
 
       return (
-        <li {...props} className="flex items-start gap-3 my-3 p-3 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
+        <li {...props} className="flex items-start gap-3 my-2">
           <Checkbox
             id={`checkbox-${itemIndex}`}
             checked={isChecked}
             onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
-            className="mt-1 flex-shrink-0 scale-125 border-2"
+            className="mt-1 flex-shrink-0"
             aria-label={`Mark "${itemText}" as complete`}
           />
           <label
             htmlFor={`checkbox-${itemIndex}`}
-            className={`flex-1 cursor-pointer select-none leading-relaxed ${
-              isChecked ? 'line-through text-muted-foreground' : 'text-foreground'
+            className={`flex-1 cursor-pointer select-none ${
+              isChecked ? 'line-through text-muted-foreground' : ''
             }`}
           >
             {children}
@@ -93,12 +93,12 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
       )
     },
     ul: ({ children, ...props }) => (
-      <ul {...props} className="space-y-2 list-none pl-0 my-4">
+      <ul {...props} className="space-y-1 list-none pl-0">
         {children}
       </ul>
     ),
     ol: ({ children, ...props }) => (
-      <ol {...props} className="space-y-2 list-none pl-0 my-4">
+      <ol {...props} className="space-y-1 list-none pl-0">
         {children}
       </ol>
     ),
