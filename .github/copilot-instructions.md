@@ -370,11 +370,10 @@ Co-authored-by: Other Contributor <other@example.com>"
 1. Run linters: `npm run lint`
 2. Build the project: `npm run build`
 3. Test in dev mode: `npm run dev`
-4. **Run Playwright tests**: `npm run test` (verifies functionality)
-5. **For UI changes**: Take before/after screenshots manually, save to `docs/tasks/images/`
-6. Document significant changes in `/docs/tasks/` following naming conventions
-7. **Include screenshots in task docs** with relative image paths
-8. **Commit your changes with co-author attribution**:
+4. **For UI changes**: Take before/after screenshots manually, save to `docs/tasks/images/`
+5. Document significant changes in `/docs/tasks/` following naming conventions
+6. **Include screenshots in task docs** with relative image paths
+7. **Commit your changes with co-author attribution**:
    ```bash
    git add . && git commit -m "Type: Description
 
@@ -383,25 +382,10 @@ Co-authored-by: Other Contributor <other@example.com>"
 
 ## Testing and Quality
 
-### Automated Testing with Playwright
-**Always run Playwright tests before committing changes** to ensure the site works correctly.
-
-#### Test Commands:
-- `npm run test` - Run all tests
-- `npm run test:ui` - Run tests in UI mode for debugging
-- `npm run test:headed` - Run tests with browser visible
-
-#### What Tests Cover:
-- Homepage loading and recipe display
-- Dark mode toggle functionality
-- Search and filter operations
-- Keyboard accessibility (Tab, Enter, Space navigation)
-- Responsive design (mobile, tablet, desktop)
-- Recipe detail page functionality
+### Manual Testing
+Always test your changes thoroughly before committing.
 
 #### Screenshots for Task Documentation:
-**Important**: Playwright tests verify functionality but DON'T auto-generate task screenshots.
-
 **For UI changes, manually capture screenshots**:
 1. Run the dev server: `npm run dev`
 2. Take "before" screenshot of current state
@@ -422,10 +406,9 @@ After:
 ```
 
 ### Before Committing
-- **Run Playwright tests**: `npm run test` - Ensure all functionality works
 - Ensure no TypeScript errors: `npm run build`
 - Run ESLint: `npm run lint`
-- Test affected functionality manually
+- Test affected functionality manually in the browser
 - **For UI changes**: Capture before/after screenshots in `docs/tasks/images/`
 - **Test keyboard navigation** - ensure all interactive elements are accessible
 - **Test with screen reader** - verify announcements are correct
@@ -457,7 +440,7 @@ After:
 9. **Minor tasks update existing files** - Don't create duplicate task files
 10. **Document major changes** - Create task files for significant work
 11. **Accessibility is mandatory** - Every change must be accessible
-12. **Test before committing** - Run Playwright tests to verify functionality
+12. **Test before committing** - Build and manually test functionality in browser
 13. **Tina generated files are ignored** - Never commit `tina/__generated__/` or `public/admin/`
 
 ### When to Update These Instructions
@@ -470,10 +453,10 @@ After:
 
 ---
 
-**Last Updated**: 2025-01-07
-**Version**: 2.1.0
+**Last Updated**: 2025-10-07
+**Version**: 2.2.0
 **CMS Status**: ✅ Tina CMS Integrated
 **Accessibility Standard**: WCAG 2.1 AA
-**Testing**: Playwright for functionality verification
+**Testing**: Manual testing and validation
 **Screenshots**: Manual capture in docs/tasks/images/
 **Attribution**: Co-author commits for proper attribution

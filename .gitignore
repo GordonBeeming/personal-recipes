@@ -33,13 +33,6 @@ pids
 
 .spark-workbench-id
 
-# Playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
-
-# Keep screenshots for documentation
-# tests/screenshots/
 
 # Temporary files (if needed, create tmp/ folder in project)
 tmp/
