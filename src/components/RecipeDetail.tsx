@@ -8,6 +8,7 @@ import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useState, useEffect } from 'react'
+import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
 
@@ -64,53 +65,77 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
     }
   }
 
-  // Custom markdown components to replace unordered list items with checkboxes
+  // Create separate list item components for ordered and unordered lists
+  const CheckboxListItem = ({ children, itemKey }: { children: React.ReactNode, itemKey: string }) => {
+    const isChecked = checkedItems[itemKey] || false
+    
+    return (
+      <li className="flex items-start gap-3 my-2">
+        <Checkbox
+          id={`checkbox-${itemKey}`}
+          checked={isChecked}
+          onCheckedChange={(checked) => handleCheckboxChange(itemKey, checked as boolean)}
+          className="mt-1 flex-shrink-0"
+          aria-label={`Mark "${String(children)}" as complete`}
+        />
+        <label
+          htmlFor={`checkbox-${itemKey}`}
+          className={`flex-1 cursor-pointer select-none ${
+            isChecked ? 'line-through text-muted-foreground' : ''
+          }`}
+        >
+          {children}
+        </label>
+      </li>
+    )
+  }
+
+  // Custom markdown components - track list context
   const components: Components = {
-    ul: ({ children, ...props }) => (
-      <ul {...props} className="space-y-1 list-none pl-0" data-list-type="unordered">
-        {children}
-      </ul>
-    ),
-    ol: ({ children, ...props }) => (
-      <ol {...props} className="space-y-2 list-decimal pl-6" data-list-type="ordered">
-        {children}
-      </ol>
-    ),
-    li: ({ children, node, ...props }) => {
-      // Check if this li is inside an ordered list by looking at the parent node
-      const parent = node?.parent
-      const isOrderedList = parent?.type === 'element' && parent.tagName === 'ol'
+    ul: ({ children, ...props }) => {
+      // Clone children and mark them as unordered
+      const wrappedChildren = React.Children.map(children, child => {
+        if (React.isValidElement(child) && child.props.node?.tagName === 'li') {
+          return React.cloneElement(child, { ...child.props, 'data-list-type': 'ul' } as any)
+        }
+        return child
+      })
       
-      // Only use numbered list items for ordered lists, everything else gets checkboxes
-      if (isOrderedList) {
-        // Regular ordered list item
-        return <li {...props}>{children}</li>
+      return (
+        <ul {...props} className="space-y-1 list-none pl-0">
+          {wrappedChildren}
+        </ul>
+      )
+    },
+    ol: ({ children, ...props }) => {
+      // Clone children and mark them as ordered
+      const wrappedChildren = React.Children.map(children, child => {
+        if (React.isValidElement(child) && child.props.node?.tagName === 'li') {
+          return React.cloneElement(child, { ...child.props, 'data-list-type': 'ol' } as any)
+        }
+        return child
+      })
+      
+      return (
+        <ol {...props} className="space-y-2 list-decimal pl-6">
+          {wrappedChildren}
+        </ol>
+      )
+    },
+    li: ({ children, node, ...props }) => {
+      // Check the data-list-type prop we added
+      const listType = (props as any)['data-list-type']
+      
+      if (listType === 'ol') {
+        // Ordered list item - render normally
+        return <li {...props} className="my-1">{children}</li>
       }
       
-      // Checkbox list item for unordered lists
+      // Unordered list item - render as checkbox
       const itemText = String(children)
-      const itemIndex = itemText.slice(0, 50) // Use first 50 chars as unique identifier
-      const isChecked = checkedItems[itemIndex] || false
-
-      return (
-        <li {...props} className="flex items-start gap-3 my-2">
-          <Checkbox
-            id={`checkbox-${itemIndex}`}
-            checked={isChecked}
-            onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
-            className="mt-1 flex-shrink-0"
-            aria-label={`Mark "${itemText}" as complete`}
-          />
-          <label
-            htmlFor={`checkbox-${itemIndex}`}
-            className={`flex-1 cursor-pointer select-none ${
-              isChecked ? 'line-through text-muted-foreground' : ''
-            }`}
-          >
-            {children}
-          </label>
-        </li>
-      )
+      const itemKey = itemText.slice(0, 50)
+      
+      return <CheckboxListItem itemKey={itemKey}>{children}</CheckboxListItem>
     },
   }
 
