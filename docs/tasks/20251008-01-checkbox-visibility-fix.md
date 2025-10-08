@@ -27,11 +27,12 @@ This creates strong contrast between the checkbox and its background in both the
   - Dark mode now has light off-white background
 
 - `src/components/RecipeDetail.tsx`
-  - Updated list rendering logic to check for ordered lists specifically
+  - Implemented React.cloneElement approach to reliably pass list type to items
+  - Parent lists (ul/ol) now clone children and add 'data-list-type' prop
+  - List items check this prop to determine rendering method
   - **Ordered lists (`<ol>`)**: Rendered as numbered items with `list-decimal pl-6`
-  - **Unordered lists (`<ul>`)**: Rendered as interactive checkboxes (even when nested)
-  - Fixed parent node detection by checking `parent.tagName === 'ol'`
-  - Inverted logic: check for ordered list first, default to checkbox for everything else
+  - **Unordered lists (`<ul>`)**: Rendered as interactive checkboxes
+  - This approach is more reliable than node.parent detection with react-markdown
 
 ## Testing
 
