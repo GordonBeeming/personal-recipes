@@ -27,10 +27,11 @@ This creates strong contrast between the checkbox and its background in both the
   - Dark mode now has light off-white background
 
 - `src/components/RecipeDetail.tsx`
-  - Updated list rendering to only convert unordered lists to checkboxes
-  - Ordered lists remain as numbered lists with proper decimal styling
-  - Added parent node detection to determine list item rendering
-  - Ordered lists now have `list-decimal pl-6` classes for proper numbering
+  - Updated list rendering logic to check for ordered lists specifically
+  - **Ordered lists (`<ol>`)**: Rendered as numbered items with `list-decimal pl-6`
+  - **Unordered lists (`<ul>`)**: Rendered as interactive checkboxes (even when nested)
+  - Fixed parent node detection by checking `parent.tagName === 'ol'`
+  - Inverted logic: check for ordered list first, default to checkbox for everything else
 
 ## Testing
 
