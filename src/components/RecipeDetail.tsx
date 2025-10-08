@@ -8,6 +8,7 @@ import { Recipe } from '../lib/types'
 import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useIsMobile } from '../hooks/use-mobile'
 import { useState, useEffect, useRef } from 'react'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -21,6 +22,7 @@ interface RecipeDetailProps {
 
 export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   const { frontmatter, content } = recipe
+  const isMobile = useIsMobile()
   
   // Store checkbox states in localStorage with recipe slug as key
   const [checkedItems, setCheckedItems] = useLocalStorage<Record<string, boolean>>(
@@ -44,10 +46,19 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
     setHasCheckedItems(Object.values(checkedItems).some(checked => checked))
   }, [checkedItems])
   
-  // Set up Intersection Observer for lazy loading gallery images
+  // Set up Intersection Observer for lazy loading gallery images (desktop only)
+  // On mobile, load all images immediately to avoid scroll issues
   useEffect(() => {
     if (!frontmatter.images || frontmatter.images.length === 0) return
     
+    // On mobile, load all images immediately
+    if (isMobile) {
+      const allIndices = Array.from({ length: frontmatter.images.length }, (_, i) => i)
+      setVisibleImages(new Set(allIndices))
+      return
+    }
+    
+    // On desktop, use lazy loading with Intersection Observer
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -70,7 +81,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
     })
     
     return () => observer.disconnect()
-  }, [frontmatter.images])
+  }, [frontmatter.images, isMobile])
   
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -89,6 +100,8 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   }, [lightboxOpen, lightboxIndex, frontmatter.images])
   
   const openLightbox = (image: string, index: number) => {
+    // Ensure the clicked image is marked as visible (in case it wasn't loaded yet)
+    setVisibleImages(prev => new Set([...prev, index]))
     setLightboxImage(image)
     setLightboxIndex(index)
     setLightboxOpen(true)
