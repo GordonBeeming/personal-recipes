@@ -15,14 +15,26 @@ A personal recipe website built with React, Vite, TypeScript, and Tailwind CSS, 
 # Install dependencies
 npm install
 
-# Start development server (without CMS)
+# Start development server (recommended - fast and simple)
 npm run dev:prod
 
-# Or start with Tina CMS (requires setup - see below)
+# Or start with Tina CMS admin (requires Tina Cloud setup)
 npm run dev
 ```
 
-Visit `http://localhost:5173`
+Visit `http://localhost:5000`
+
+> **💡 Tip**: Use `npm run dev:prod` for regular development. Only use `npm run dev` if you need the CMS admin interface at `/admin`.
+
+## ⚠️ Troubleshooting
+
+### Getting 403 Forbidden Error?
+
+If you see a 403 error when running `npm run dev`, it's because Tina CMS is trying to authenticate without valid credentials.
+
+**Quick Fix**: Use `npm run dev:prod` instead - it runs the app without Tina CMS (faster and no authentication needed).
+
+See **[403 Error Fix Guide](docs/tasks/20251007-04-fix-403-forbidden-npm-dev.md)** for details.
 
 ## 📝 Content Management with Tina CMS
 
@@ -56,13 +68,12 @@ npm run dev
 
 ### Available Scripts
 
-- `npm run dev` - Start Vite + Tina CMS dev server
-- `npm run dev:prod` - Start Vite only (faster, no CMS)
+- `npm run dev:prod` - **Recommended**: Start Vite dev server (fast, no CMS)
+- `npm run dev` - Start Vite + Tina CMS (requires Tina Cloud credentials)
 - `npm run build` - Build for production (requires Tina Cloud credentials)
-- `npm run build:local` - Build without Tina Cloud
+- `npm run build:local` - Build without Tina Cloud (faster)
 - `npm run lint` - Run ESLint
-- `npm run test` - Run Playwright tests
-- `npm run test:ui` - Run tests in UI mode
+- `npm run preview` - Preview production build
 
 ### Project Structure
 
@@ -81,29 +92,13 @@ npm run dev
 
 ## 🧪 Testing
 
-```bash
-# Run all tests
-npm run test
-
-# Run tests with UI
-npm run test:ui
-
-# Run tests in headed mode (see browser)
-npm run test:headed
-```
-
-Tests cover:
-- Homepage and recipe display
-- Search and filtering
-- Dark mode toggle
-- Keyboard accessibility
-- Responsive design
+Tests have been removed from this project in favor of manual testing. See the development workflow in the documentation for testing guidelines.
 
 ## 📚 Documentation
 
 - **[Tina Cloud Setup](docs/TINA_CLOUD_SETUP.md)** - Complete CMS setup guide
+- **[403 Error Fix](docs/tasks/20251007-04-fix-403-forbidden-npm-dev.md)** - Fix 403 Forbidden errors
 - **[Task History](docs/tasks/)** - Development task logs
-- **[PRD](docs/PRD.md)** - Product requirements (if available)
 
 ## 🚢 Deployment
 
@@ -121,7 +116,8 @@ This project is configured for GitHub Pages deployment:
 - **CMS**: Tina CMS (cloud-hosted)
 - **UI Components**: Radix UI, shadcn/ui patterns
 - **State Management**: TanStack Query
-- **Testing**: Playwright
+- **Routing**: React Router
+- **Markdown**: React Markdown, Marked
 
 ## 📄 License
 
