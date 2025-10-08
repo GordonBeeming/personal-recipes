@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share, Eraser, X, CaretLeft, CaretRight } from '@phosphor-icons/react'
+import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share, Eraser, X, CaretLeft, CaretRight, Images } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -42,23 +42,25 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   const [visibleImages, setVisibleImages] = useState<Set<number>>(new Set())
   const imageRefs = useRef<(HTMLDivElement | null)[]>([])
   
+  // Gallery visibility state for mobile - hide initially on mobile to save bandwidth
+  const [showGallery, setShowGallery] = useState(!isMobile)
+  
   useEffect(() => {
     setHasCheckedItems(Object.values(checkedItems).some(checked => checked))
   }, [checkedItems])
   
-  // Set up Intersection Observer for lazy loading gallery images (desktop only)
-  // On mobile, load all images immediately to avoid scroll issues
+  // Update gallery visibility when device type changes
+  useEffect(() => {
+    if (!isMobile) {
+      setShowGallery(true)
+    }
+  }, [isMobile])
+  
+  // Set up Intersection Observer for lazy loading gallery images
   useEffect(() => {
     if (!frontmatter.images || frontmatter.images.length === 0) return
+    if (!showGallery) return // Don't set up observer if gallery is hidden
     
-    // On mobile, load all images immediately
-    if (isMobile) {
-      const allIndices = Array.from({ length: frontmatter.images.length }, (_, i) => i)
-      setVisibleImages(new Set(allIndices))
-      return
-    }
-    
-    // On desktop, use lazy loading with Intersection Observer
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -81,7 +83,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
     })
     
     return () => observer.disconnect()
-  }, [frontmatter.images, isMobile])
+  }, [frontmatter.images, showGallery])
   
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -332,44 +334,61 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
 
           {/* Gallery section - only show if there are images */}
           {frontmatter.images && frontmatter.images.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Recipe Gallery</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {frontmatter.images.map((image, index) => (
-                    <div 
-                      key={index} 
-                      ref={(el) => (imageRefs.current[index] = el)}
-                      className="aspect-square overflow-hidden rounded-md bg-muted"
-                    >
-                      {visibleImages.has(index) ? (
-                        <img
-                          src={image}
-                          alt={`${frontmatter.title} step ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
-                          onClick={() => openLightbox(image, index)}
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault()
-                              openLightbox(image, index)
-                            }
-                          }}
-                          aria-label={`View full size image ${index + 1} of ${frontmatter.images.length}`}
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                          Loading...
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            showGallery ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recipe Gallery</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {frontmatter.images.map((image, index) => (
+                      <div 
+                        key={index} 
+                        ref={(el) => (imageRefs.current[index] = el)}
+                        className="aspect-square overflow-hidden rounded-md bg-muted"
+                      >
+                        {visibleImages.has(index) ? (
+                          <img
+                            src={image}
+                            alt={`${frontmatter.title} step ${index + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                            onClick={() => openLightbox(image, index)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault()
+                                openLightbox(image, index)
+                              }
+                            }}
+                            aria-label={`View full size image ${index + 1} of ${frontmatter.images.length}`}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                            Loading...
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="pt-6">
+                  <Button 
+                    onClick={() => setShowGallery(true)} 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full"
+                    aria-label={`View recipe gallery (${frontmatter.images.length} images)`}
+                  >
+                    <Images size={20} className="mr-2" aria-hidden="true" />
+                    View Gallery ({frontmatter.images.length} {frontmatter.images.length === 1 ? 'image' : 'images'})
+                  </Button>
+                </CardContent>
+              </Card>
+            )
           )}
         </article>
 
