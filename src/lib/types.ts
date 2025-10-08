@@ -10,6 +10,7 @@ export interface RecipeFrontmatter {
   servings: string
   description?: string
   heroImage?: string
+  thumbnailImage?: string
   images?: string[]
 }
 

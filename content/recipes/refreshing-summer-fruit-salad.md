@@ -14,6 +14,7 @@ cookTime: 0 minutes
 totalTime: 15 minutes
 servings: 6-8
 heroImage: /images/IMG_2511.jpeg
+thumbnailImage: /images/IMG_2511.jpeg
 images:
   - /images/IMG_2511.jpeg
   - /images/IMG_2510.jpeg

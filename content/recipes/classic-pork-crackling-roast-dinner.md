@@ -13,6 +13,7 @@ cookTime: 3 hours 30 minutes
 totalTime: 5 hours (includes 45 min resting time)
 servings: 6-8
 heroImage: /images/IMG_2508.jpeg
+thumbnailImage: /images/IMG_2508.jpeg
 images:
   - /images/IMG_2508.jpeg
 ---

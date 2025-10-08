@@ -395,11 +395,14 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
         {/* Lightbox Dialog */}
         <DialogPrimitive.Root open={lightboxOpen} onOpenChange={setLightboxOpen}>
           <DialogPrimitive.Portal>
-            <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/95 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+            <DialogPrimitive.Overlay 
+              className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 cursor-pointer"
+              onClick={() => setLightboxOpen(false)}
+            />
             <DialogPrimitive.Content 
               className={cn(
                 "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
-                "w-[95vw] h-[95vh] max-w-none",
+                "w-[90vw] h-auto max-w-4xl max-h-[85vh]",
                 "focus:outline-none"
               )}
               aria-describedby={undefined}
@@ -447,7 +450,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
                 <img
                   src={lightboxImage}
                   alt={`${frontmatter.title} - Full size view ${lightboxIndex + 1} of ${frontmatter.images?.length || 1}`}
-                  className="max-w-full max-h-[90vh] object-contain"
+                  className="max-w-full max-h-[80vh] object-contain rounded-lg"
                 />
                 
                 {frontmatter.images && frontmatter.images.length > 1 && (

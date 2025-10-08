@@ -40,6 +40,35 @@ See **[403 Error Fix Guide](docs/tasks/20251007-04-fix-403-forbidden-npm-dev.md)
 
 This project uses Tina CMS for managing recipes. You can edit content visually through the admin interface.
 
+### Image Guidelines
+
+For optimal performance and page load times, please follow these image size recommendations:
+
+#### Recommended Image Sizes
+
+| Image Type | Dimensions | Max File Size | Usage |
+|------------|------------|---------------|-------|
+| **Hero Image** | 1200×675px (16:9) | 200 KB | Recipe detail page header |
+| **Thumbnail Image** | 600×338px (16:9) | 100 KB | Recipe cards on home page |
+| **Gallery Images** | 800×800px (1:1) | 150 KB each | Recipe photo gallery |
+
+#### Image Optimization Tips
+
+- **Format**: Use JPEG for photos, PNG for graphics with transparency
+- **Compression**: Use tools like [TinyPNG](https://tinypng.com/) or [Squoosh](https://squoosh.app/) to compress images
+- **Aspect Ratios**: 
+  - Hero/Thumbnail: 16:9 (landscape)
+  - Gallery: 1:1 (square) or 4:3 (flexible)
+- **File Names**: Use descriptive, lowercase names with hyphens (e.g., `beef-curry-hero.jpg`)
+
+#### Lightbox Behavior
+
+Gallery images open in a lightbox with these features:
+- **Max display size**: 80% viewport height, 90% viewport width (max 1200px wide)
+- **Semi-transparent background** (80% opacity) - click outside to close
+- **Keyboard navigation**: Arrow keys to navigate, Escape to close
+- **Responsive**: Adapts to screen size automatically
+
 ### Setup Tina Cloud (Required for Production)
 
 For complete setup instructions, see **[Tina Cloud Setup Guide](docs/TINA_CLOUD_SETUP.md)**.

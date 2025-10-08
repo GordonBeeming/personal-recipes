@@ -26,9 +26,9 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
       aria-label={`Recipe: ${frontmatter.title}`}
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
-        {frontmatter.heroImage ? (
+        {(frontmatter.thumbnailImage || frontmatter.heroImage) ? (
           <img
-            src={frontmatter.heroImage}
+            src={frontmatter.thumbnailImage || frontmatter.heroImage}
             alt={`${frontmatter.title} - ${frontmatter.category} recipe`}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
