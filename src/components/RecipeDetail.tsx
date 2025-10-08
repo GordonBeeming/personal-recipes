@@ -67,49 +67,50 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   // Custom markdown components to replace unordered list items with checkboxes
   const components: Components = {
     ul: ({ children, ...props }) => (
-      <ul {...props} className="space-y-1 list-none pl-0" data-checkbox-list="true">
+      <ul {...props} className="space-y-1 list-none pl-0" data-list-type="unordered">
         {children}
       </ul>
     ),
     ol: ({ children, ...props }) => (
-      <ol {...props} className="space-y-2 list-decimal pl-6">
+      <ol {...props} className="space-y-2 list-decimal pl-6" data-list-type="ordered">
         {children}
       </ol>
     ),
-    li: ({ children, ...props }) => {
-      // Check if this li is inside a ul (checkbox list) by checking parent
-      const parent = (props as any).node?.parent
-      const isUnorderedList = parent?.tagName === 'ul'
+    li: ({ children, node, ...props }) => {
+      // Check if this li is inside an ordered list by looking at the parent node
+      const parent = node?.parent
+      const isOrderedList = parent?.type === 'element' && parent.tagName === 'ol'
       
-      if (isUnorderedList) {
-        // Generate a unique index for this list item based on its position in the document
-        const itemText = String(children)
-        const itemIndex = itemText.slice(0, 50) // Use first 50 chars as unique identifier
-        const isChecked = checkedItems[itemIndex] || false
-
-        return (
-          <li {...props} className="flex items-start gap-3 my-2">
-            <Checkbox
-              id={`checkbox-${itemIndex}`}
-              checked={isChecked}
-              onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
-              className="mt-1 flex-shrink-0"
-              aria-label={`Mark "${itemText}" as complete`}
-            />
-            <label
-              htmlFor={`checkbox-${itemIndex}`}
-              className={`flex-1 cursor-pointer select-none ${
-                isChecked ? 'line-through text-muted-foreground' : ''
-              }`}
-            >
-              {children}
-            </label>
-          </li>
-        )
+      // Only use numbered list items for ordered lists, everything else gets checkboxes
+      if (isOrderedList) {
+        // Regular ordered list item
+        return <li {...props}>{children}</li>
       }
       
-      // Regular ordered list item
-      return <li {...props}>{children}</li>
+      // Checkbox list item for unordered lists
+      const itemText = String(children)
+      const itemIndex = itemText.slice(0, 50) // Use first 50 chars as unique identifier
+      const isChecked = checkedItems[itemIndex] || false
+
+      return (
+        <li {...props} className="flex items-start gap-3 my-2">
+          <Checkbox
+            id={`checkbox-${itemIndex}`}
+            checked={isChecked}
+            onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
+            className="mt-1 flex-shrink-0"
+            aria-label={`Mark "${itemText}" as complete`}
+          />
+          <label
+            htmlFor={`checkbox-${itemIndex}`}
+            className={`flex-1 cursor-pointer select-none ${
+              isChecked ? 'line-through text-muted-foreground' : ''
+            }`}
+          >
+            {children}
+          </label>
+        </li>
+      )
     },
   }
 
