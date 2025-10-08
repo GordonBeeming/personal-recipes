@@ -1,16 +1,18 @@
-import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share, Eraser } from '@phosphor-icons/react'
+import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share, Eraser, X, CaretLeft, CaretRight } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
 import { Checkbox } from './ui/checkbox'
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Recipe } from '../lib/types'
 import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
+import { cn } from '../lib/utils'
 
 interface RecipeDetailProps {
   recipe: Recipe
@@ -29,9 +31,79 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   // Track if any items are checked
   const [hasCheckedItems, setHasCheckedItems] = useState(false)
   
+  // Lightbox state
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxImage, setLightboxImage] = useState<string>('')
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+  
+  // Lazy loading state for gallery images
+  const [visibleImages, setVisibleImages] = useState<Set<number>>(new Set())
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([])
+  
   useEffect(() => {
     setHasCheckedItems(Object.values(checkedItems).some(checked => checked))
   }, [checkedItems])
+  
+  // Set up Intersection Observer for lazy loading gallery images
+  useEffect(() => {
+    if (!frontmatter.images || frontmatter.images.length === 0) return
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = imageRefs.current.indexOf(entry.target as HTMLDivElement)
+            if (index !== -1) {
+              setVisibleImages(prev => new Set([...prev, index]))
+              observer.unobserve(entry.target)
+            }
+          }
+        })
+      },
+      {
+        rootMargin: '50px', // Start loading 50px before the image enters viewport
+      }
+    )
+    
+    imageRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref)
+    })
+    
+    return () => observer.disconnect()
+  }, [frontmatter.images])
+  
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        navigateLightbox('prev')
+      } else if (e.key === 'ArrowRight') {
+        navigateLightbox('next')
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [lightboxOpen, lightboxIndex, frontmatter.images])
+  
+  const openLightbox = (image: string, index: number) => {
+    setLightboxImage(image)
+    setLightboxIndex(index)
+    setLightboxOpen(true)
+  }
+  
+  const navigateLightbox = (direction: 'prev' | 'next') => {
+    if (!frontmatter.images) return
+    
+    const newIndex = direction === 'next' 
+      ? (lightboxIndex + 1) % frontmatter.images.length
+      : (lightboxIndex - 1 + frontmatter.images.length) % frontmatter.images.length
+    
+    setLightboxIndex(newIndex)
+    setLightboxImage(frontmatter.images[newIndex])
+  }
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
     setCheckedItems(prev => ({
@@ -254,12 +326,32 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {frontmatter.images.map((image, index) => (
-                    <div key={index} className="aspect-square overflow-hidden rounded-md bg-muted">
-                      <img
-                        src={image}
-                        alt={`${frontmatter.title} step ${index + 1}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
-                      />
+                    <div 
+                      key={index} 
+                      ref={(el) => (imageRefs.current[index] = el)}
+                      className="aspect-square overflow-hidden rounded-md bg-muted"
+                    >
+                      {visibleImages.has(index) ? (
+                        <img
+                          src={image}
+                          alt={`${frontmatter.title} step ${index + 1}`}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                          onClick={() => openLightbox(image, index)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              openLightbox(image, index)
+                            }
+                          }}
+                          aria-label={`View full size image ${index + 1} of ${frontmatter.images.length}`}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                          Loading...
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -267,6 +359,74 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
             </Card>
           )}
         </article>
+
+        {/* Lightbox Dialog */}
+        <DialogPrimitive.Root open={lightboxOpen} onOpenChange={setLightboxOpen}>
+          <DialogPrimitive.Portal>
+            <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/95 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+            <DialogPrimitive.Content 
+              className={cn(
+                "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
+                "w-[95vw] h-[95vh] max-w-none",
+                "focus:outline-none"
+              )}
+              aria-describedby={undefined}
+            >
+              <div className="relative w-full h-full flex items-center justify-center">
+                <DialogPrimitive.Close asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-4 right-4 z-50 rounded-full bg-black/50 hover:bg-black/70 text-white"
+                    aria-label="Close lightbox"
+                  >
+                    <X size={24} aria-hidden="true" />
+                  </Button>
+                </DialogPrimitive.Close>
+                
+                {frontmatter.images && frontmatter.images.length > 1 && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute left-4 z-50 rounded-full bg-black/50 hover:bg-black/70 text-white"
+                      onClick={() => navigateLightbox('prev')}
+                      aria-label="Previous image"
+                    >
+                      <CaretLeft size={32} aria-hidden="true" weight="bold" />
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-4 z-50 rounded-full bg-black/50 hover:bg-black/70 text-white"
+                      onClick={() => navigateLightbox('next')}
+                      aria-label="Next image"
+                    >
+                      <CaretRight size={32} aria-hidden="true" weight="bold" />
+                    </Button>
+                  </>
+                )}
+                
+                <DialogPrimitive.Title className="sr-only">
+                  {`Image ${lightboxIndex + 1} of ${frontmatter.images?.length || 1} - ${frontmatter.title}`}
+                </DialogPrimitive.Title>
+                
+                <img
+                  src={lightboxImage}
+                  alt={`${frontmatter.title} - Full size view ${lightboxIndex + 1} of ${frontmatter.images?.length || 1}`}
+                  className="max-w-full max-h-[90vh] object-contain"
+                />
+                
+                {frontmatter.images && frontmatter.images.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm" role="status" aria-live="polite">
+                    {lightboxIndex + 1} / {frontmatter.images.length}
+                  </div>
+                )}
+              </div>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        </DialogPrimitive.Root>
 
         {/* Clear Progress Button - Fixed bottom right */}
         {hasCheckedItems && (

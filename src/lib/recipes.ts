@@ -171,6 +171,12 @@ let cachedRecipes: Recipe[] | null = null
 export const getRecipes = (): Recipe[] => {
   if (!cachedRecipes) {
     cachedRecipes = loadRecipesFromContent()
+    // Sort by date descending (newest first)
+    cachedRecipes.sort((a, b) => {
+      const dateA = new Date(a.frontmatter.date).getTime()
+      const dateB = new Date(b.frontmatter.date).getTime()
+      return dateB - dateA
+    })
   }
   return cachedRecipes
 }
