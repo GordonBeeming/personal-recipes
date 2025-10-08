@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { Header } from './components/Header'
 import { RecipeCard } from './components/RecipeCard'
 import { RecipeDetail } from './components/RecipeDetail'
 import { RecipeFilters } from './components/RecipeFilters'
 import { RecipeStatsComponent } from './components/RecipeStats'
+import { NotFoundPage } from './components/NotFoundPage'
 import { Button } from './components/ui/button'
 import { getRecipes, getRecipeStats, searchRecipes, getRecipeBySlug } from './lib/recipes'
 
@@ -106,13 +107,13 @@ function RecipePage() {
   const navigate = useNavigate()
 
   if (!slug) {
-    return <Navigate to="/" replace />
+    return <NotFoundPage />
   }
 
   const recipe = getRecipeBySlug(slug)
 
   if (!recipe) {
-    return <Navigate to="/" replace />
+    return <NotFoundPage />
   }
 
   const handleBack = () => {
@@ -128,7 +129,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/recipe/:slug" element={<RecipePage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )
