@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "dev": "tinacms dev -c \"vite\"",
-        "dev:prod": "vite",
+        "dev:prod": "npm run clean && vite",
+        "clean": "rm -rf public/admin tina/__generated__",
         "kill": "fuser -k 5000/tcp",
         "build": "tinacms build && npx tsc -b --noCheck && vite build",
         "build:tina": "tinacms build",
