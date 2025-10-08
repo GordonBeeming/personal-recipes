@@ -1,11 +1,15 @@
-import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share } from '@phosphor-icons/react'
+import { ArrowLeft, Clock, Users, CalendarBlank, Printer, Share, Eraser } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
+import { Checkbox } from './ui/checkbox'
 import { Recipe } from '../lib/types'
 import { Header } from './Header'
-import ReactMarkdown from 'react-markdown'
 import { formatDate } from '../lib/formatDate'
+import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useState, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
+import type { Components } from 'react-markdown'
 
 interface RecipeDetailProps {
   recipe: Recipe
@@ -14,6 +18,30 @@ interface RecipeDetailProps {
 
 export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
   const { frontmatter, content } = recipe
+  
+  // Store checkbox states in localStorage with recipe slug as key
+  const [checkedItems, setCheckedItems] = useLocalStorage<Record<string, boolean>>(
+    `recipe-progress-${recipe.slug}`,
+    {}
+  )
+  
+  // Track if any items are checked
+  const [hasCheckedItems, setHasCheckedItems] = useState(false)
+  
+  useEffect(() => {
+    setHasCheckedItems(Object.values(checkedItems).some(checked => checked))
+  }, [checkedItems])
+
+  const handleCheckboxChange = (index: number, checked: boolean) => {
+    setCheckedItems(prev => ({
+      ...prev,
+      [index]: checked
+    }))
+  }
+
+  const handleClearProgress = () => {
+    setCheckedItems({})
+  }
 
   const handlePrint = () => {
     window.print()
@@ -34,6 +62,46 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
       await navigator.clipboard.writeText(window.location.href)
       alert('Recipe link copied to clipboard!')
     }
+  }
+
+  // Custom markdown components to replace list items with checkboxes
+  const components: Components = {
+    li: ({ children, ...props }) => {
+      // Generate a unique index for this list item based on its position in the document
+      const itemText = String(children)
+      const itemIndex = itemText.slice(0, 50) // Use first 50 chars as unique identifier
+      const isChecked = checkedItems[itemIndex] || false
+
+      return (
+        <li {...props} className="flex items-start gap-3 my-2">
+          <Checkbox
+            id={`checkbox-${itemIndex}`}
+            checked={isChecked}
+            onCheckedChange={(checked) => handleCheckboxChange(itemIndex, checked as boolean)}
+            className="mt-1 flex-shrink-0"
+            aria-label={`Mark "${itemText}" as complete`}
+          />
+          <label
+            htmlFor={`checkbox-${itemIndex}`}
+            className={`flex-1 cursor-pointer select-none ${
+              isChecked ? 'line-through text-muted-foreground' : ''
+            }`}
+          >
+            {children}
+          </label>
+        </li>
+      )
+    },
+    ul: ({ children, ...props }) => (
+      <ul {...props} className="space-y-1 list-none pl-0">
+        {children}
+      </ul>
+    ),
+    ol: ({ children, ...props }) => (
+      <ol {...props} className="space-y-1 list-none pl-0">
+        {children}
+      </ol>
+    ),
   }
 
   return (
@@ -133,11 +201,11 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
             </CardContent>
           </Card>
 
-          {/* Main content area with fluid markdown rendering */}
+          {/* Main content area with fluid markdown rendering and checkboxes */}
           <Card>
             <CardContent className="pt-6">
               <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
-                <ReactMarkdown>{content}</ReactMarkdown>
+                <ReactMarkdown components={components}>{content}</ReactMarkdown>
               </div>
             </CardContent>
           </Card>
@@ -164,6 +232,22 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
             </Card>
           )}
         </article>
+
+        {/* Clear Progress Button - Fixed bottom right */}
+        {hasCheckedItems && (
+          <div className="fixed bottom-6 right-6 z-50">
+            <Button
+              onClick={handleClearProgress}
+              variant="destructive"
+              size="lg"
+              className="shadow-lg hover:shadow-xl transition-shadow"
+              aria-label="Clear recipe progress"
+            >
+              <Eraser size={20} className="mr-2" aria-hidden="true" />
+              Clear Progress
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
