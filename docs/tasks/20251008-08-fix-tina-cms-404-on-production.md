@@ -33,6 +33,15 @@ The GitHub Actions deployment workflow was incorrectly configured:
 
 Updated `.github/workflows/deploy.yml` to use the standard build process:
 
+**Issue discovered during deployment**: The build was failing due to schema sync issues with Tina Cloud. When schema changes are made (e.g., adding the `thumbnailImage` field), Tina Cloud needs time to re-index the content. The build was failing with:
+
+```
+The local GraphQL schema doesn't match the remote GraphQL schema.
+[NON_BREAKING - FIELD_ADDED] Field 'thumbnailImage' was added to object type 'Recipe'
+```
+
+**Solution**: Added `--skip-cloud-checks` flag to bypass schema validation during build, allowing deployments to proceed even when Tina Cloud is catching up with schema changes.
+
 **Before**:
 ```yaml
 - name: Build Tina Admin (or use local schema if Cloud not ready)
@@ -81,7 +90,21 @@ The workflow requires these secrets to be configured in the GitHub repository:
    - Add `TINA_TOKEN` with the token value
    - Add `NEXT_PUBLIC_TINA_CLIENT_ID` with the client ID
 
-### 3. Verification Steps
+### 3. Added Skip Cloud Checks Flag
+
+Modified `package.json` build scripts to include `--skip-cloud-checks`:
+
+```json
+"build": "tinacms build --skip-cloud-checks && npx tsc -b --noCheck && vite build",
+"build:tina": "tinacms build --skip-cloud-checks"
+```
+
+This prevents build failures when:
+- Schema changes are made locally but Tina Cloud hasn't re-indexed yet
+- There are non-breaking schema changes (like adding optional fields)
+- Tina Cloud indexing is temporarily delayed
+
+### 4. Verification Steps
 
 After the fix:
 - [ ] Verify GitHub secrets are configured correctly
@@ -99,6 +122,11 @@ After the fix:
    - Replaced dual-step build (build:tina + build:local) with single `npm run build`
    - Simplified workflow and removed error-prone fallback logic
    - Ensures Tina admin files are always built when credentials are available
+
+2. **`package.json`**
+   - Added `--skip-cloud-checks` flag to `build` and `build:tina` scripts
+   - Prevents build failures due to Tina Cloud schema sync delays
+   - Allows deployments to proceed even with non-breaking schema changes
 
 ## Technical Details
 
