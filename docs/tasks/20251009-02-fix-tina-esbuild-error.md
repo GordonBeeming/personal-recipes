@@ -19,7 +19,7 @@ The issue persisted even after the previous fix (removing job-level env vars). T
 
 ## Root Cause
 
-The Tina CLI (versions 1.10.0 - 1.11.0) has a bug where it sets the `process.env` define value for esbuild as:
+The Tina CLI (versions 1.10.0 - 1.11.0) has a bug where it sets the esbuild `define` option for `process.env` as:
 
 ```javascript
 "process.env": `new Object(${JSON.stringify(publicEnv)})`
@@ -37,17 +37,12 @@ This results in values like `new Object({})` or `new Object({"NEXT_PUBLIC_TINA_C
 ### Investigation Process
 
 - Tested with multiple esbuild versions (0.17.19, 0.20.0, 0.24.2, 0.25.10) - all failed
-- Tried renaming environment variables to avoid `NEXT_PUBLIC_` prefix - still failed with empty object
 - Examined Tina CLI source code and found the problematic define value
 - Created a patch to fix the Tina CLI bug
 
 ## Solution
 
-### 1. Renamed Environment Variables
-
-Changed from `NEXT_PUBLIC_TINA_CLIENT_ID` to `TINA_CLIENT_ID` to avoid Tina CLI's automatic collection of `NEXT_PUBLIC_*` environment variables.
-
-### 2. Created Patch for Tina CLI
+### Created Patch for Tina CLI
 
 Used `patch-package` to fix the bug in `@tinacms/cli`:
 
@@ -62,10 +57,10 @@ Used `patch-package` to fix the bug in `@tinacms/cli`:
 ```
 
 This changes the output from:
-- ❌ `new Object({})` → Invalid for esbuild
-- ✅ `{}` → Valid JSON for esbuild
+- ❌ `new Object({"NEXT_PUBLIC_TINA_CLIENT_ID":"value"})` → Invalid for esbuild
+- ✅ `{"NEXT_PUBLIC_TINA_CLIENT_ID":"value"}` → Valid JSON for esbuild
 
-### 3. Added Esbuild Override
+### Added Esbuild Override
 
 Pinned esbuild to version 0.17.19 to ensure consistent behavior across all dependencies:
 
@@ -75,7 +70,7 @@ Pinned esbuild to version 0.17.19 to ensure consistent behavior across all depen
 }
 ```
 
-### 4. Added postinstall Script
+### Added postinstall Script
 
 Added `postinstall` script to automatically apply the Tina CLI patch after `npm install`:
 
@@ -89,18 +84,7 @@ Added `postinstall` script to automatically apply the Tina CLI patch after `npm 
 
 ### Files Modified
 
-1. **`tina/config.ts`**
-   - Changed `clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID` 
-   - To: `clientId: process.env.TINA_CLIENT_ID`
-
-2. **`.env.example`**
-   - Updated variable name from `NEXT_PUBLIC_TINA_CLIENT_ID` to `TINA_CLIENT_ID`
-
-3. **`.github/workflows/deploy.yml`**
-   - Updated `.env` file creation to use `TINA_CLIENT_ID` instead of `NEXT_PUBLIC_TINA_CLIENT_ID`
-   - Note: GitHub secrets need to be renamed from `NEXT_PUBLIC_TINA_CLIENT_ID` to `TINA_CLIENT_ID`
-
-4. **`package.json`**
+1. **`package.json`**
    - Added `patch-package` to devDependencies
    - Added `"postinstall": "patch-package"` script
    - Added esbuild override: `"esbuild": "0.17.19"`
@@ -123,22 +107,21 @@ npm run build
 - Tina build completes without esbuild errors
 - Admin UI generated in `public/admin/`
 - Site builds successfully
+- Works with `NEXT_PUBLIC_TINA_CLIENT_ID` environment variable
 
 ### What the Patch Does
 
 The patch modifies `node_modules/@tinacms/cli/dist/index.js` to change how the `process.env` define value is set. Instead of using `new Object(...)`, it uses plain JSON stringification, which is valid for esbuild.
 
-## GitHub Secrets Update Required
+## Important Notes
 
-**Important**: The GitHub repository secrets need to be updated:
-
-1. Go to repository Settings → Secrets and variables → Actions
-2. Delete or rename `NEXT_PUBLIC_TINA_CLIENT_ID` to `TINA_CLIENT_ID`
-3. The value remains the same, only the name changes
+- The environment variable name remains `NEXT_PUBLIC_TINA_CLIENT_ID` (unchanged from original)
+- No GitHub secrets changes are required
+- The patch alone is sufficient to fix the esbuild error
+- The patch handles environment variables starting with `NEXT_PUBLIC_` correctly
 
 ## Follow-up
 
-- [ ] Update GitHub secrets: Rename `NEXT_PUBLIC_TINA_CLIENT_ID` to `TINA_CLIENT_ID`
 - [ ] Monitor first GitHub Actions workflow run after merge
 - [ ] Consider submitting issue/PR to Tina CLI repository about this bug
 
