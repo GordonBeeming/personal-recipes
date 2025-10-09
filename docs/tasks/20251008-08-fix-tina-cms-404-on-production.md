@@ -33,14 +33,25 @@ The GitHub Actions deployment workflow was incorrectly configured:
 
 Updated `.github/workflows/deploy.yml` to use the standard build process:
 
-**Issue discovered during deployment**: The build was failing due to schema sync issues with Tina Cloud. When schema changes are made (e.g., adding the `thumbnailImage` field), Tina Cloud needs time to re-index the content. The build was failing with:
+**Issue discovered during deployment #1**: The build was failing due to schema sync issues with Tina Cloud. When schema changes are made (e.g., adding the `thumbnailImage` field), Tina Cloud needs time to re-index the content. The build was failing with:
 
 ```
 The local GraphQL schema doesn't match the remote GraphQL schema.
 [NON_BREAKING - FIELD_ADDED] Field 'thumbnailImage' was added to object type 'Recipe'
 ```
 
-**Solution**: Added `--skip-cloud-checks` flag to bypass schema validation during build, allowing deployments to proceed even when Tina Cloud is catching up with schema changes.
+**Solution #1**: Added `--skip-cloud-checks` flag to bypass schema validation during build.
+
+**Issue discovered during deployment #2**: The build was failing with an esbuild error:
+
+```
+[commonjs--resolver] Transform failed with 1 error:
+error: Invalid define value (must be an entity name or JS literal): new Object({"NEXT_PUBLIC_TINA_CLIENT_ID":"***"})
+```
+
+This error occurred because GitHub Actions environment variables were not being properly consumed by Tina's esbuild process. The Tina CLI uses esbuild's `define` option internally, which requires environment variables to be provided in a specific format.
+
+**Solution #2**: Created a `.env` file during the build process to ensure environment variables are loaded correctly by the Tina CLI, rather than relying solely on GitHub Actions environment variable passing.
 
 **Before**:
 ```yaml
@@ -63,16 +74,21 @@ The local GraphQL schema doesn't match the remote GraphQL schema.
     NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
 ```
 
-**After**:
+**After** (final version):
 ```yaml
+- name: Create .env file for Tina build
+  run: |
+    echo "TINA_TOKEN=${{ secrets.TINA_TOKEN }}" > .env
+    echo "NEXT_PUBLIC_TINA_CLIENT_ID=${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}" >> .env
+
 - name: Build site with Tina CMS
   run: npm run build
-  env:
-    TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
-    NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
 ```
 
-This ensures the complete build process runs: `tinacms build && tsc && vite build`
+This approach:
+1. Creates a `.env` file with the secrets
+2. Tina CLI reads from `.env` file (standard Node.js behavior)
+3. Avoids esbuild `define` option issues with GitHub Actions env vars
 
 ### 2. Required GitHub Secrets Configuration
 
@@ -120,7 +136,8 @@ After the fix:
 
 1. **`.github/workflows/deploy.yml`**
    - Replaced dual-step build (build:tina + build:local) with single `npm run build`
-   - Simplified workflow and removed error-prone fallback logic
+   - Added `.env` file creation step to properly pass secrets to Tina CLI
+   - Moved environment variables to job level for better organization
    - Ensures Tina admin files are always built when credentials are available
 
 2. **`package.json`**
