@@ -13,7 +13,8 @@
         "build:local": "npx tsc -b --noCheck && vite build",
         "lint": "eslint .",
         "optimize": "vite optimize",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "postinstall": "patch-package"
     },
     "dependencies": {
         "@github/spark": "^0.39.0",
@@ -52,7 +53,6 @@
         "@tailwindcss/typography": "^0.5.19",
         "@tailwindcss/vite": "^4.1.11",
         "@tanstack/react-query": "^5.83.1",
-        "@tinacms/cli": "^1.11.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
@@ -87,6 +87,7 @@
         "@babel/core": "^7.28.4",
         "@eslint/js": "^9.21.0",
         "@tailwindcss/postcss": "^4.1.8",
+        "@tinacms/cli": "^1.11.0",
         "@types/node": "^24.6.2",
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.0.4",
@@ -95,6 +96,7 @@
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.19",
         "globals": "^16.0.0",
+        "patch-package": "^8.0.1",
         "react-refresh": "^0.14.2",
         "tailwindcss": "^4.1.11",
         "typescript": "~5.7.2",
@@ -103,6 +105,7 @@
     },
     "overrides": {
         "vite": "$vite",
-        "@vitejs/plugin-react": "$@vitejs/plugin-react"
+        "@vitejs/plugin-react": "$@vitejs/plugin-react",
+        "esbuild": "0.17.19"
     }
 }

@@ -34,7 +34,7 @@ jobs:
       - name: Create .env file for Tina build
         run: |
           echo "TINA_TOKEN=${{ secrets.TINA_TOKEN }}" > .env
-          echo "NEXT_PUBLIC_TINA_CLIENT_ID=${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}" >> .env
+          echo "TINA_CLIENT_ID=${{ secrets.TINA_CLIENT_ID }}" >> .env
 
       - name: Build site with Tina CMS
         run: npm run build
