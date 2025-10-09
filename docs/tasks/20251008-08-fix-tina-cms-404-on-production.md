@@ -106,7 +106,7 @@ The workflow requires these secrets to be configured in the GitHub repository:
    - Add `TINA_TOKEN` with the token value
    - Add `NEXT_PUBLIC_TINA_CLIENT_ID` with the client ID
 
-### 3. Added Skip Cloud Checks Flag
+### 3. Added Skip Cloud Checks Flag (Temporary)
 
 Modified `package.json` build scripts to include `--skip-cloud-checks`:
 
@@ -115,19 +115,35 @@ Modified `package.json` build scripts to include `--skip-cloud-checks`:
 "build:tina": "tinacms build --skip-cloud-checks"
 ```
 
-This prevents build failures when:
+This prevented build failures when:
 - Schema changes are made locally but Tina Cloud hasn't re-indexed yet
 - There are non-breaking schema changes (like adding optional fields)
 - Tina Cloud indexing is temporarily delayed
 
-### 4. Verification Steps
+**Note**: This flag was removed after Tina Cloud completed re-indexing to ensure the deployed admin UI matches Tina Cloud's schema exactly.
+
+### 4. Removed Skip Cloud Checks Flag (After Re-indexing)
+
+Once Tina Cloud completed re-indexing the schema changes, the `--skip-cloud-checks` flag was removed to ensure:
+- The admin UI is built against the exact schema Tina Cloud has indexed
+- No "GraphQL Schema Mismatch" warnings appear in the admin interface
+- Full schema validation during builds
+
+```json
+"build": "tinacms build && npx tsc -b --noCheck && vite build",
+"build:tina": "tinacms build"
+```
+
+### 5. Verification Steps
 
 After the fix:
-- [ ] Verify GitHub secrets are configured correctly
-- [ ] Push the workflow changes to trigger a new deployment
-- [ ] Wait for GitHub Actions workflow to complete
-- [ ] Test `/admin` route on the published site
-- [ ] Verify Tina CMS admin interface loads correctly
+- [x] Verify GitHub secrets are configured correctly
+- [x] Push the workflow changes to trigger a new deployment
+- [x] Wait for GitHub Actions workflow to complete
+- [x] Test `/admin` route on the published site
+- [x] Verify Tina CMS admin interface loads correctly
+- [ ] **After Tina Cloud re-indexing**: Remove `--skip-cloud-checks` flag and redeploy
+- [ ] Verify no "GraphQL Schema Mismatch" warnings appear
 - [ ] Test content editing functionality
 
 ## Changes Made
@@ -141,9 +157,10 @@ After the fix:
    - Ensures Tina admin files are always built when credentials are available
 
 2. **`package.json`**
-   - Added `--skip-cloud-checks` flag to `build` and `build:tina` scripts
-   - Prevents build failures due to Tina Cloud schema sync delays
-   - Allows deployments to proceed even with non-breaking schema changes
+   - ~~Added `--skip-cloud-checks` flag to `build` and `build:tina` scripts~~ (Temporary)
+   - ~~Prevented build failures due to Tina Cloud schema sync delays~~ (No longer needed)
+   - Removed `--skip-cloud-checks` after Tina Cloud completed re-indexing
+   - Now builds with full schema validation against Tina Cloud
 
 ## Technical Details
 
