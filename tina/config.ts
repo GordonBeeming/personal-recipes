@@ -19,6 +19,7 @@ export default defineConfig({
     outputFolder: "admin",
     publicFolder: "public",
   },
+  // Schema updated: 2025-10-09 - thumbnailImage field added
   media: {
     tina: {
       mediaRoot: "images",
