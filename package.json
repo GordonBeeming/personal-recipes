@@ -104,8 +104,5 @@
         "vite": "^6.3.5"
     },
     "overrides": {
-        "vite": "$vite",
-        "@vitejs/plugin-react": "$@vitejs/plugin-react",
-        "esbuild": "0.17.19"
     }
 }
