@@ -147,10 +147,10 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
     setLightboxImage(frontmatter.images[newIndex])
   }
 
-  const handleCheckboxChange = (index: number, checked: boolean) => {
+  const handleCheckboxChange = (key: string, checked: boolean) => {
     setCheckedItems(prev => ({
       ...prev,
-      [index]: checked
+      [key]: checked
     }))
   }
 
