@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import { Header } from './components/Header'
 import { RecipeCard } from './components/RecipeCard'
@@ -9,6 +9,8 @@ import { NotFoundPage } from './components/NotFoundPage'
 import { ScrollToTop } from './components/ScrollToTop'
 import { Button } from './components/ui/button'
 import { getRecipes, getRecipeStats, searchRecipes, getRecipeBySlug } from './lib/recipes'
+import client from '../tina/__generated__/client'
+import type { RecipeQuery } from '../tina/__generated__/types'
 
 function HomePage() {
   const navigate = useNavigate()
@@ -106,6 +108,11 @@ function HomePage() {
 function RecipePage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const [tinaData, setTinaData] = useState<{
+    data: RecipeQuery
+    query: string
+    variables: { relativePath: string }
+  } | null>(null)
 
   if (!slug) {
     return <NotFoundPage />
@@ -117,11 +124,44 @@ function RecipePage() {
     return <NotFoundPage />
   }
 
+  // Fetch Tina data for live editing experience
+  useEffect(() => {
+    const fetchTinaData = async () => {
+      try {
+        const relativePath = `${slug}.md`
+        const result = await client.queries.recipe({
+          relativePath
+        })
+        
+        if (result.data) {
+          setTinaData({
+            data: result.data,
+            query: result.query,
+            variables: { relativePath }
+          })
+        }
+      } catch (error) {
+        console.log('Tina client not available, using static data', error)
+        // Not an error - just means we're in production or Tina isn't running
+      }
+    }
+
+    fetchTinaData()
+  }, [slug])
+
   const handleBack = () => {
     navigate('/')
   }
 
-  return <RecipeDetail recipe={recipe} onBack={handleBack} />
+  return (
+    <RecipeDetail 
+      recipe={recipe} 
+      data={tinaData?.data}
+      query={tinaData?.query}
+      variables={tinaData?.variables}
+      onBack={handleBack} 
+    />
+  )
 }
 
 function App() {

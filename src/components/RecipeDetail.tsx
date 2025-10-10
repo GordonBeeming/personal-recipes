@@ -14,14 +14,41 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
 import { cn } from '../lib/utils'
+import { useTina } from 'tinacms/dist/react'
+import { TinaMarkdown } from 'tinacms/dist/rich-text'
+import type { RecipeQuery } from '../../tina/__generated__/types'
 
 interface RecipeDetailProps {
   recipe: Recipe
+  data?: RecipeQuery
+  query?: string
+  variables?: { relativePath: string }
   onBack: () => void
 }
 
-export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
-  const { frontmatter, content } = recipe
+export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeDetailProps) {
+  // Use Tina's live editing hook if data is provided (from admin)
+  const tinaData = data && query && variables ? useTina({ data, query, variables }) : null
+  
+  // Use Tina data if available, otherwise fall back to static recipe data
+  const frontmatter = tinaData?.data?.recipe ? {
+    title: tinaData.data.recipe.title,
+    description: tinaData.data.recipe.description || '',
+    date: tinaData.data.recipe.date,
+    source: tinaData.data.recipe.source,
+    category: tinaData.data.recipe.category,
+    tags: tinaData.data.recipe.tags,
+    prepTime: tinaData.data.recipe.prepTime,
+    cookTime: tinaData.data.recipe.cookTime,
+    totalTime: tinaData.data.recipe.totalTime,
+    servings: tinaData.data.recipe.servings,
+    heroImage: tinaData.data.recipe.heroImage || undefined,
+    thumbnailImage: tinaData.data.recipe.thumbnailImage || undefined,
+    images: tinaData.data.recipe.images?.filter((img): img is string => img !== null) || [],
+  } : recipe.frontmatter
+  
+  const content = tinaData?.data?.recipe?.body || recipe.content
+  const isUsingTina = !!tinaData
   const isMobile = useIsMobile()
   
   // Store checkbox states in localStorage with recipe slug as key
@@ -327,7 +354,11 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
           <Card>
             <CardContent className="pt-6">
               <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
-                <ReactMarkdown components={components}>{content}</ReactMarkdown>
+                {isUsingTina && typeof content === 'object' ? (
+                  <TinaMarkdown content={content} />
+                ) : (
+                  <ReactMarkdown components={components}>{String(content)}</ReactMarkdown>
+                )}
               </div>
             </CardContent>
           </Card>
