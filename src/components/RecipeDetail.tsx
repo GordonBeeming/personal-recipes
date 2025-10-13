@@ -9,7 +9,7 @@ import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useIsMobile } from '../hooks/use-mobile'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import type { Components } from 'react-markdown'
@@ -17,6 +17,9 @@ import { cn } from '../lib/utils'
 import { useTina } from 'tinacms/dist/react'
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import type { RecipeQuery } from '../../tina/__generated__/types'
+
+// Context to track list type for Tina markdown
+const ListTypeContext = createContext<'ul' | 'ol' | null>(null)
 
 interface RecipeDetailProps {
   recipe: Recipe
@@ -29,7 +32,7 @@ interface RecipeDetailProps {
 export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeDetailProps) {
   // Use Tina's live editing hook if data is provided (from admin)
   const tinaData = data && query && variables ? useTina({ data, query, variables }) : null
-  
+
   // Use Tina data if available, otherwise fall back to static recipe data
   const frontmatter = tinaData?.data?.recipe ? {
     title: tinaData.data.recipe.title,
@@ -46,48 +49,48 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
     thumbnailImage: tinaData.data.recipe.thumbnailImage || undefined,
     images: tinaData.data.recipe.images?.filter((img): img is string => img !== null) || [],
   } : recipe.frontmatter
-  
+
   const content = tinaData?.data?.recipe?.body || recipe.content
   const isUsingTina = !!tinaData
   const isMobile = useIsMobile()
-  
+
   // Store checkbox states in localStorage with recipe slug as key
   const [checkedItems, setCheckedItems] = useLocalStorage<Record<string, boolean>>(
     `recipe-progress-${recipe.slug}`,
     {}
   )
-  
+
   // Track if any items are checked
   const [hasCheckedItems, setHasCheckedItems] = useState(false)
-  
+
   // Lightbox state
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImage, setLightboxImage] = useState<string>('')
   const [lightboxIndex, setLightboxIndex] = useState(0)
-  
+
   // Lazy loading state for gallery images
   const [visibleImages, setVisibleImages] = useState<Set<number>>(new Set())
   const imageRefs = useRef<(HTMLDivElement | null)[]>([])
-  
+
   // Gallery visibility state for mobile - hide initially on mobile to save bandwidth
   const [showGallery, setShowGallery] = useState(!isMobile)
-  
+
   useEffect(() => {
     setHasCheckedItems(Object.values(checkedItems).some(checked => checked))
   }, [checkedItems])
-  
+
   // Update gallery visibility when device type changes
   useEffect(() => {
     if (!isMobile) {
       setShowGallery(true)
     }
   }, [isMobile])
-  
+
   // Set up Intersection Observer for lazy loading gallery images
   useEffect(() => {
     if (!frontmatter.images || frontmatter.images.length === 0) return
     if (!showGallery) return // Don't set up observer if gallery is hidden
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -104,18 +107,18 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         rootMargin: '50px', // Start loading 50px before the image enters viewport
       }
     )
-    
+
     imageRefs.current.forEach((ref) => {
       if (ref) observer.observe(ref)
     })
-    
+
     return () => observer.disconnect()
   }, [frontmatter.images, showGallery])
-  
+
   // Keyboard navigation for lightbox
   useEffect(() => {
     if (!lightboxOpen) return
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         navigateLightbox('prev')
@@ -123,11 +126,11 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         navigateLightbox('next')
       }
     }
-    
+
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [lightboxOpen, lightboxIndex, frontmatter.images])
-  
+
   const openLightbox = (image: string, index: number) => {
     // Ensure the clicked image is marked as visible (in case it wasn't loaded yet)
     setVisibleImages(prev => new Set([...prev, index]))
@@ -135,14 +138,14 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
     setLightboxIndex(index)
     setLightboxOpen(true)
   }
-  
+
   const navigateLightbox = (direction: 'prev' | 'next') => {
     if (!frontmatter.images) return
-    
-    const newIndex = direction === 'next' 
+
+    const newIndex = direction === 'next'
       ? (lightboxIndex + 1) % frontmatter.images.length
       : (lightboxIndex - 1 + frontmatter.images.length) % frontmatter.images.length
-    
+
     setLightboxIndex(newIndex)
     setLightboxImage(frontmatter.images[newIndex])
   }
@@ -182,7 +185,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
   // Create separate list item components for ordered and unordered lists
   const CheckboxListItem = ({ children, itemKey }: { children: React.ReactNode, itemKey: string }) => {
     const isChecked = checkedItems[itemKey] || false
-    
+
     return (
       <li className="flex items-start gap-3 my-2">
         <Checkbox
@@ -194,9 +197,8 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         />
         <label
           htmlFor={`checkbox-${itemKey}`}
-          className={`flex-1 cursor-pointer select-none ${
-            isChecked ? 'line-through text-muted-foreground' : ''
-          }`}
+          className={`flex-1 cursor-pointer select-none ${isChecked ? 'line-through text-muted-foreground' : ''
+            }`}
         >
           {children}
         </label>
@@ -214,7 +216,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         }
         return child
       })
-      
+
       return (
         <ul {...props} className="space-y-1 list-none pl-0">
           {wrappedChildren}
@@ -229,7 +231,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         }
         return child
       })
-      
+
       return (
         <ol {...props} className="space-y-2 list-decimal pl-6">
           {wrappedChildren}
@@ -239,24 +241,60 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
     li: ({ children, node, ...props }) => {
       // Check the data-list-type prop we added
       const listType = (props as any)['data-list-type']
-      
+
       if (listType === 'ol') {
         // Ordered list item - render normally
         return <li {...props} className="my-1">{children}</li>
       }
-      
+
       // Unordered list item - render as checkbox
       const itemText = String(children)
       const itemKey = itemText.slice(0, 50)
-      
+
       return <CheckboxListItem itemKey={itemKey}>{children}</CheckboxListItem>
+    },
+  }
+
+  // TinaMarkdown components for checkbox support
+  const tinaComponents = {
+    ul: (props: any) => {
+      return (
+        <ListTypeContext.Provider value="ul">
+          <ul className="space-y-1 list-none pl-0">
+            {props.children}
+          </ul>
+        </ListTypeContext.Provider>
+      )
+    },
+    ol: (props: any) => {
+      return (
+        <ListTypeContext.Provider value="ol">
+          <ol className="space-y-2 list-decimal pl-6">
+            {props.children}
+          </ol>
+        </ListTypeContext.Provider>
+      )
+    },
+    li: (props: any) => {
+      const listType = useContext(ListTypeContext)
+      
+      // If it's an ordered list, render normally
+      if (listType === 'ol') {
+        return <li className="my-1">{props.children}</li>
+      }
+
+      // Unordered list item - render as checkbox
+      const itemText = String(props.children)
+      const itemKey = itemText.slice(0, 50)
+
+      return <CheckboxListItem itemKey={itemKey}>{props.children}</CheckboxListItem>
     },
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Header onLogoClick={onBack} />
-      
+
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <Button
           variant="ghost"
@@ -272,7 +310,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         <article className="space-y-6">
           <header>
             <h1 className="text-4xl font-bold text-foreground mb-4">{frontmatter.title}</h1>
-            
+
             {frontmatter.heroImage && (
               <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-6 bg-muted">
                 <img
@@ -331,7 +369,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Recipe Source</p>
                 <p className="font-medium">{frontmatter.source}</p>
@@ -355,7 +393,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
             <CardContent className="pt-6">
               <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
                 {isUsingTina && typeof content === 'object' ? (
-                  <TinaMarkdown content={content} />
+                  <TinaMarkdown content={content} components={tinaComponents} />
                 ) : (
                   <ReactMarkdown components={components}>{String(content)}</ReactMarkdown>
                 )}
@@ -373,8 +411,8 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {frontmatter.images.map((image, index) => (
-                      <div 
-                        key={index} 
+                      <div
+                        key={index}
                         ref={(el) => (imageRefs.current[index] = el)}
                         className="aspect-square overflow-hidden rounded-md bg-muted"
                       >
@@ -407,10 +445,10 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
             ) : (
               <Card>
                 <CardContent className="pt-6">
-                  <Button 
-                    onClick={() => setShowGallery(true)} 
-                    variant="outline" 
-                    size="lg" 
+                  <Button
+                    onClick={() => setShowGallery(true)}
+                    variant="outline"
+                    size="lg"
                     className="w-full"
                     aria-label={`View recipe gallery (${frontmatter.images.length} images)`}
                   >
@@ -426,11 +464,11 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
         {/* Lightbox Dialog */}
         <DialogPrimitive.Root open={lightboxOpen} onOpenChange={setLightboxOpen}>
           <DialogPrimitive.Portal>
-            <DialogPrimitive.Overlay 
+            <DialogPrimitive.Overlay
               className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 cursor-pointer"
               onClick={() => setLightboxOpen(false)}
             />
-            <DialogPrimitive.Content 
+            <DialogPrimitive.Content
               className={cn(
                 "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
                 "w-[90vw] h-auto max-w-4xl max-h-[85vh]",
@@ -449,7 +487,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
                     <X size={24} aria-hidden="true" />
                   </Button>
                 </DialogPrimitive.Close>
-                
+
                 {frontmatter.images && frontmatter.images.length > 1 && (
                   <>
                     <Button
@@ -461,7 +499,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
                     >
                       <CaretLeft size={32} aria-hidden="true" weight="bold" />
                     </Button>
-                    
+
                     <Button
                       variant="ghost"
                       size="icon"
@@ -473,17 +511,17 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
                     </Button>
                   </>
                 )}
-                
+
                 <DialogPrimitive.Title className="sr-only">
                   {`Image ${lightboxIndex + 1} of ${frontmatter.images?.length || 1} - ${frontmatter.title}`}
                 </DialogPrimitive.Title>
-                
+
                 <img
                   src={lightboxImage}
                   alt={`${frontmatter.title} - Full size view ${lightboxIndex + 1} of ${frontmatter.images?.length || 1}`}
                   className="max-w-full max-h-[80vh] object-contain rounded-lg"
                 />
-                
+
                 {frontmatter.images && frontmatter.images.length > 1 && (
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-sm" role="status" aria-live="polite">
                     {lightboxIndex + 1} / {frontmatter.images.length}

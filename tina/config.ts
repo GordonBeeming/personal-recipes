@@ -42,6 +42,9 @@ export default defineConfig({
               return `${values?.title?.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`;
             },
           },
+          router(args) {
+            return `/recipe/${args.document._sys.filename}`;
+          },
         },
         fields: [
           {
