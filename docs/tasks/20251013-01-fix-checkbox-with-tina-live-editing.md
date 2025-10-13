@@ -309,3 +309,132 @@ const setValue = useCallback((value: T | ((val: T) => T)) => {
 - Atomic update ensures localStorage and React state stay in sync
 
 This is a critical lesson in React hooks: functional state updates MUST use the callback form of setState to avoid stale closures, especially in custom hooks.
+
+---
+
+## Update 3: October 13, 2025 - Fixed Component Re-rendering with React Context
+
+### Problem Discovered
+Even after fixing the `useLocalStorage` hook, checkboxes still weren't updating visually when clicked. However, the "Clear Progress" button would appear/disappear correctly, indicating that state WAS updating, just not triggering checkbox re-renders.
+
+### Root Cause
+The issue was with how checkbox state was being passed to components:
+
+**The Problem Flow**:
+1. User clicks checkbox → `handleCheckboxChange` called
+2. `checkedItems` state updates via `useLocalStorage`
+3. Component re-renders with new `checkedItems`
+4. `tinaComponents` memo recreates with new `checkedItems` dependency
+5. **TinaMarkdown receives new components but doesn't re-render its content tree**
+6. CheckboxListItem components never get new `checked` prop
+7. UI remains unchanged
+
+**Why TinaMarkdown didn't re-render**:
+- TinaMarkdown likely memoizes its content internally for performance
+- Passing a new `components` object doesn't force it to re-render all content
+- The `checked` prop was passed down at render time, not read reactively
+
+### Solution
+
+Use React Context to provide checkbox state instead of passing it as props:
+
+```typescript
+// Create context for checkbox state
+interface CheckboxContextValue {
+  checkedItems: Record<string, boolean>
+  onToggle: (key: string, checked: boolean) => void
+}
+const CheckboxContext = createContext<CheckboxContextValue | null>(null)
+
+// CheckboxListItem reads from context
+const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
+  const context = useContext(CheckboxContext)
+  const { checkedItems, onToggle } = context
+  const checked = checkedItems[itemKey] || false  // Read reactively
+  
+  return (
+    <li>
+      <Checkbox checked={checked} onCheckedChange={(c) => onToggle(itemKey, c)} />
+      <label className={checked ? 'line-through' : ''}>{children}</label>
+    </li>
+  )
+}
+
+// Wrap TinaMarkdown in provider
+<CheckboxContext.Provider value={{ checkedItems, onToggle: handleCheckboxChange }}>
+  <TinaMarkdown content={content} components={tinaComponents} />
+</CheckboxContext.Provider>
+```
+
+### Key Changes:
+
+1. **Created CheckboxContext**
+   - Provides `checkedItems` and `onToggle` handler
+   - Updates trigger context consumers to re-render
+
+2. **CheckboxListItem uses context**
+   - Reads `checkedItems` and `onToggle` from context
+   - No longer receives them as props
+   - Re-renders automatically when context value changes
+
+3. **Removed state from tinaComponents deps**
+   - `tinaComponents` now has empty dependency array `[]`
+   - Never recreates, maintains stable references
+   - TinaMarkdown doesn't need to re-mount components
+
+4. **Wrapped TinaMarkdown in provider**
+   - Context provider wraps the markdown content
+   - All CheckboxListItem components subscribe to state
+   - Updates propagate via context, not props
+
+### Changes Made
+
+#### Modified Files:
+- `src/components/RecipeDetail.tsx`
+  - Added `CheckboxContext` and `CheckboxContextValue` interface
+  - Updated `CheckboxListItem` to use `useContext` instead of props
+  - Removed `checked` and `onToggle` from `CheckboxListItemProps`
+  - Removed `checkedItems` and `handleCheckboxChange` from `tinaComponents` deps
+  - Wrapped TinaMarkdown in `CheckboxContext.Provider`
+
+### Testing Performed
+
+- [x] Clicking checkbox immediately updates checked state visually
+- [x] Clicking again immediately unchecks
+- [x] Strikethrough applies/removes in real-time
+- [x] Multiple checkboxes work independently
+- [x] Clear Progress button appears when items checked
+- [x] Clear Progress button clears all checkboxes immediately
+- [x] State persists correctly to localStorage
+- [x] Page refresh shows correct state
+- [x] No performance issues with rapid clicking
+
+### Technical Notes
+
+**Why Context Works**:
+- Context provides reactive state access - components subscribe to changes
+- When context value changes, all consumers (`useContext`) automatically re-render
+- This bypasses TinaMarkdown's internal memoization/optimization
+- Each checkbox component independently subscribes to state updates
+
+**Why Props Failed**:
+- Props are passed down at render time, not read reactively
+- If parent (TinaMarkdown) doesn't re-render, children don't get new props
+- Memoization in TinaMarkdown prevented prop updates from flowing down
+
+**Performance Considerations**:
+- Context updates cause all consumers to re-render
+- With many checkboxes, this is still efficient because:
+  - Each checkbox only re-renders itself (small component)
+  - React batches updates
+  - No complex reconciliation needed
+- Alternative would be separate context per checkbox (overkill)
+
+**React Pattern**:
+This is a classic use case for Context:
+- State lives at top level (RecipeDetail)
+- Deep children (CheckboxListItem) need to read and update it
+- Intermediate components (TinaMarkdown, ul, li wrappers) don't need to know about it
+- Context "tunnels" through the component tree
+
+This pattern is especially important when working with third-party components (like TinaMarkdown) that may have aggressive memoization or optimization strategies that prevent normal prop-based updates from flowing through.
