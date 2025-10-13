@@ -18,15 +18,29 @@ import type { RecipeQuery } from '../../tina/__generated__/types'
 // Context to track list type for Tina markdown
 const ListTypeContext = createContext<'ul' | 'ol' | null>(null)
 
-// CheckboxListItem component - defined outside to prevent recreation on every render
+// Context to provide checkbox state and toggle handler
+interface CheckboxContextValue {
+  checkedItems: Record<string, boolean>
+  onToggle: (key: string, checked: boolean) => void
+}
+const CheckboxContext = createContext<CheckboxContextValue | null>(null)
+
+// CheckboxListItem component - reads state from context
 interface CheckboxListItemProps {
   children: React.ReactNode
   itemKey: string
-  checked: boolean
-  onToggle: (key: string, checked: boolean) => void
 }
 
-const CheckboxListItem = ({ children, itemKey, checked, onToggle }: CheckboxListItemProps) => {
+const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
+  const context = useContext(CheckboxContext)
+  
+  if (!context) {
+    throw new Error('CheckboxListItem must be used within CheckboxContext.Provider')
+  }
+
+  const { checkedItems, onToggle } = context
+  const checked = checkedItems[itemKey] || false
+
   return (
     <li className="flex items-start gap-3 my-2">
       <Checkbox
@@ -214,9 +228,9 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
     }
   }
 
-  // Memoize TinaMarkdown components to prevent unnecessary re-creation when unrelated state changes
+  // Memoize TinaMarkdown components - only recreate when handler changes, not when state changes
   const tinaComponents = useMemo(() => {
-    // Create a list item component that can access checkedItems and handleCheckboxChange
+    // Create a list item component
     const ListItem = (props: any) => {
       const listType = useContext(ListTypeContext)
       
@@ -228,15 +242,9 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
       // Unordered list item - render as checkbox
       const itemText = String(props.children)
       const itemKey = itemText.slice(0, 50)
-      const isChecked = checkedItems[itemKey] || false
 
       return (
-        <CheckboxListItem
-          key={itemKey}
-          itemKey={itemKey}
-          checked={isChecked}
-          onToggle={handleCheckboxChange}
-        >
+        <CheckboxListItem key={itemKey} itemKey={itemKey}>
           {props.children}
         </CheckboxListItem>
       )
@@ -263,7 +271,7 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
       },
       li: ListItem,
     }
-  }, [checkedItems, handleCheckboxChange])
+  }, []) // No dependencies - components never change
 
   return (
     <div className="min-h-screen bg-background">
@@ -365,9 +373,11 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
           {/* Main content area with fluid markdown rendering and checkboxes */}
           <Card>
             <CardContent className="pt-6">
-              <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
-                <TinaMarkdown content={content} components={tinaComponents} />
-              </div>
+              <CheckboxContext.Provider value={{ checkedItems, onToggle: handleCheckboxChange }}>
+                <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
+                  <TinaMarkdown content={content} components={tinaComponents} />
+                </div>
+              </CheckboxContext.Provider>
             </CardContent>
           </Card>
 
