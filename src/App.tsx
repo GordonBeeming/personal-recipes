@@ -116,18 +116,23 @@ function RecipePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  if (!slug) {
-    return <NotFoundPage />
-  }
-
-  const recipe = getRecipeBySlug(slug)
-
-  if (!recipe) {
-    return <NotFoundPage />
-  }
-
   // Always fetch Tina data for live editing
   useEffect(() => {
+    // Check if slug exists
+    if (!slug) {
+      setError('No recipe slug provided')
+      setLoading(false)
+      return
+    }
+
+    // Check if recipe exists
+    const recipe = getRecipeBySlug(slug)
+    if (!recipe) {
+      setError('Recipe not found')
+      setLoading(false)
+      return
+    }
+
     const fetchTinaData = async () => {
       try {
         setLoading(true)
@@ -142,6 +147,7 @@ function RecipePage() {
             query: result.query,
             variables: { relativePath }
           })
+          setError(null)
         } else {
           setError('Recipe data not found')
         }
