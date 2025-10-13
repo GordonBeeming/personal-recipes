@@ -31,6 +31,23 @@ interface CheckboxListItemProps {
   itemKey: string
 }
 
+// Helper function to extract text content from React children
+const extractTextFromChildren = (children: React.ReactNode): string => {
+  if (typeof children === 'string') {
+    return children
+  }
+  if (typeof children === 'number') {
+    return String(children)
+  }
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join('')
+  }
+  if (React.isValidElement(children) && children.props.children) {
+    return extractTextFromChildren(children.props.children)
+  }
+  return ''
+}
+
 const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
   const context = useContext(CheckboxContext)
   
@@ -48,7 +65,7 @@ const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
         checked={checked}
         onCheckedChange={(newChecked) => onToggle(itemKey, newChecked as boolean)}
         className="mt-1 flex-shrink-0"
-        aria-label={`Mark "${String(children)}" as complete`}
+        aria-label={`Mark "${extractTextFromChildren(children)}" as complete`}
       />
       <label
         htmlFor={`checkbox-${itemKey}`}
@@ -240,8 +257,13 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
       }
 
       // Unordered list item - render as checkbox
-      const itemText = String(props.children)
-      const itemKey = itemText.slice(0, 50)
+      // Extract text content from children to create unique key
+      const itemText = extractTextFromChildren(props.children)
+      // Use slug + text for uniqueness (in case of duplicate items across sections)
+      const itemKey = `${slug}-${itemText.slice(0, 100).trim()}`
+      
+      // Debug logging to see what keys are being generated
+      console.log('ListItem key:', itemKey, 'text:', itemText.slice(0, 50))
 
       return (
         <CheckboxListItem key={itemKey} itemKey={itemKey}>
