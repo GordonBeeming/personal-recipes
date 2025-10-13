@@ -218,3 +218,94 @@ const tinaComponents = useMemo(() => {
 4. **Explicit state flow**: Checked state flows down as props, updates flow up through callbacks
 
 This is a classic React optimization pattern that ensures controlled components work correctly in complex rendering scenarios like TinaMarkdown's live editing mode.
+
+---
+
+## Update 2: October 13, 2025 - Fixed useLocalStorage State Updates
+
+### Problem Discovered
+After the previous fix, clicking checkboxes still didn't update the UI in real-time. The state was being saved to localStorage (visible after page refresh), but the component wasn't re-rendering to show the checked state. Additionally:
+- All checkboxes would show as checked after refresh (not just the ones clicked)
+- Clear Progress button didn't visually clear checkboxes until page refresh
+- The UI was completely out of sync with the actual state
+
+### Root Cause
+Critical bug in the `useLocalStorage` hook:
+
+```typescript
+// BROKEN - stale closure
+const setValue = (value: T | ((val: T) => T)) => {
+  const valueToStore = value instanceof Function ? value(storedValue) : value
+  setStoredValue(valueToStore)
+  // ... localStorage update
+}
+```
+
+**Issues**:
+1. **Stale closure**: `storedValue` in the closure was stale, causing functional updates `prev => ...` to use old state
+2. **Function recreation**: `setValue` was recreated on every render, breaking `useCallback` dependencies
+3. **Race conditions**: Multiple rapid updates could overwrite each other
+
+### Solution
+
+Fixed `useLocalStorage` to properly handle state updates:
+
+```typescript
+const setValue = useCallback((value: T | ((val: T) => T)) => {
+  try {
+    // Use setStoredValue's functional form to always get current value
+    setStoredValue((currentValue) => {
+      const valueToStore = value instanceof Function ? value(currentValue) : value
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore))
+      }
+      return valueToStore
+    })
+  } catch (error) {
+    console.warn(`Error saving localStorage key "${key}":`, error)
+  }
+}, [key]) // Only depend on key, not storedValue
+```
+
+### Key Changes:
+
+1. **Functional setState**: Uses `setStoredValue((currentValue) => ...)` to always get the current value
+2. **Memoized callback**: Wrapped in `useCallback` with only `key` as dependency
+3. **Correct closure**: No longer captures `storedValue` in closure
+4. **Atomic updates**: All state and localStorage updates happen in single atomic operation
+
+### Changes Made
+
+#### Modified Files:
+- `src/hooks/useLocalStorage.ts`
+  - Changed import from `useEffect` to `useCallback`
+  - Wrapped `setValue` in `useCallback([key])`
+  - Changed setValue to use functional form of `setStoredValue`
+  - Moved localStorage update inside `setStoredValue` callback for atomicity
+
+### Testing Performed
+
+- [x] Clicking checkbox immediately shows checked state
+- [x] Clicking again immediately unchecks
+- [x] Strikethrough applies/removes in real-time
+- [x] Multiple checkboxes can be toggled independently
+- [x] State persists to localStorage correctly
+- [x] Only clicked checkboxes show as checked (not all)
+- [x] Clear Progress button immediately clears all visual state
+- [x] Page refresh maintains correct state
+- [x] No race conditions with rapid clicking
+
+### Technical Notes
+
+**Why the original code failed**:
+- When `handleCheckboxChange` called `setCheckedItems(prev => ...)`, the `prev` value came from the stale `storedValue` closure
+- Each render created a new `setValue` function with the OLD `storedValue` value
+- React's setState batching didn't help because the closure was already wrong
+
+**Why this fix works**:
+- `setStoredValue` (from `useState`) always provides the current value to its functional update
+- No stale closures - we let React manage the current state
+- `useCallback` ensures stable reference, preventing unnecessary re-renders
+- Atomic update ensures localStorage and React state stay in sync
+
+This is a critical lesson in React hooks: functional state updates MUST use the callback form of setState to avoid stale closures, especially in custom hooks.
