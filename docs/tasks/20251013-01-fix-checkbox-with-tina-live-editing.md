@@ -93,3 +93,128 @@ const tinaComponents = {
 ## Follow-up
 
 None required - checkbox functionality is fully restored for both Tina and non-Tina rendering paths.
+
+---
+
+## Update: October 13, 2025 - Fixed Checkbox State Updates
+
+### Problem Discovered
+After the initial fix got checkboxes showing, a new issue was discovered: clicking checkboxes didn't actually update their checked state or apply the strikethrough styling. The checkboxes were visible but non-functional.
+
+### Root Cause
+The issue was with how the `tinaComponents` object was being created and managed:
+
+1. **Component recreation on every render**: The `tinaComponents` object was being created as a plain object inside the component body, which meant it was recreated on every render
+2. **React reconciliation issues**: When TinaMarkdown received a "new" components object on each render, it would re-mount all the custom components, losing their state
+3. **Non-memoized callbacks**: The `handleCheckboxChange` function was being recreated on every render, causing unnecessary re-renders
+
+### Solution
+
+Applied React optimization patterns to prevent component recreation and ensure proper state management:
+
+#### Key Changes:
+
+1. **Moved CheckboxListItem outside component**
+   - Defined as a standalone component at module level
+   - Accepts `checked` and `onToggle` props
+   - Prevents recreation on every render
+
+2. **Memoized tinaComponents with useMemo**
+   - Wrapped in `useMemo` hook with proper dependencies
+   - Only recreates when `checkedItems` or `handleCheckboxChange` actually change
+   - Prevents unnecessary TinaMarkdown re-renders
+
+3. **Memoized handleCheckboxChange with useCallback**
+   - Wrapped in `useCallback` to maintain stable reference
+   - Prevents unnecessary re-renders of child components
+
+4. **Proper dependency tracking**
+   - `tinaComponents` depends on `[checkedItems, handleCheckboxChange]`
+   - `handleCheckboxChange` depends on `[setCheckedItems]`
+   - Ensures updates propagate correctly while minimizing re-renders
+
+### Implementation:
+
+```typescript
+// CheckboxListItem moved outside component (module level)
+const CheckboxListItem = ({ children, itemKey, checked, onToggle }: CheckboxListItemProps) => {
+  return (
+    <li className="flex items-start gap-3 my-2">
+      <Checkbox
+        checked={checked}
+        onCheckedChange={(newChecked) => onToggle(itemKey, newChecked as boolean)}
+        // ... other props
+      />
+      <label className={checked ? 'line-through text-muted-foreground' : ''}>
+        {children}
+      </label>
+    </li>
+  )
+}
+
+// Inside RecipeDetail component:
+const handleCheckboxChange = useCallback((key: string, checked: boolean) => {
+  setCheckedItems(prev => ({ ...prev, [key]: checked }))
+}, [setCheckedItems])
+
+const tinaComponents = useMemo(() => {
+  const ListItem = (props: any) => {
+    const listType = useContext(ListTypeContext)
+    if (listType === 'ol') return <li>{props.children}</li>
+    
+    const itemKey = String(props.children).slice(0, 50)
+    const isChecked = checkedItems[itemKey] || false
+    
+    return (
+      <CheckboxListItem
+        key={itemKey}
+        itemKey={itemKey}
+        checked={isChecked}
+        onToggle={handleCheckboxChange}
+      >
+        {props.children}
+      </CheckboxListItem>
+    )
+  }
+  
+  return { ul, ol, li: ListItem }
+}, [checkedItems, handleCheckboxChange])
+```
+
+### Changes Made
+
+#### Modified Files:
+- `src/components/RecipeDetail.tsx`
+  - Added `useMemo` and `useCallback` imports
+  - Moved `CheckboxListItem` to module level with proper TypeScript interface
+  - Wrapped `handleCheckboxChange` in `useCallback`
+  - Wrapped `tinaComponents` in `useMemo` with correct dependencies
+  - Updated `CheckboxListItem` to receive `checked` and `onToggle` props
+
+### Testing Performed
+
+- [x] Checkboxes display correctly
+- [x] Clicking checkboxes updates their checked state
+- [x] Strikethrough styling applies when checked
+- [x] Strikethrough styling removes when unchecked
+- [x] State persists in localStorage
+- [x] Clear Progress button clears all checkboxes
+- [x] Multiple checkboxes can be toggled independently
+- [x] Ordered lists still show as numbered (no checkboxes)
+- [x] Unordered lists show as checkboxes
+
+### Technical Notes
+
+- **Performance benefit**: Memoization prevents TinaMarkdown from re-mounting components unnecessarily
+- **State management**: Moving checked state to props ensures React can properly track updates
+- **React best practices**: Uses `useCallback` and `useMemo` appropriately for optimization
+- **TypeScript**: Added proper interface for CheckboxListItemProps
+
+### Why This Fix Works
+
+1. **Stable component references**: `useMemo` ensures TinaMarkdown receives the same component object unless dependencies change
+2. **Proper React reconciliation**: React can now track which checkbox is which across renders
+3. **Callback stability**: `useCallback` ensures the toggle handler reference is stable
+4. **Explicit state flow**: Checked state flows down as props, updates flow up through callbacks
+
+This is a classic React optimization pattern that ensures controlled components work correctly in complex rendering scenarios like TinaMarkdown's live editing mode.

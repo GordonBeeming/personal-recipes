@@ -8,7 +8,7 @@ import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useIsMobile } from '../hooks/use-mobile'
-import { useState, useEffect, useRef, createContext, useContext } from 'react'
+import { useState, useEffect, useRef, createContext, useContext, useMemo, useCallback } from 'react'
 import React from 'react'
 import { cn } from '../lib/utils'
 import { useTina } from 'tinacms/dist/react'
@@ -17,6 +17,35 @@ import type { RecipeQuery } from '../../tina/__generated__/types'
 
 // Context to track list type for Tina markdown
 const ListTypeContext = createContext<'ul' | 'ol' | null>(null)
+
+// CheckboxListItem component - defined outside to prevent recreation on every render
+interface CheckboxListItemProps {
+  children: React.ReactNode
+  itemKey: string
+  checked: boolean
+  onToggle: (key: string, checked: boolean) => void
+}
+
+const CheckboxListItem = ({ children, itemKey, checked, onToggle }: CheckboxListItemProps) => {
+  return (
+    <li className="flex items-start gap-3 my-2">
+      <Checkbox
+        id={`checkbox-${itemKey}`}
+        checked={checked}
+        onCheckedChange={(newChecked) => onToggle(itemKey, newChecked as boolean)}
+        className="mt-1 flex-shrink-0"
+        aria-label={`Mark "${String(children)}" as complete`}
+      />
+      <label
+        htmlFor={`checkbox-${itemKey}`}
+        className={`flex-1 cursor-pointer select-none ${checked ? 'line-through text-muted-foreground' : ''
+          }`}
+      >
+        {children}
+      </label>
+    </li>
+  )
+}
 
 interface RecipeDetailProps {
   data: RecipeQuery
@@ -153,12 +182,12 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
     setLightboxImage(frontmatter.images[newIndex])
   }
 
-  const handleCheckboxChange = (key: string, checked: boolean) => {
+  const handleCheckboxChange = useCallback((key: string, checked: boolean) => {
     setCheckedItems(prev => ({
       ...prev,
       [key]: checked
     }))
-  }
+  }, [setCheckedItems])
 
   const handleClearProgress = () => {
     setCheckedItems({})
@@ -185,51 +214,10 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
     }
   }
 
-  // Create separate list item components for ordered and unordered lists
-  const CheckboxListItem = ({ children, itemKey }: { children: React.ReactNode, itemKey: string }) => {
-    const isChecked = checkedItems[itemKey] || false
-
-    return (
-      <li className="flex items-start gap-3 my-2">
-        <Checkbox
-          id={`checkbox-${itemKey}`}
-          checked={isChecked}
-          onCheckedChange={(checked) => handleCheckboxChange(itemKey, checked as boolean)}
-          className="mt-1 flex-shrink-0"
-          aria-label={`Mark "${String(children)}" as complete`}
-        />
-        <label
-          htmlFor={`checkbox-${itemKey}`}
-          className={`flex-1 cursor-pointer select-none ${isChecked ? 'line-through text-muted-foreground' : ''
-            }`}
-        >
-          {children}
-        </label>
-      </li>
-    )
-  }
-
-  // TinaMarkdown components for checkbox support
-  const tinaComponents = {
-    ul: (props: any) => {
-      return (
-        <ListTypeContext.Provider value="ul">
-          <ul className="space-y-1 list-none pl-0">
-            {props.children}
-          </ul>
-        </ListTypeContext.Provider>
-      )
-    },
-    ol: (props: any) => {
-      return (
-        <ListTypeContext.Provider value="ol">
-          <ol className="space-y-2 list-decimal pl-6">
-            {props.children}
-          </ol>
-        </ListTypeContext.Provider>
-      )
-    },
-    li: (props: any) => {
+  // Memoize TinaMarkdown components to prevent unnecessary re-creation when unrelated state changes
+  const tinaComponents = useMemo(() => {
+    // Create a list item component that can access checkedItems and handleCheckboxChange
+    const ListItem = (props: any) => {
       const listType = useContext(ListTypeContext)
       
       // If it's an ordered list, render normally
@@ -240,10 +228,42 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
       // Unordered list item - render as checkbox
       const itemText = String(props.children)
       const itemKey = itemText.slice(0, 50)
+      const isChecked = checkedItems[itemKey] || false
 
-      return <CheckboxListItem itemKey={itemKey}>{props.children}</CheckboxListItem>
-    },
-  }
+      return (
+        <CheckboxListItem
+          key={itemKey}
+          itemKey={itemKey}
+          checked={isChecked}
+          onToggle={handleCheckboxChange}
+        >
+          {props.children}
+        </CheckboxListItem>
+      )
+    }
+
+    return {
+      ul: (props: any) => {
+        return (
+          <ListTypeContext.Provider value="ul">
+            <ul className="space-y-1 list-none pl-0">
+              {props.children}
+            </ul>
+          </ListTypeContext.Provider>
+        )
+      },
+      ol: (props: any) => {
+        return (
+          <ListTypeContext.Provider value="ol">
+            <ol className="space-y-2 list-decimal pl-6">
+              {props.children}
+            </ol>
+          </ListTypeContext.Provider>
+        )
+      },
+      li: ListItem,
+    }
+  }, [checkedItems, handleCheckboxChange])
 
   return (
     <div className="min-h-screen bg-background">
