@@ -113,6 +113,8 @@ function RecipePage() {
     query: string
     variables: { relativePath: string }
   } | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   if (!slug) {
     return <NotFoundPage />
@@ -124,10 +126,11 @@ function RecipePage() {
     return <NotFoundPage />
   }
 
-  // Fetch Tina data for live editing experience
+  // Always fetch Tina data for live editing
   useEffect(() => {
     const fetchTinaData = async () => {
       try {
+        setLoading(true)
         const relativePath = `${slug}.md`
         const result = await client.queries.recipe({
           relativePath
@@ -139,10 +142,14 @@ function RecipePage() {
             query: result.query,
             variables: { relativePath }
           })
+        } else {
+          setError('Recipe data not found')
         }
-      } catch (error) {
-        console.log('Tina client not available, using static data', error)
-        // Not an error - just means we're in production or Tina isn't running
+      } catch (err) {
+        console.error('Failed to fetch Tina data:', err)
+        setError('Failed to load recipe data')
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -153,12 +160,36 @@ function RecipePage() {
     navigate('/')
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4" aria-hidden="true">🍳</div>
+          <p className="text-muted-foreground">Loading recipe...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !tinaData) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4" aria-hidden="true">❌</div>
+          <p className="text-destructive mb-4">{error || 'Failed to load recipe'}</p>
+          <Button onClick={handleBack} variant="outline">
+            Back to Recipes
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <RecipeDetail 
-      recipe={recipe} 
-      data={tinaData?.data}
-      query={tinaData?.query}
-      variables={tinaData?.variables}
+      data={tinaData.data}
+      query={tinaData.query}
+      variables={tinaData.variables}
       onBack={handleBack} 
     />
   )

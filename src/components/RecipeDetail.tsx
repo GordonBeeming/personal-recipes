@@ -4,15 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
 import { Checkbox } from './ui/checkbox'
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { Recipe } from '../lib/types'
 import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useIsMobile } from '../hooks/use-mobile'
 import { useState, useEffect, useRef, createContext, useContext } from 'react'
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import type { Components } from 'react-markdown'
 import { cn } from '../lib/utils'
 import { useTina } from 'tinacms/dist/react'
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
@@ -22,41 +19,47 @@ import type { RecipeQuery } from '../../tina/__generated__/types'
 const ListTypeContext = createContext<'ul' | 'ol' | null>(null)
 
 interface RecipeDetailProps {
-  recipe: Recipe
-  data?: RecipeQuery
-  query?: string
-  variables?: { relativePath: string }
+  data: RecipeQuery
+  query: string
+  variables: { relativePath: string }
   onBack: () => void
 }
 
-export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeDetailProps) {
-  // Use Tina's live editing hook if data is provided (from admin)
-  const tinaData = data && query && variables ? useTina({ data, query, variables }) : null
+export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailProps) {
+  // Always use Tina for live editing
+  const { data: tinaData } = useTina({ data, query, variables })
 
-  // Use Tina data if available, otherwise fall back to static recipe data
-  const frontmatter = tinaData?.data?.recipe ? {
-    title: tinaData.data.recipe.title,
-    description: tinaData.data.recipe.description || '',
-    date: tinaData.data.recipe.date,
-    source: tinaData.data.recipe.source,
-    category: tinaData.data.recipe.category,
-    tags: tinaData.data.recipe.tags,
-    prepTime: tinaData.data.recipe.prepTime,
-    cookTime: tinaData.data.recipe.cookTime,
-    totalTime: tinaData.data.recipe.totalTime,
-    servings: tinaData.data.recipe.servings,
-    heroImage: tinaData.data.recipe.heroImage || undefined,
-    thumbnailImage: tinaData.data.recipe.thumbnailImage || undefined,
-    images: tinaData.data.recipe.images?.filter((img): img is string => img !== null) || [],
-  } : recipe.frontmatter
+  // Extract recipe data from Tina
+  const recipe = tinaData.recipe
+  
+  if (!recipe) {
+    return <div>Recipe not found</div>
+  }
 
-  const content = tinaData?.data?.recipe?.body || recipe.content
-  const isUsingTina = !!tinaData
+  const frontmatter = {
+    title: recipe.title,
+    description: recipe.description || '',
+    date: recipe.date,
+    source: recipe.source,
+    category: recipe.category,
+    tags: recipe.tags,
+    prepTime: recipe.prepTime,
+    cookTime: recipe.cookTime,
+    totalTime: recipe.totalTime,
+    servings: recipe.servings,
+    heroImage: recipe.heroImage || undefined,
+    thumbnailImage: recipe.thumbnailImage || undefined,
+    images: recipe.images?.filter((img): img is string => img !== null) || [],
+  }
+
+  const content = recipe.body
   const isMobile = useIsMobile()
 
   // Store checkbox states in localStorage with recipe slug as key
+  // Extract slug from variables.relativePath (e.g., "recipe-name.md" -> "recipe-name")
+  const slug = variables.relativePath.replace(/\.md$/, '')
   const [checkedItems, setCheckedItems] = useLocalStorage<Record<string, boolean>>(
-    `recipe-progress-${recipe.slug}`,
+    `recipe-progress-${slug}`,
     {}
   )
 
@@ -206,55 +209,6 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
     )
   }
 
-  // Custom markdown components - track list context
-  const components: Components = {
-    ul: ({ children, ...props }) => {
-      // Clone children and mark them as unordered
-      const wrappedChildren = React.Children.map(children, child => {
-        if (React.isValidElement(child) && child.props.node?.tagName === 'li') {
-          return React.cloneElement(child, { ...child.props, 'data-list-type': 'ul' } as any)
-        }
-        return child
-      })
-
-      return (
-        <ul {...props} className="space-y-1 list-none pl-0">
-          {wrappedChildren}
-        </ul>
-      )
-    },
-    ol: ({ children, ...props }) => {
-      // Clone children and mark them as ordered
-      const wrappedChildren = React.Children.map(children, child => {
-        if (React.isValidElement(child) && child.props.node?.tagName === 'li') {
-          return React.cloneElement(child, { ...child.props, 'data-list-type': 'ol' } as any)
-        }
-        return child
-      })
-
-      return (
-        <ol {...props} className="space-y-2 list-decimal pl-6">
-          {wrappedChildren}
-        </ol>
-      )
-    },
-    li: ({ children, node, ...props }) => {
-      // Check the data-list-type prop we added
-      const listType = (props as any)['data-list-type']
-
-      if (listType === 'ol') {
-        // Ordered list item - render normally
-        return <li {...props} className="my-1">{children}</li>
-      }
-
-      // Unordered list item - render as checkbox
-      const itemText = String(children)
-      const itemKey = itemText.slice(0, 50)
-
-      return <CheckboxListItem itemKey={itemKey}>{children}</CheckboxListItem>
-    },
-  }
-
   // TinaMarkdown components for checkbox support
   const tinaComponents = {
     ul: (props: any) => {
@@ -392,11 +346,7 @@ export function RecipeDetail({ recipe, data, query, variables, onBack }: RecipeD
           <Card>
             <CardContent className="pt-6">
               <div className="prose prose-gray max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:bg-muted prose-th:text-foreground prose-td:text-foreground">
-                {isUsingTina && typeof content === 'object' ? (
-                  <TinaMarkdown content={content} components={tinaComponents} />
-                ) : (
-                  <ReactMarkdown components={components}>{String(content)}</ReactMarkdown>
-                )}
+                <TinaMarkdown content={content} components={tinaComponents} />
               </div>
             </CardContent>
           </Card>
