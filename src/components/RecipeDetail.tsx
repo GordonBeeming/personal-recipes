@@ -124,6 +124,10 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
   // Store checkbox states in localStorage with recipe slug as key
   // Extract slug from variables.relativePath (e.g., "recipe-name.md" -> "recipe-name")
   const slug = variables.relativePath.replace(/\.md$/, '')
+  
+  // Use ref to track list item count for stable keys across renders
+  const listItemCountRef = useRef(0)
+  
   const [checkedItems, setCheckedItems] = useLocalStorage<Record<string, boolean>>(
     `recipe-progress-${slug}`,
     {}
@@ -253,6 +257,9 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
 
   // Memoize TinaMarkdown components - only recreate when handler changes, not when state changes
   const tinaComponents = useMemo(() => {
+    // Reset counter when components are recreated
+    listItemCountRef.current = 0
+    
     // Create a list item component
     const ListItem = (props: any) => {
       const listType = useContext(ListTypeContext)
@@ -262,14 +269,10 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
         return <li className="my-1">{props.children}</li>
       }
 
-      // Unordered list item - render as checkbox
-      // Extract text content from children to create unique key
-      const itemText = extractTextFromChildren(props.children)
-      // Use slug + text for uniqueness (in case of duplicate items across sections)
-      const itemKey = `${slug}-${itemText.slice(0, 100).trim()}`
+      // Generate unique key using slug + index (stable across renders of same content)
+      const itemKey = `${slug}-item-${listItemCountRef.current++}`
       
-      // Debug logging to see what keys are being generated
-      console.log('ListItem key:', itemKey, 'text:', itemText.slice(0, 50))
+      console.log('ListItem created with key:', itemKey)
 
       return (
         <CheckboxListItem key={itemKey} itemKey={itemKey}>
