@@ -67,3 +67,9 @@ images:
 5. **Finishing Touches:**
    * Stir in the fresh chopped coriander. Check for seasoning and add more salt if needed.
    * For the best flavour, let it rest for at least 20 minutes off the heat before serving. Honestly, it's even better the next day!
+
+#### **Serving Suggestions**
+
+The rich, aromatic gravy is the heart of this dish, and you won't want to waste a single drop. It's traditionally served with fluffy basmati rice or warm naan bread, which are perfect for soaking up every last bit of flavour. 
+
+For the ultimate authentic Durban experience, you can create a 'Bunny Chow' by hollowing out a quarter loaf of fresh white bread and filling it with the curry—it's a delicious, messy, and unforgettable way to eat! (Keep an eye out, as a dedicated post on how to make the perfect bunny chow is coming soon).
