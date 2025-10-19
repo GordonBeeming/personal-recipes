@@ -65,7 +65,7 @@ images:
 4.  **Cook the Potatoes:**
     * Add the quartered potatoes and stir to coat them in the gravy.
     * Pour in the chicken stock or hot water and season with about 1 tsp of salt. Bring to a simmer.
-    * Reduce the heat to low, cover the pot, and let it gently bubble away for 15-20 minutes, or until the potatoes are about halfway tender.
+    * Reduce the heat to low, cover the pot, and let it gently bubble away for 20-25 minutes, or until the potatoes are about halfway tender.
 
 5.  **Add the Chicken:**
     * Add the chicken breast chunks to the pot, stirring gently to submerge them in the gravy.
