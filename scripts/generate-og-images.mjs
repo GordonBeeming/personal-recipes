@@ -77,14 +77,14 @@ function loadRecipes() {
         cookTime: frontmatter.cookTime || '',
         totalTime: frontmatter.totalTime || '',
         servings: frontmatter.servings || '',
-        heroImage: frontmatter.heroImage || ''
+        thumbnailImage: frontmatter.thumbnailImage || ''
       }
     }
   })
 }
 
 // Create OG image structure for satori
-function createOGImageStructure(recipe, heroImageBase64) {
+function createOGImageStructure(recipe, thumbnailImageBase64) {
   const { title, category, prepTime, cookTime, servings, tags } = recipe.frontmatter
   
   // Determine font size based on title length
@@ -241,7 +241,7 @@ function createOGImageStructure(recipe, heroImageBase64) {
   const mainChildren = []
   
   // Add background image if present
-  if (heroImageBase64) {
+  if (thumbnailImageBase64) {
     mainChildren.push({
       type: 'div',
       props: {
@@ -257,7 +257,7 @@ function createOGImageStructure(recipe, heroImageBase64) {
         children: {
           type: 'img',
           props: {
-            src: heroImageBase64,
+            src: thumbnailImageBase64,
             style: {
               width: '100%',
               height: '100%',
@@ -409,13 +409,32 @@ function createOGImageStructure(recipe, heroImageBase64) {
 async function generateOGImage(recipe, fontData) {
   console.log(`Generating OG image for: ${recipe.frontmatter.title}`)
   
-  // For now, skip hero images as background due to satori issues
-  // TODO: Investigate satori data URL image support
-  const heroImageBase64 = null
+  // Load thumbnail image if available (smaller than hero image)
+  let thumbnailImageBase64 = null
+  if (recipe.frontmatter.thumbnailImage) {
+    try {
+      const imagePath = join(projectRoot, 'public', recipe.frontmatter.thumbnailImage)
+      
+      // Resize the image to be even smaller for satori (max 400px wide)
+      const resizedImageBuffer = await sharp(imagePath)
+        .resize(400, null, { 
+          fit: 'inside',
+          withoutEnlargement: true 
+        })
+        .jpeg({ quality: 60 }) // Convert to JPEG with lower quality for smaller size
+        .toBuffer()
+      
+      const base64 = resizedImageBuffer.toString('base64')
+      thumbnailImageBase64 = `data:image/jpeg;base64,${base64}`
+      console.log(`  ✓ Loaded and resized thumbnail image: ${recipe.frontmatter.thumbnailImage} (${Math.round(base64.length / 1024)}KB)`)
+    } catch (err) {
+      console.warn(`  Warning: Could not load thumbnail image: ${recipe.frontmatter.thumbnailImage} - ${err.message}`)
+    }
+  }
   
   // Create SVG using satori
   const svg = await satori(
-    createOGImageStructure(recipe, heroImageBase64),
+    createOGImageStructure(recipe, thumbnailImageBase64),
     {
       width: 1200,
       height: 630,
