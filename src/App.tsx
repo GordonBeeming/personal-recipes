@@ -8,6 +8,7 @@ import { RecipeStatsComponent } from './components/RecipeStats'
 import { NotFoundPage } from './components/NotFoundPage'
 import { ScrollToTop } from './components/ScrollToTop'
 import { Button } from './components/ui/button'
+import { useMetaTags } from './hooks/useMetaTags'
 import { getRecipes, getRecipeStats, searchRecipes, getRecipeBySlug } from './lib/recipes'
 import client from '../tina/__generated__/client'
 import type { RecipeQuery } from '../tina/__generated__/types'
@@ -17,6 +18,13 @@ function HomePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [selectedTag, setSelectedTag] = useState('All')
+  
+  // Set default meta tags for homepage
+  useMetaTags({
+    title: "Gordon's Recipe Collection",
+    description: "A personal collection of family recipes featuring authentic Durban curries, roasts, and more. Discover delicious recipes with detailed instructions and cooking times.",
+    url: window.location.origin
+  })
 
   const recipes = getRecipes()
   const stats = getRecipeStats()

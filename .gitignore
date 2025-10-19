@@ -44,3 +44,7 @@ pnpm-lock.yaml
 # Tina CMS generated files (built during build process)
 public/admin/
 tina/__generated__/
+
+# OG images (generated during build process)
+public/og-images/
+public/fonts/
