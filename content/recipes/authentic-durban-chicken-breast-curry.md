@@ -13,10 +13,18 @@ prepTime: 20 minutes
 cookTime: 50 minutes
 totalTime: 1 hour 10 minutes
 servings: 4-6
-heroImage: /images/durban-chicken-curry-hero.webp
-thumbnailImage: /images/durban-chicken-curry-thumbnail.webp
+heroImage: /images/authentic-durban-chicken-breast-curry-hero.webp
+thumbnailImage: /images/authentic-durban-chicken-breast-curry-thumbnail.webp
 images:
-  - /images/durban-chicken-curry-1.webp
+  - /images/curry-1.webp
+  - /images/curry-2.webp
+  - /images/curry-3.webp
+  - /images/curry-4.webp
+  - /images/curry-5.webp
+  - /images/curry-6.webp
+  - /images/authentic-durban-chicken-breast-curry-1.webp
+  - /images/authentic-durban-chicken-breast-curry-2.webp
+  - /images/authentic-durban-chicken-breast-curry-3.webp
 ---
 
 #### **Ingredients**
