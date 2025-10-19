@@ -114,7 +114,7 @@ function createOGImageStructure(recipe, thumbnailImageBase64) {
           display: 'flex',
           alignItems: 'center'
         },
-        children: `⏱️ ${prepTime}`
+        children: `Prep: ${prepTime}`
       }
     })
   }
@@ -126,7 +126,7 @@ function createOGImageStructure(recipe, thumbnailImageBase64) {
           display: 'flex',
           alignItems: 'center'
         },
-        children: `🔥 ${cookTime}`
+        children: `Cook: ${cookTime}`
       }
     })
   }
@@ -138,7 +138,7 @@ function createOGImageStructure(recipe, thumbnailImageBase64) {
           display: 'flex',
           alignItems: 'center'
         },
-        children: `👥 ${servings}`
+        children: `Servings: ${servings}`
       }
     })
   }
