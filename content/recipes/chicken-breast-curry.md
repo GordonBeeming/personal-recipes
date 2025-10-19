@@ -9,8 +9,8 @@ tags:
   - Curry
   - Spicy
 prepTime: 20 minutes
-cookTime: 50 minutes
-totalTime: 1 hour 10 minutes
+cookTime: 55 minutes
+totalTime: 1 hour 15 minutes
 servings: 4-6
 heroImage: /images/chicken-breast-curry-hero.webp
 thumbnailImage: /images/chicken-breast-curry-thumbnail.webp
