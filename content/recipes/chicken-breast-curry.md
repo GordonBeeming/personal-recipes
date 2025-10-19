@@ -1,5 +1,5 @@
 ---
-title: Authentic Durban Chicken Breast Curry
+title: Chicken Breast Curry
 description: A quick and aromatic South African curry with tender chicken breast, cooked in a rich, fragrant spice blend with potatoes. Authentic Durban flavor that's perfect for a weeknight.
 date: 2025-10-19T00:00:00.000Z
 source: Gemini
@@ -8,13 +8,12 @@ tags:
   - Chicken
   - Curry
   - Spicy
-  - Family Favorite
 prepTime: 20 minutes
-cookTime: 50 minutes
-totalTime: 1 hour 10 minutes
+cookTime: 55 minutes
+totalTime: 1 hour 15 minutes
 servings: 4-6
-heroImage: /images/authentic-durban-chicken-breast-curry-hero.webp
-thumbnailImage: /images/authentic-durban-chicken-breast-curry-thumbnail.webp
+heroImage: /images/chicken-breast-curry-hero.webp
+thumbnailImage: /images/chicken-breast-curry-thumbnail.webp
 images:
   - /images/curry-1.webp
   - /images/curry-2.webp
@@ -22,9 +21,9 @@ images:
   - /images/curry-4.webp
   - /images/curry-5.webp
   - /images/curry-6.webp
-  - /images/authentic-durban-chicken-breast-curry-1.webp
-  - /images/authentic-durban-chicken-breast-curry-2.webp
-  - /images/authentic-durban-chicken-breast-curry-3.webp
+  - /images/chicken-breast-curry-1.webp
+  - /images/chicken-breast-curry-2.webp
+  - /images/chicken-breast-curry-3.webp
 ---
 
 #### **Ingredients**

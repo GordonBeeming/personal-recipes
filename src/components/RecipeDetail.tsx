@@ -8,6 +8,7 @@ import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useIsMobile } from '../hooks/use-mobile'
+import { useMetaTags } from '../hooks/useMetaTags'
 import { useState, useEffect, useRef, createContext, useContext, useMemo, useCallback } from 'react'
 import React from 'react'
 import { cn } from '../lib/utils'
@@ -114,6 +115,14 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
 
   const content = recipe.body
   const isMobile = useIsMobile()
+  
+  // Set meta tags for OG image and SEO
+  useMetaTags({
+    title: `${frontmatter.title} | Gordon's Recipe Collection`,
+    description: frontmatter.description,
+    image: `/og-images/${slug}.png`,
+    url: `${window.location.origin}/recipe/${slug}`
+  })
 
   // Store checkbox states in localStorage with recipe slug as key
   // Extract slug from variables.relativePath (e.g., "recipe-name.md" -> "recipe-name")
