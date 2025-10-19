@@ -116,6 +116,10 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
   const content = recipe.body
   const isMobile = useIsMobile()
   
+  // Extract slug from variables.relativePath (e.g., "recipe-name.md" -> "recipe-name")
+  // Used for localStorage key and meta tags
+  const slug = variables.relativePath.replace(/\.md$/, '')
+  
   // Set meta tags for OG image and SEO
   useMetaTags({
     title: `${frontmatter.title} | Gordon's Recipe Collection`,
@@ -125,8 +129,6 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
   })
 
   // Store checkbox states in localStorage with recipe slug as key
-  // Extract slug from variables.relativePath (e.g., "recipe-name.md" -> "recipe-name")
-  const slug = variables.relativePath.replace(/\.md$/, '')
   
   // Use ref to track list item count for stable keys across renders
   const listItemCountRef = useRef(0)
