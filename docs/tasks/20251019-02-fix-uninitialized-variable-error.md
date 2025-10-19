@@ -21,20 +21,20 @@ This prevented users from viewing recipe details, breaking a core functionality 
 
 ## Root Cause Analysis
 
-The issue was located in `src/components/RecipeDetail.tsx`:
+The issue was located in `src/components/RecipeDetail.tsx` (line numbers refer to the original code before the fix):
 
 1. The `slug` variable was declared on line 129:
    ```typescript
    const slug = variables.relativePath.replace(/\.md$/, '')
    ```
 
-2. However, it was being used on lines 123-124 in the `useMetaTags` hook:
+2. However, it was being used earlier on lines 123-124 in the `useMetaTags` hook:
    ```typescript
    useMetaTags({
      title: `${frontmatter.title} | Gordon's Recipe Collection`,
      description: frontmatter.description,
-     image: `/og-images/${slug}.png`,  // Line 123 - slug used before declaration
-     url: `${window.location.origin}/recipe/${slug}`  // Line 124
+     image: `/og-images/${slug}.png`,  // slug used before declaration
+     url: `${window.location.origin}/recipe/${slug}`
    })
    ```
 
