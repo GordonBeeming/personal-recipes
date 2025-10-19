@@ -7,7 +7,6 @@ category: Dinner
 tags:
   - Pork
   - Roast
-  - Family Favorite
 prepTime: 45 minutes
 cookTime: 3 hours 30 minutes
 totalTime: 5 hours (includes 45 min resting time)

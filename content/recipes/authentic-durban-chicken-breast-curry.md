@@ -8,7 +8,6 @@ tags:
   - Chicken
   - Curry
   - Spicy
-  - Family Favorite
 prepTime: 20 minutes
 cookTime: 50 minutes
 totalTime: 1 hour 10 minutes
