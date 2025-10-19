@@ -58,19 +58,13 @@ const CheckboxListItem = ({ children, itemKey }: CheckboxListItemProps) => {
 
   const { checkedItems, onToggle } = context
   const checked = checkedItems[itemKey] || false
-  
-  // Debug logging
-  console.log(`CheckboxListItem render - key: "${itemKey}", checked: ${checked}`)
 
   return (
     <li className="flex items-start gap-3 my-2">
       <Checkbox
         id={`checkbox-${itemKey}`}
         checked={checked}
-        onCheckedChange={(newChecked) => {
-          console.log(`Checkbox change - key: "${itemKey}", newChecked: ${newChecked}`)
-          onToggle(itemKey, newChecked as boolean)
-        }}
+        onCheckedChange={(newChecked) => onToggle(itemKey, newChecked as boolean)}
         className="mt-1 flex-shrink-0"
         aria-label={`Mark "${extractTextFromChildren(children)}" as complete`}
       />
@@ -280,8 +274,6 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
 
       // Generate unique key using slug + index (stable across renders of same content)
       const itemKey = `${slug}-item-${listItemCountRef.current++}`
-      
-      console.log('ListItem created with key:', itemKey)
 
       return (
         <CheckboxListItem key={itemKey} itemKey={itemKey}>

@@ -16,6 +16,12 @@ servings: 4-6
 heroImage: /images/durban-beef-curry-hero.webp
 thumbnailImage: /images/durban-beef-curry-thumbnail.webp
 images:
+  - /images/curry-1.webp
+  - /images/curry-2.webp
+  - /images/curry-3.webp
+  - /images/curry-4.webp
+  - /images/curry-5.webp
+  - /images/curry-6.webp
   - /images/durban-beef-curry-1.webp
 ---
 

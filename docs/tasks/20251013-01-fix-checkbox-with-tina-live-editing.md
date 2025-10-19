@@ -438,3 +438,126 @@ This is a classic use case for Context:
 - Context "tunnels" through the component tree
 
 This pattern is especially important when working with third-party components (like TinaMarkdown) that may have aggressive memoization or optimization strategies that prevent normal prop-based updates from flowing through.
+
+---
+
+## Update 4: October 13, 2025 - Fixed Duplicate Keys Issue
+
+### Problem Discovered
+After implementing the Context-based solution, all checkboxes were still toggling together as one. When clicking any checkbox, all would check or uncheck simultaneously.
+
+### Root Cause
+**All checkboxes had the same key**: Investigation revealed that all list items were being assigned the key `"durban-beef-curry-"` with empty text content.
+
+**The Issue**:
+```javascript
+const itemText = extractTextFromChildren(props.children)  // Returns ""
+const itemKey = `${slug}-${itemText.slice(0, 100).trim()}`  // Results in "slug-"
+```
+
+**Why text extraction failed**:
+- TinaMarkdown passes `props.children` as complex React element objects, not plain strings
+- Structure: `{$$typeof: Symbol(react.transitional.element), type: function, ...}`
+- The `extractTextFromChildren` helper couldn't properly extract text from this structure
+- All items ended up with the same empty key, causing them to share state
+
+### Console Output Evidence
+```
+ListItem props.children: (3) {$$typeof: Symbol(react.transitional.element), ...} type: object
+ListItem key: "durban-beef-curry-" text: ""
+CheckboxListItem render - key: "durban-beef-curry-", checked: false (x33)
+```
+
+### Solution
+
+Switched from text-based keys to index-based keys using a ref for stability:
+
+```typescript
+// Use ref to track count across renders
+const listItemCountRef = useRef(0)
+
+const tinaComponents = useMemo(() => {
+  // Reset counter when components recreate
+  listItemCountRef.current = 0
+  
+  const ListItem = (props: any) => {
+    if (listType === 'ol') return <li>{props.children}</li>
+    
+    // Generate unique key using index
+    const itemKey = `${slug}-item-${listItemCountRef.current++}`
+    
+    return <CheckboxListItem key={itemKey} itemKey={itemKey}>{props.children}</CheckboxListItem>
+  }
+  
+  return { ul, ol, li: ListItem }
+}, [])
+```
+
+### Key Changes:
+
+1. **Added ref for counter**
+   - `useRef(0)` persists across renders
+   - Provides stable incrementing counter
+
+2. **Index-based keys**
+   - Format: `"recipe-slug-item-0"`, `"recipe-slug-item-1"`, etc.
+   - Each checkbox gets unique key
+   - Keys are stable as long as list order doesn't change
+
+3. **Reset counter in useMemo**
+   - Counter resets when components are recreated
+   - Ensures consistent key generation
+
+4. **Removed text extraction**
+   - No longer try to extract text from complex React elements
+   - Simpler, more reliable approach
+
+### Changes Made
+
+#### Modified Files:
+- `src/components/RecipeDetail.tsx`
+  - Added `listItemCountRef = useRef(0)`
+  - Changed key generation to `${slug}-item-${listItemCountRef.current++}`
+  - Removed `extractTextFromChildren` from ListItem logic (kept for aria-label)
+  - Reset counter at start of useMemo
+
+### Testing Performed
+
+- [x] Each checkbox has unique key (verified in console)
+- [x] Clicking one checkbox only affects that checkbox
+- [x] Multiple checkboxes can be independently checked/unchecked
+- [x] Strikethrough applies only to checked items
+- [x] Clear Progress clears all checkboxes
+- [x] State persists correctly to localStorage
+- [x] Page refresh maintains correct state for each item
+- [x] No interference between different checkboxes
+
+### Technical Notes
+
+**Why index-based keys work**:
+- List items appear in consistent order in markdown
+- As long as content doesn't change order, keys remain stable
+- Simpler than trying to parse complex React element structures
+
+**Tradeoffs**:
+- If user reorders list items in markdown, checkbox state won't follow
+- This is acceptable because:
+  - Recipe instructions rarely change order
+  - User can clear progress if needed
+  - Simpler implementation outweighs this edge case
+
+**Alternative approaches considered**:
+1. Deep parse TinaMarkdown's React element structure - too fragile
+2. JSON.stringify children for hashing - unreliable and slow
+3. Use content hash from Tina API - not available at this level
+4. Index-based keys - ✅ Simple and works reliably
+
+### Final Resolution
+
+Checkbox functionality is now fully working with Tina CMS visual editing:
+- ✅ Checkboxes display correctly
+- ✅ Each checkbox is independently clickable
+- ✅ Visual state (checked/strikethrough) updates immediately
+- ✅ State persists to localStorage
+- ✅ Clear Progress button works
+- ✅ Works with Tina live editing active
