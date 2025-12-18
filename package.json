@@ -85,7 +85,7 @@
         "@babel/core": "^7.28.4",
         "@eslint/js": "^9.21.0",
         "@tailwindcss/postcss": "^4.1.8",
-        "@tinacms/cli": "^1.11.0",
+        "@tinacms/cli": "^2.0.4",
         "@types/node": "^24.6.2",
         "@types/react": "^19.0.10",
         "@types/react-dom": "^19.0.4",
