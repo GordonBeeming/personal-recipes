@@ -1,6 +1,9 @@
 ---
 title: Double Batch Durban Beef Curry
-description: Cooking for a crowd or meal prepping? This is the bulk version of my Durban Beef Curry. Deep, rich flavors, scaled up to feed the whole family (and then some).
+description: >-
+  Cooking for a crowd or meal prepping? This is the bulk version of my Durban
+  Beef Curry. Deep, rich flavors, scaled up to feed the whole family (and then
+  some).
 date: 2025-12-21T00:00:00.000Z
 source: Gemini
 category: Dinner
@@ -32,11 +35,11 @@ Sometimes one pot just isn't enough. Whether you're feeding a crowd, prepping fo
 
 If you've made my standard curry before, there are **three critical changes** when cooking this volume:
 
-1.  ** The Onion "Braise" Takes Longer:** With double the onions, there is much more water to cook out. Do not rush this step. It will take **20-25 minutes** (not 10) to get them properly golden brown.
-2.  **Add Potatoes Later:** In a massive pot with 2kg of meat, potatoes at the bottom tend to get crushed or dissolve over a 2-hour cook. **Add them halfway through** (after the beef has simmered for an hour) to keep them perfect.
-3.  **Pot Size Matters:** You need at least an **8L to 11L pot** with a thick base to prevent scorching.
+1. **The Onion "Braise" Takes Longer**: With double the onions, there is much more water to cook out. Do not rush this step. It will take **20-25 minutes** (not 10) to get them properly golden brown.
+2. **Add Potatoes Later:** In a massive pot with 2kg of meat, potatoes at the bottom tend to get crushed or dissolve over a 2-hour cook. **Add them halfway through** (after the beef has simmered for an hour) to keep them perfect.
+3. **Pot Size Matters:** You need at least an **8L to 11L pot** with a thick base to prevent scorching.
 
----
+***
 
 #### **Ingredients**
 
@@ -67,34 +70,29 @@ If you've made my standard curry before, there are **three critical changes** wh
 
 #### **Instructions**
 
-1.  **Create Your Masala:**
-    * In a dry pan over medium heat, toast the whole spices (coriander, cumin, fennel, cloves, cardamom, cinnamon) for about 3-4 minutes until fragrant.
-    * Let them cool, grind to a fine powder, and mix with the Kashmiri chilli, turmeric, and hot chilli powder. Set aside.
+1. **Create Your Masala:**
+   * In a dry pan over medium heat, toast the whole spices (coriander, cumin, fennel, cloves, cardamom, cinnamon) for about 3-4 minutes until fragrant.
+   * Let them cool, grind to a fine powder, and mix with the Kashmiri chilli, turmeric, and hot chilli powder. Set aside.
+2. **The "Big Braise":**
+   * Heat the oil in your large stock pot (11L is ideal) over medium-high heat.
+   * Add the chopped onions and a generous pinch of salt. Sauté for **20-25 minutes**. You want them soft and deeply golden brown. Be patient; this is where the flavour lives.
+   * Add the curry leaves and ginger-garlic paste. Cook for 1-2 minutes until fragrant.
+   * Add your masala powder. Stir constantly for 45-60 seconds. It will be a lot of spice, so keep it moving so it doesn't burn!
+3. **Build the Base:**
+   * Immediately add both tins of tomatoes. Stir well, scraping the bottom of the pot. Cook for **10-12 minutes** until the tomatoes break down and the oil separates at the edges.
+   * Increase the heat slightly and add the beef cubes. Stir thoroughly to coat every piece of meat in the paste. Cook for 5-8 minutes to let the beef heat up.
+4. **The First Simmer (Beef Only):**
+   * Pour in the beef stock or hot water and season with salt. Bring to a boil.
+   * Once bubbling, reduce heat to low, cover, and simmer for **1 hour**. Stir occasionally to ensure nothing sticks to the bottom.
+5. **Add the Potatoes:**
+   * After the hour is up, add your quartered potatoes. Stir them gently into the gravy.
+   * Cover and simmer for another **45-60 minutes**.
+   * The curry is ready when the beef is fork-tender and the potatoes are soft but holding their shape.
+6. **Finishing Touches:**
+   * Stir in the fresh chopped coriander. Check for seasoning—with this volume, you might need a touch more salt.
+   * Let it rest for 20 minutes before serving to let the oils settle and flavours meld.
 
-2.  **The "Big Braise":**
-    * Heat the oil in your large stock pot (11L is ideal) over medium-high heat.
-    * Add the chopped onions and a generous pinch of salt. Sauté for **20-25 minutes**. You want them soft and deeply golden brown. Be patient; this is where the flavour lives.
-    * Add the curry leaves and ginger-garlic paste. Cook for 1-2 minutes until fragrant.
-    * Add your masala powder. Stir constantly for 45-60 seconds. It will be a lot of spice, so keep it moving so it doesn't burn!
-
-3.  **Build the Base:**
-    * Immediately add both tins of tomatoes. Stir well, scraping the bottom of the pot. Cook for **10-12 minutes** until the tomatoes break down and the oil separates at the edges.
-    * Increase the heat slightly and add the beef cubes. Stir thoroughly to coat every piece of meat in the paste. Cook for 5-8 minutes to let the beef heat up.
-
-4.  **The First Simmer (Beef Only):**
-    * Pour in the beef stock or hot water and season with salt. Bring to a boil.
-    * Once bubbling, reduce heat to low, cover, and simmer for **1 hour**. Stir occasionally to ensure nothing sticks to the bottom.
-
-5.  **Add the Potatoes:**
-    * After the hour is up, add your quartered potatoes. Stir them gently into the gravy.
-    * Cover and simmer for another **45-60 minutes**.
-    * The curry is ready when the beef is fork-tender and the potatoes are soft but holding their shape.
-
-6.  **Finishing Touches:**
-    * Stir in the fresh chopped coriander. Check for seasoning—with this volume, you might need a touch more salt.
-    * Let it rest for 20 minutes before serving to let the oils settle and flavours meld.
-
----
+***
 
 #### **Serving Suggestions**
 
