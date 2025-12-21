@@ -39,8 +39,6 @@ If you've made my standard curry before, there are **three critical changes** wh
 2. **Add Potatoes Later:** In a massive pot with 2kg of meat, potatoes at the bottom tend to get crushed or dissolve over a 2-hour cook. **Add them halfway through** (after the beef has simmered for an hour) to keep them perfect.
 3. **Pot Size Matters:** You need at least an **8L to 11L pot** with a thick base to prevent scorching.
 
-***
-
 #### **Ingredients**
 
 **For the Masala (Spice Mix):**
