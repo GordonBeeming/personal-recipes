@@ -1,9 +1,6 @@
 ---
 title: Double Batch Durban Beef Curry
-description: >-
-  Cooking for a crowd or meal prepping? This is the bulk version of my Durban
-  Beef Curry. Deep, rich flavors, scaled up to feed the whole family (and then
-  some).
+description: Cooking for a crowd or meal prepping? This is the bulk version of my Durban Beef Curry. Deep, rich flavors, scaled up to feed the whole family (and then some).
 date: 2025-12-21T00:00:00.000Z
 source: Gemini
 category: Dinner
@@ -17,8 +14,8 @@ prepTime: 35 minutes
 cookTime: 2 hours 30 minutes
 totalTime: 3 hours 5 minutes
 servings: 8-12
-heroImage: /images/durban-beef-curry-hero.webp
-thumbnailImage: /images/durban-beef-curry-thumbnail.webp
+heroImage: /images/double-batch-durban-beef-curry-hero.webp
+thumbnailImage: /images/double-batch-durban-beef-curry-thumbnail.webp
 images:
   - /images/curry-1.webp
   - /images/curry-2.webp
@@ -26,7 +23,7 @@ images:
   - /images/curry-4.webp
   - /images/curry-5.webp
   - /images/curry-6.webp
-  - /images/durban-beef-curry-1.webp
+  - /images/double-batch-durban-beef-curry-1.webp
 ---
 
 Sometimes one pot just isn't enough. Whether you're feeding a crowd, prepping for the week, or just want to ensure there are plenty of leftovers (because curry always tastes better the next day), this double batch recipe has you covered.
