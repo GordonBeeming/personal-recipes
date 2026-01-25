@@ -124,7 +124,7 @@ function RecipePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Always fetch Tina data for live editing
+  // Fetch Tina data for live editing, fallback to static data for production
   useEffect(() => {
     // Check if slug exists
     if (!slug) {
@@ -145,22 +145,66 @@ function RecipePage() {
       try {
         setLoading(true)
         const relativePath = `${slug}.md`
-        const result = await client.queries.recipe({
-          relativePath
-        })
         
-        if (result.data) {
-          setTinaData({
-            data: result.data,
-            query: result.query,
-            variables: { relativePath }
+        try {
+          // Try to fetch from Tina (works in dev with Tina server running)
+          const result = await client.queries.recipe({
+            relativePath
           })
-          setError(null)
-        } else {
-          setError('Recipe data not found')
+          
+          if (result.data) {
+            setTinaData({
+              data: result.data,
+              query: result.query,
+              variables: { relativePath }
+            })
+            setError(null)
+            return
+          }
+        } catch (tinaErr) {
+          // Tina fetch failed (expected in production), fall back to static data
+          console.log('Tina client unavailable, using static recipe data')
         }
+        
+        // Fallback: Create mock Tina data structure from static recipe
+        // This allows RecipeDetail to work in production without Tina Cloud
+        const mockTinaData = {
+          data: {
+            recipe: {
+              __typename: 'Recipe' as const,
+              id: relativePath,
+              _sys: {
+                filename: slug,
+                basename: slug,
+                breadcrumbs: [slug],
+                path: relativePath,
+                relativePath: relativePath,
+                extension: '.md'
+              },
+              title: recipe.frontmatter.title,
+              description: recipe.frontmatter.description || null,
+              date: recipe.frontmatter.date,
+              source: recipe.frontmatter.source,
+              category: recipe.frontmatter.category,
+              tags: recipe.frontmatter.tags,
+              prepTime: recipe.frontmatter.prepTime,
+              cookTime: recipe.frontmatter.cookTime,
+              totalTime: recipe.frontmatter.totalTime,
+              servings: recipe.frontmatter.servings,
+              heroImage: recipe.frontmatter.heroImage || null,
+              thumbnailImage: recipe.frontmatter.thumbnailImage || null,
+              images: (recipe.frontmatter.images && recipe.frontmatter.images.length > 0) ? recipe.frontmatter.images : null,
+              body: recipe.content as any // Tina expects rich-text format
+            }
+          },
+          query: '', // Not needed for static data
+          variables: { relativePath }
+        }
+        
+        setTinaData(mockTinaData as any)
+        setError(null)
       } catch (err) {
-        console.error('Failed to fetch Tina data:', err)
+        console.error('Failed to load recipe data:', err)
         setError('Failed to load recipe data')
       } finally {
         setLoading(false)
