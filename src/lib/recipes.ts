@@ -119,6 +119,16 @@ const parseMarkdown = (content: string): { intro: string; ingredients: string[];
   return { intro, ingredients, instructions }
 }
 
+// Helper function to add base path to image URLs
+const addBasePath = (url: string | undefined): string | undefined => {
+  if (!url) return url
+  // Only add base path if URL starts with / and isn't already prefixed
+  if (url.startsWith('/') && !url.startsWith('/personal-recipes/')) {
+    return `/personal-recipes${url}`
+  }
+  return url
+}
+
 const loadRecipesFromContent = (): Recipe[] => {
   const recipes: Recipe[] = []
   
@@ -149,8 +159,9 @@ const loadRecipesFromContent = (): Recipe[] => {
         totalTime: frontmatter.totalTime || '',
         servings: frontmatter.servings || '',
         description: frontmatter.description || '',
-        heroImage: frontmatter.heroImage,
-        images: Array.isArray(frontmatter.images) ? frontmatter.images : []
+        heroImage: addBasePath(frontmatter.heroImage),
+        thumbnailImage: addBasePath(frontmatter.thumbnailImage),
+        images: Array.isArray(frontmatter.images) ? frontmatter.images.map(img => addBasePath(img) || img) : []
       },
       content: body,
       intro: frontmatter.description || intro || body.substring(0, 200).replace(/[#*_\[\]]/g, '') + '...',

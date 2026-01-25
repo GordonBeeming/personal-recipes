@@ -27,7 +27,7 @@ const adminRoutePlugin = (): PluginOption => ({
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
+  base: '/personal-recipes/',
   plugins: [
     react(),
     tailwindcss(),

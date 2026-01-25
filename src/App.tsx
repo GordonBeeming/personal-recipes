@@ -211,7 +211,7 @@ function RecipePage() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/personal-recipes">
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />

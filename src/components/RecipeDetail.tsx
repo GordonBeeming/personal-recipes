@@ -124,8 +124,8 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
   useMetaTags({
     title: `${frontmatter.title} | Gordon's Recipe Collection`,
     description: frontmatter.description,
-    image: `/og-images/${slug}.png`,
-    url: `${window.location.origin}/recipe/${slug}`
+    image: `/personal-recipes/og-images/${slug}.png`,
+    url: `${window.location.origin}/personal-recipes/recipe/${slug}`
   })
 
   // Store checkbox states in localStorage with recipe slug as key
