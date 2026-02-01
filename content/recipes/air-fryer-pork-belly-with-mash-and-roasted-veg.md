@@ -1,5 +1,5 @@
 ---
-title: Air Fryer Pork Belly with Rustic Mash and Roasted Veg
+title: Air Fryer Pork Belly with Mash and Roasted Veg
 description: A crackling-perfect roast featuring pork belly with a simple salt and pepper rub, served with skin-on mash and a vibrant orange vegetable medley.
 date: 2026-02-01T00:00:00.000Z
 source: Gemini
@@ -16,9 +16,14 @@ servings: "4"
 heroImage: /images/air-fryer-pork-belly-hero.webp
 thumbnailImage: /images/air-fryer-pork-belly-thumbnail.webp
 images:
-  - /images/pork-1.webp
-  - /images/pork-2.webp
-  - /images/pork-3.webp
+  - /images/air-fryer-pork-belly-1.webp
+  - /images/air-fryer-pork-belly-2.webp
+  - /images/air-fryer-pork-belly-3.webp
+  - /images/air-fryer-pork-belly-4.webp
+  - /images/air-fryer-pork-belly-5.webp
+  - /images/air-fryer-pork-belly-6.webp
+  - /images/air-fryer-pork-belly-7.webp
+  - /images/air-fryer-pork-belly-8.webp
 ---
 
 #### **Ingredients**
@@ -26,9 +31,8 @@ images:
 **For the Pork Belly:**
 
 * Pork Belly, skin-on
-* 2 tbsp Sea Salt (fine or flaked)
-* 1 tsp Black Pepper
-* Olive Oil (optional, for the meat side)
+* ~2 tbsp Sea Salt (fine or flaked)
+* ~1 tsp Black Pepper
 
 **For the Orange Roast Veg & Parsnips:**
 
@@ -36,14 +40,14 @@ images:
 * 500g Pumpkin (Kent or Butternut), cut into chunks
 * 500g Sweet Potato, cut into chunks
 * 2-3 large Carrots, peeled and sliced into thick rounds
-* 2 tbsp Olive Oil
+* ~2 tbsp Olive Oil
 * Salt and Pepper to taste
 
-**For the Skin-on Rustic Mash:**
+**For the Skin-on Mash:**
 
 * 1 kg Potatoes (Dutch Cream or Yukon Gold), scrubbed
 * 50g Butter
-* 1/4 cup Milk (adjust for desired consistency)
+* ~1/4 cup Milk (adjust for desired consistency)
 * Salt for boiling water
 
 #### **Instructions**
@@ -64,15 +68,15 @@ images:
 3. **Roast the Vegetables:**
    * While the pork starts, preheat your oven to **200°C**.
    * Toss the pumpkin, sweet potato, carrots, and baby parsnips in olive oil and salt.
-   * Spread them out on a large baking tray—ensure they aren't crowded so they roast rather than steam!
+   * Spread them out on a large baking tray—ensure they aren't crowded so they roast rather than steam! (not like me 🥴)
    * Roast for 35-45 minutes, shaking the tray halfway through.
 
 
-4. **Make the Rustic Mash:**
+4. **Make the Mash:**
    * Cut the scrubbed potatoes (skins on!) into small 2 cm cubes.
    * Place in a pot of cold salted water and bring to a boil.
    * Simmer for 12-15 minutes until fork-tender.
-   * Drain well, then add butter and milk. Mash until you have a textured, rustic mash.
+   * Drain well, then add butter and milk. Mash until you have the texture you prefer.
 
 
 5. **Rest and Serve:**
