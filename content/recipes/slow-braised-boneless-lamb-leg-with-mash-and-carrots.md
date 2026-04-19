@@ -18,8 +18,6 @@ thumbnailImage: /images/slow-braised-lamb-leg-thumbnail.webp
 images:
   - /images/slow-braised-lamb-leg-1.webp
   - /images/slow-braised-lamb-leg-2.webp
-  - /images/slow-braised-lamb-leg-3.webp
-  - /images/slow-braised-lamb-leg-4.webp
 ---
 
 #### **Ingredients**
