@@ -47,7 +47,11 @@ const parseFrontmatter = (content: string): { frontmatter: any; body: string } =
           // Might be start of array
           arrayItems = []
         } else {
-          frontmatter[key] = value.trim()
+          // Strip surrounding quotes. Tina requires string fields to be quoted
+          // in YAML (e.g. servings: "4" — an unquoted number crashes Tina's
+          // indexer), so this fallback parser must drop the quotes itself or
+          // they render literally on the page.
+          frontmatter[key] = value.trim().replace(/^(["'])(.*)\1$/, '$2')
         }
       }
     }
