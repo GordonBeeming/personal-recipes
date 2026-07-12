@@ -13,8 +13,8 @@ There are two rendering paths and a change has to satisfy both:
 - **Tina** (dev, and prod when indexing succeeds) — needs the value to match the schema type.
 - **Static fallback** (`src/lib/recipes.ts`) — a hand-rolled frontmatter parser used when Tina data isn't available. It strips surrounding quotes so a quoted `"4"` renders as `4`. If you add a field that needs special handling, update this parser too, not just the frontmatter.
 
-So the rule: schema first, then the frontmatter, then confirm the static parser handles it. When in doubt, copy an existing recipe that already works (e.g. `content/recipes/air-fryer-pork-belly.md`).
+So the rule: schema first, then the frontmatter, then confirm the static parser handles it. When in doubt, copy an existing recipe that already works (e.g. `content/recipes/air-fryer-pork-belly-with-mash-and-roasted-veg.md`).
 
 ## Running locally
 
-`./run.sh` installs deps if needed and runs `npm run dev` (TinaCMS + Vite). The dev server holds port 9000 for Tina's datalayer, so a separate `tinacms build` won't run alongside it.
+`./run.sh` installs deps if needed and runs `npm run dev` (TinaCMS + Vite). The dev server runs Tina's local datalayer alongside Vite, so a separate `tinacms build` won't run alongside it.
