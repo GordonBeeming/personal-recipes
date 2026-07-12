@@ -2,5 +2,5 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-[ -d node_modules ] || npm install
+[ -d node_modules ] || npm ci
 exec npm run dev

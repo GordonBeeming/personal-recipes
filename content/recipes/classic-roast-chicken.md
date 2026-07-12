@@ -12,7 +12,7 @@ tags:
 prepTime: 20 minutes
 cookTime: 1 hour 15 minutes
 totalTime: 1 hour 35 minutes
-servings: "4"
+servings: 4
 heroImage: /images/classic-roast-chicken-hero.webp
 thumbnailImage: /images/classic-roast-chicken-thumbnail.webp
 images:
