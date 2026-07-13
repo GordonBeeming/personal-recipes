@@ -124,7 +124,7 @@ const parseMarkdown = (content: string): { intro: string; ingredients: string[];
 }
 
 // Helper function to add base path to image URLs
-const addBasePath = (url: string | undefined): string | undefined => {
+export const addBasePath = (url: string | undefined): string | undefined => {
   if (!url) return url
   // Only add base path if URL starts with / and isn't already prefixed
   if (url.startsWith('/') && !url.startsWith('/personal-recipes/')) {

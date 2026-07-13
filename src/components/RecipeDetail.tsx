@@ -6,6 +6,7 @@ import { Checkbox } from './ui/checkbox'
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Header } from './Header'
 import { formatDate } from '../lib/formatDate'
+import { addBasePath } from '../lib/recipes'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { useIsMobile } from '../hooks/use-mobile'
 import { useMetaTags } from '../hooks/useMetaTags'
@@ -108,9 +109,9 @@ export function RecipeDetail({ data, query, variables, onBack }: RecipeDetailPro
     cookTime: recipe.cookTime,
     totalTime: recipe.totalTime,
     servings: recipe.servings,
-    heroImage: recipe.heroImage || undefined,
-    thumbnailImage: recipe.thumbnailImage || undefined,
-    images: recipe.images?.filter((img): img is string => img !== null) || [],
+    heroImage: addBasePath(recipe.heroImage || undefined),
+    thumbnailImage: addBasePath(recipe.thumbnailImage || undefined),
+    images: (recipe.images?.filter((img): img is string => img !== null) || []).map(img => addBasePath(img) || img),
   }
 
   const content = recipe.body

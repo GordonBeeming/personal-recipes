@@ -2,6 +2,7 @@ import { Clock, Users } from '@phosphor-icons/react'
 import { Card, CardContent } from './ui/card'
 import { Badge } from './ui/badge'
 import { Recipe } from '../lib/types'
+import { addBasePath } from '../lib/recipes'
 
 interface RecipeCardProps {
   recipe: Recipe
@@ -28,7 +29,7 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
       <div className="relative aspect-video overflow-hidden bg-muted">
         {(frontmatter.thumbnailImage || frontmatter.heroImage) ? (
           <img
-            src={frontmatter.thumbnailImage || frontmatter.heroImage}
+            src={addBasePath(frontmatter.thumbnailImage || frontmatter.heroImage)}
             alt={`${frontmatter.title} - ${frontmatter.category} recipe`}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
