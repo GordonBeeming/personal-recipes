@@ -16,6 +16,7 @@ servings: "4"
 heroImage: /images/classic-roast-chicken-hero.webp
 thumbnailImage: /images/classic-roast-chicken-thumbnail.webp
 images:
+  - /images/classic-roast-chicken-hero.webp
   - /images/classic-roast-chicken-1.webp
   - /images/classic-roast-chicken-2.webp
   - /images/classic-roast-chicken-3.webp
