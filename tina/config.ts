@@ -16,6 +16,7 @@ export default defineConfig({
   token: process.env.TINA_TOKEN,
 
   build: {
+    basePath: "personal-recipes",
     outputFolder: "admin",
     publicFolder: "public",
   },
